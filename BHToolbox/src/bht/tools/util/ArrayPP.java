@@ -1,11 +1,12 @@
 package bht.tools.util;
 
-import com.sun.istack.internal.logging.Logger;
 import java.awt.Window;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractListModel;
 import javax.swing.ListModel;
 
@@ -1305,7 +1306,7 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 					}
 					catch (ClassCastException ex)
 					{
-						Logger.getLogger(getClass()).warning("Could not add item " + i + " to array; types don't match.", ex);
+						Logger.getGlobal().log(Level.WARNING, "Could not add item {0} to array; types don''t match.", i);
 						continue;
 					}
 				return a;
