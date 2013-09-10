@@ -3,6 +3,10 @@ package bht.tools.misc;
 import bht.tools.util.ArrayPP;
 import bht.tools.util.StringPP;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.Scanner;
+
+
 
 /**
  * Argument, made for BHToolbox, is copyright Blue Husky Programming ©2013 CC 3.0 BY-SA<HR/>
@@ -11,101 +15,60 @@ import java.util.Collection;
  * @version 1.0.0
  * @since 2013-08-08
  */
-public class Argument
+public abstract class Argument
 {
 	private CharSequence triggerWord;
-	private Object[] parameters;
-	private Runnable action;
+	private Parameter[] parameters;
 
-	public Argument(CharSequence initTriggerWord, Object[] initParameters, Runnable initAction)
+	public Argument(CharSequence initTriggerWord, Parameter[] initParameters)
 	{
 		triggerWord = initTriggerWord;
 		parameters = initParameters;
-		action = initAction;
 	}
 
-	public Argument performAction()
+	/**
+	 * Alerts this class that the argument has been provided in the command line
+	 *
+	 * @param withParameters the parameters this argument has been provided with
+	 *
+	 * @return {@code this}
+	 */
+	public abstract Argument provide(Parameter... withParameters);
+
+	/**
+	 * Reports whether the argument has been provided
+	 *
+	 * @return {@code true} iff this argument has been provided already
+	 */
+	public abstract boolean isProvided();
+
+	public Parameter[] getParameters()
 	{
-		if (action != null)
-			action.run();
-		return this;
+		return parameters;
 	}
 
-	public Argument performActionAsynhronously()
+	public void setParameters(Parameter[] parameters)
 	{
-		if (action != null)
-			new Thread(action, "AsynchronousArgument_" + triggerWord).start();
-		return this;
+		this.parameters = parameters;
 	}
 
-	public boolean matches(CharSequence rawInput)
+	public CharSequence getTriggerWord()
 	{
-		StringPP rawInputPP = StringPP.makeStringPP(rawInput);
-		ArrayPP inputWords = rawInputPP.getWords();
-
-		return matches(inputWords);
+		return triggerWord;
 	}
 
-	public boolean matches(Iterable<CharSequence> inputWords)
+	public void setTriggerWord(CharSequence triggerWord)
 	{
-		ArrayPP<CharSequence> inputWordsPP = new ArrayPP<>(inputWords);
-		return matches(inputWordsPP.toArray());
+		this.triggerWord = triggerWord;
 	}
 
-	public boolean matches(CharSequence... inputWords)
+	@Override
+	public String toString()
 	{
-		for (int i = 0; i < inputWords.length; i++)
-		{
-			CharSequence charSequence = inputWords[i];
-			if (StringPP.makeStringPP(triggerWord).equalsIgnoreCase(inputWords[i]))
-			{
-				if (parameters == null)
-					return true;
-				ArrayPP paramsPP = new ArrayPP(parameters);
-				/*for (Object object : paramsPP)
-				 {
-				 if (object instanceof Object[])
-				 {
-						
-				 }
-				 if (object instanceof DefaultArg)
-						
-				 }*/
-				if (paramsPP.contains((Object) null))
-					return true;
-				// TODO: Finish this
-			}
-		}
-		return false;
+		return String.valueOf(triggerWord);
 	}
 
-	public ArgumentParser getNewParser()
-	{
-		return new ArgumentParser(this);
-	}
 
-	private int getMinRequiredParameters()
-	{
-		int mrp = 0;
-		for (Object param : parameters)
-		{
-			if (recursiveNullCheck(param))
-				break;
-			mrp++;
-		}
-		return mrp;
-	}
-
-	private boolean recursiveNullCheck(Object hasNull)
-	{
-		if (hasNull == null)
-			return true;
-		if (hasNull instanceof Object[])
-			for (Object o : (Object[]) hasNull)
-				if (recursiveNullCheck(hasNull))
-					return true;
-		return false;
-	}
 
 	public static enum DefaultArg
 	{
@@ -127,51 +90,6 @@ public class Argument
 			if (s.equalsAnyIgnoreCase("yes", "true", "on", "positive", "affirmative"))
 				return this == POSITIVE || this == BOOLEAN;
 			return false;
-		}
-	}
-
-	public class ArgumentParser
-	{
-		private Argument basis;
-		private int numMatchedArgs = 0;
-
-		protected ArgumentParser(Argument initBasis)
-		{
-			basis = initBasis;
-		}
-
-		public boolean needsMore()
-		{
-			return basis.getMinRequiredParameters() > numMatchedArgs;
-		}
-
-		public boolean takes(CharSequence cs)
-		{
-			return (cs == null && basis.parameters[numMatchedArgs] == null)
-				   || recursiveEqualityCheck(basis.parameters[numMatchedArgs], cs);
-		}
-
-		private boolean recursiveEqualityCheck(Object o1, Object o2)
-		{
-			if (o1 == o2)
-				return true;
-			if (o1 instanceof Object[])
-				if (o2 instanceof Object[])
-					for (Object o1o : (Object[]) o1)
-						for (Object o2o : (Object[]) o2)
-							return recursiveEqualityCheck(o1o, o2o);
-				else
-					for (Object o1o : (Object[]) o1)
-						return recursiveEqualityCheck(o1o, o2);
-			if (o2 instanceof Object[])
-				for (Object o2o : (Object[]) o2)
-					return recursiveEqualityCheck(o1, o2o);
-			return false;
-		}
-
-		public void parseWord(CharSequence charSequence)
-		{
-			throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 		}
 	}
 }
