@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  *
  * @author Supuhstar of Blue Husky Programming
  * @since Dec 20, 2011
- * @version 1.2.0
+ * @version 1.2.1
  */
 public class BHTimer
 {
@@ -78,11 +78,12 @@ public class BHTimer
 	 * @param initAction The action that will be performed
 	 * @param initFPS Then approximate number of times the given action will be performed every second
 	 * @since 1.2.0 (2013-05-14) for BHIM Try 2
-	 * @version 1.0.0
+	 * @version 1.0.1
+         * 		 - Changed "1000.0" to "1000d"
 	 */
 	public BHTimer(ActionListener initAction, double initFPS)
 	{
-		this(initAction, (long) (1000.0 / initFPS));
+		this(initAction, (long) (1000d / initFPS));
 	}
 
 	/**
@@ -177,6 +178,12 @@ public class BHTimer
 		action = newAction;
 	}
 
+        /**
+         * Returns the action performed every repetition
+         * @return the action performed every repetition
+         * 
+         * @version 1.0.0
+         */
 	public EventListener getAction()
 	{
 		return action;
@@ -194,27 +201,53 @@ public class BHTimer
 	 * @see #PRIORITY_MEDIUM_LOW
 	 * @see #PRIORITY_LOW
 	 * @see #PRIORITY_VERY_LOW
+         * 
+         * @version 1.0.0
 	 */
 	public void setPriority(byte priority)
 	{
 		System.out.println("Setting priority: " + priority);
 		if (priority < PRIORITY_VERY_LOW || priority > PRIORITY_VERY_HIGH)
-			throw new IllegalArgumentException("priority (" + priority + ") must be between PRIORITY_VERY_LOW ("
-											   + PRIORITY_VERY_LOW + ") and PRIORITY_VERY_HIGH (" + PRIORITY_VERY_HIGH
-											   + "), inclusive");
+			throw new IllegalArgumentException(
+                                   "priority (" + priority + ") must be between PRIORITY_VERY_LOW ("
+				 + PRIORITY_VERY_LOW + ") and PRIORITY_VERY_HIGH (" + PRIORITY_VERY_HIGH
+				 + "), inclusive"
+                        );
 		timer.setPriority(chosenPriority = priority);
 	}
 
 	/**
-	 * Immediately halts the timer
+	 * Asynchronously halts the timer
+         * 
+         * @since March 4, 2012 (1.1.0) for BHNotifier
+         * @version 1.0.0
 	 */
-	public void reset()//added March 4, 2012 (1.1.0) for BHNotifier
+	public void reset()
 	{
 		timer.stop();
 	}
 
-	public void setRepeats(boolean shouldRepeat)//added March 4, 2012 (1.1.0) for BHNotifier
+        /**
+         * Asynchronously sets whether the timer repeats
+         * @param shouldRepeat if {@code true}, the timer repeats. If false, will perform at most one more action before pausing the timer.
+         * 
+         * @since March 4, 2012 (1.1.0) for BHNotifier
+         * @version 1.0.0
+         */
+	public void setRepeats(boolean shouldRepeat)
 	{
 		rep = shouldRepeat;
 	}
+
+        /**
+         * Set the repetition interval of the timer, in repetitions per second. This is a target interval and is <EM>not</EM> guaranteed to be met
+         * 
+         * @param framesPerSecond the number of updates per second
+         * @since 2013-09-11 (1.2.1) for BLISS
+         * @version 1.0.0
+         */
+    public void setDelay(double framesPerSecond)
+    {
+        setDelay((long) (1000d / framesPerSecond));
+    }
 }
