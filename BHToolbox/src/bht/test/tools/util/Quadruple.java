@@ -21,7 +21,8 @@ import bht.tools.misc.ToPrimitives;
  * </ul>
  *
  * @author Supuhstar of Blue Husky Studios
- * @version 1.0.0
+ * @version 1.0.1
+ *		- 2014-08-19 (1.0.1) 0 Kyli Rouge added documentation, some TODOs, and fixed a compile error
  * @since Jul 20, 2012
  * 
  * @deprecated Not yet fully implemented
@@ -41,7 +42,7 @@ public class Quadruple extends Number implements CompleteObject, ToPrimitives
    * 
    * @since July 20, 2012 (1.0.0)
    */
-  public static final Quadruple NEGATIVE_INFINITY = new Quadruple(0x7FF0000000000000L, 0L);
+  public static final Quadruple NEGATIVE_INFINITY = new Quadruple(0xFFF0000000000000L, 0L);
   /**
    * A constant holding a Not-a-Number (NaN) value of type
    * {@code Quadruple}. It is equivalent to the value returned by
@@ -103,21 +104,45 @@ public class Quadruple extends Number implements CompleteObject, ToPrimitives
 
   public Quadruple(long initValueLeft, long initValueRight)
   {
+	  l = initValueLeft;
+	  r = initValueRight;
   }
 
   public Quadruple(double initValue)
   {
+	  // TODO: convert from double
+	  
   }
 
+  /**
+   * Creates a new {@code Quadruple} with the value of the given {@link Number}'s {@link Number#doubleValue()} value.
+   * @param initValue the value with which to initialize this {@code Quadruple}
+   */
   public Quadruple(Number initValue)
   {
+	  this(initValue.doubleValue());
+  }
+
+  /**
+   * Creates a new {@code Quadruple} with the value of the given {@link Number}'s {@link Number#doubleValue()} value.
+   * @param initValue the value with which to initialize this {@code Quadruple}
+   */
+  public Quadruple(Quadruple initValue)
+  {
+	  this(initValue.l, initValue.r);
   }
 
   @Override
   public int intValue()
   {
-    throw new UnsupportedOperationException("Not supported yet.");
+	  // TODO: Account for mantissa, exponent of l and r
+	  return (int) ((Long.signum(l) == -1 ? 1<<31 : 0) | (r & Long.MAX_VALUE));
   }
+  
+  public static void main(String[] args)
+	{
+		System.out.println(Integer.toBinaryString(new Quadruple(-1, 0).intValue()));
+	}
 
   @Override
   public long longValue()
@@ -136,15 +161,19 @@ public class Quadruple extends Number implements CompleteObject, ToPrimitives
   {
     long d = 0;
     d |= (l & 0x8000000000000000L);//sign
-    //exponent
-    //fraction
+    // TODO: exponent
+    // TODO: fraction
     return Double.longBitsToDouble(d);
   }
 
+  /**
+   * {@inheritDoc} 
+   * @return {@code false} if the value is {@code 0}, {@code true} otherwise.
+   */
   @Override
   public boolean toBoolean()
   {
-    return (Number) this == 0;
+    return (l|r) != 0;
   }
 
   @Override

@@ -1,11 +1,22 @@
 package bht.tools.fx;
 
 import bht.tools.util.BHTimer;
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Component;
+import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.DisplayMode;
+import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.HashMap;
 import java.util.Hashtable;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -22,7 +33,9 @@ import javax.swing.JFrame;
  * </ul>
  * @author Supuhstar of Blue Husky Programming
  * @since Mar 26, 2012
- * @version 3.0.0
+ * @version 3.0.2
+ *		- 2014-08-23 (3.0.2) - Kyli Rouge made {@link #testTranslucencySupport()} more efficient
+ *		- 2014-08-23 (3.0.1) - Kyli Rouge tweaked and formatted methods
  */
 public class CompAction //NOTE: Must be compiled in UTF-8
 {
@@ -76,7 +89,10 @@ public class CompAction //NOTE: Must be compiled in UTF-8
 
   public static void snapToCorner(final Component COMP_TO_CORNER, ScreenLoc corner)
   {
-    Rectangle parent = COMP_TO_CORNER instanceof Window ? new Rectangle(MAX_WIN_BOUNDS) : COMP_TO_CORNER.getParent().getBounds();
+    Rectangle parent =
+		COMP_TO_CORNER instanceof Window
+			? new Rectangle(MAX_WIN_BOUNDS)
+			: COMP_TO_CORNER.getParent().getBounds();
     int x = 0, y = 0;
     switch (corner)
     {
@@ -94,8 +110,23 @@ public class CompAction //NOTE: Must be compiled in UTF-8
     COMP_TO_CORNER.setLocation(x, y);
   }
 
+  
+  private static boolean translucencyResult, testedTranslucency = false;
+  
+  /**
+   * Tests whether translucency is supported on the current platform. This caches the result, so the first call will be exactly
+   * the same as subsequent ones. An application restart is required for a different result.
+   * 
+   * @return {@code true} if we've successfully tested the system to have supported translucency.
+   * 
+   * @version 1.1.0
+   *		- 2014-08-23 (1.1.0) - Kyli Rouge let the result be cached
+   */
+  @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch"})
   public static boolean testTranslucencySupport()
   {
+	  if (testedTranslucency)
+		  return translucencyResult;
     boolean b;
     JFrame jf = null;
     try
@@ -106,7 +137,7 @@ public class CompAction //NOTE: Must be compiled in UTF-8
       com.sun.awt.AWTUtilities.setWindowOpacity(jf, 0.5F);
       b = true;
     }
-    catch (Throwable t)//Old transparency is not supported
+    catch (Throwable t) // Old transparency is not supported
     {
       if (jf != null)
       {
@@ -121,7 +152,7 @@ public class CompAction //NOTE: Must be compiled in UTF-8
         jf.setOpacity(0.5F);
         b = true;
       }
-      catch (Throwable t2)//semitransparency of decorated frames is not supported
+      catch (Throwable t2) // semitransparency of decorated frames is not supported
       {
         b = false;
       }
@@ -131,7 +162,8 @@ public class CompAction //NOTE: Must be compiled in UTF-8
       jf.dispose();
       jf = null;
     }
-    return b;
+	testedTranslucency = true;
+    return translucencyResult = b;
   }
   
   
@@ -141,7 +173,12 @@ public class CompAction //NOTE: Must be compiled in UTF-8
   @SuppressWarnings("empty-statement")
   public static void flash(Window window, boolean shouldDing)
   {
-    for(int i=0, l = Integer.MAX_VALUE / 4; i < l && flashingWindow != null; i++);//Wait reasonably long to ensure that this method isn't already running
+    for(
+		int i = 0,
+			l = Integer.MAX_VALUE / 4;
+		i < l
+			&& flashingWindow != null;
+		i++); // Wait reasonably long to ensure that this method isn't already running
 
     if (window != null)
     {
@@ -195,11 +232,9 @@ public class CompAction //NOTE: Must be compiled in UTF-8
   /**
    * The heart of {@link CompAction}, which performs ALL animations. The heart of THIS method is a {@link BHTimer} object, which
    * performs all animation frames in a separate thread.
-   * @see BHTimer
    * 
    * @param COMP_TO_MORPH the component to morph.
    * @param TARGET_LOC the location to which the component is moving
-   * @see Rectangle
    * @param TARGET_TRANSPARENCY the transparency that the component is to have at the end of the animation
    * @param BRAKE the brake of the animation (higher values mean slower animation; 0.0 means that no animation will be
    *        performed. The recommended value for this is {@link #DEF_BRAKE}, or {@value #DEF_BRAKE})
@@ -207,7 +242,7 @@ public class CompAction //NOTE: Must be compiled in UTF-8
    *        slower than this at different points, but will not go any faster.
    * @param SHOULD_SHOW_WHEN_STARTING if {@code true}, this method will passes {@code true} to the
    *        {@link Component#setVisible(boolean)} method of {@code COMP_TO_MORPH} immediately before starting the animation.
-   * @param SHOULD_HIDE_WHEN_FINISHED if {@code true}, this method will passes {@code false} to the
+   * @param HIDE_WHEN_FINISHED if {@code true}, this method will passes {@code false} to the
    *        {@link Component#setVisible(boolean)} method of {@code COMP_TO_MORPH} immediately after completing the animation.
    * @param RETURN_LOC the location at to which the component will snap after all animation proceedures are complete.
    * @param END_ACTION the action to be performed after the animation is completed
@@ -218,85 +253,115 @@ public class CompAction //NOTE: Must be compiled in UTF-8
    * @throws NullPointerException if {@code COMP_TO_MORPH} is {@code null}
    * @throws UnsupportedOperationException if translucency is not supported and the {@code TARGET_TRANSPARENCY} is different
    *         from the current transparency value of {@code COMP_TO_MORPH}.
+   * 
+   * @see BHTimer
+   * @see Rectangle
    * @see #testTranslucencySupport()
    * @see #getTransparency(java.awt.Component)
    */
-  public void morphTo(final Component COMP_TO_MORPH, final Rectangle TARGET_LOC, final double TARGET_TRANSPARENCY,
-                      final double BRAKE, final double FRAMES_PER_SECOND, boolean SHOULD_SHOW_WHEN_STARTING,
-                      final boolean SHOULD_HIDE_WHEN_FINISHED, final Rectangle RETURN_LOC, final ActionListener END_ACTION,
-                      final boolean SHOULD_EXIT_AFTER_MORPH, final int EXIT_STATUS)
-  {
-    if (COMP_TO_MORPH == null)
-      throw new NullPointerException("Cannot manipulate a null component (COMP_TO_MORPH is null)");
-    if (!testTranslucencySupport() && getTransparency(COMP_TO_MORPH) != TARGET_TRANSPARENCY)
-      throw new UnsupportedOperationException("This system does not support decorated translucency, and the requested "
-                                              + "operation would change the translucency by " +
-                                              (getTransparency(COMP_TO_MORPH) - TARGET_TRANSPARENCY) +
-                                              " while the target component is decorated");
-    
-    if (morpher != null)
-    {
-      morpher.stop();
-      morpher.reset();
-    }
-    
-    final Rectangle BEGIN = COMP_TO_MORPH.getBounds();
-    morpher = new BHTimer(new ActionListener()
-    {
-      private int count = 0;
-      private double l = 0, temp, t;
-      private final double BEGIN_T = getTransparency(COMP_TO_MORPH), tDiff = TARGET_TRANSPARENCY - BEGIN_T;
-      private Rectangle here = BEGIN.getBounds();
-      private final int xDiff = TARGET_LOC.x - BEGIN.x, yDiff = TARGET_LOC.y - BEGIN.y,
-      wDiff = TARGET_LOC.width - BEGIN.width, hDiff = TARGET_LOC.height - BEGIN.height,
-      MAX_ITER = 128;//Added March 5, 2012 (2.0.11) for Marian
-      private final boolean SHOULD_USE_TRANPARENCY = TARGET_TRANSPARENCY != getTransparency(COMP_TO_MORPH);
-      
-      @Override public void actionPerformed(ActionEvent e)
-      {
-        temp = (l + 0) / 100;
-        here.x = (int)(BEGIN.x + (xDiff * temp));
-        here.y = (int)(BEGIN.y + (yDiff * temp));
-        here.width = (int)(BEGIN.width + (wDiff * temp)) + 1;
-        here.height = (int)(BEGIN.height + (hDiff * temp)) + 1;
-        COMP_TO_MORPH.setBounds(here);//Added March 26, 2012 (3.0.0) for rebuilding of CompAction
-        
-        temp = (t + 0) / 100;
-        if (SHOULD_USE_TRANPARENCY)
-          setTransparency(COMP_TO_MORPH, BEGIN_T + (tDiff * temp));
-        
-        l = l + ((100 - l) / (BRAKE + 1));
-        t = t + ((100 - t) / (BRAKE + 1));
-        
-        if (count++ > MAX_ITER ||//Added March 5, 2012 (2.0.11) for Marian
-            l >= 99.99 ||
-            (here.x == TARGET_LOC.x && here.y == TARGET_LOC.y &&
-                 here.width == TARGET_LOC.width && here.height == TARGET_LOC.height))
-        {
-          if (SHOULD_HIDE_WHEN_FINISHED)
-            COMP_TO_MORPH.setVisible(false);
-          COMP_TO_MORPH.setBounds(RETURN_LOC != null ? RETURN_LOC : TARGET_LOC);
-          if (END_ACTION != null)
-            END_ACTION.actionPerformed(e);
-          if (SHOULD_EXIT_AFTER_MORPH)
-            System.exit(EXIT_STATUS);
-          morpher.reset();
-        }
-      }
-    }, Math.round(1000 / FRAMES_PER_SECOND));
-    
-    if (SHOULD_SHOW_WHEN_STARTING)
-      COMP_TO_MORPH.setVisible(true);
-    
-    morpher.start();
-  }
+	public void morphTo(
+		final Component COMP_TO_MORPH,
+		final Rectangle TARGET_LOC,
+		final double TARGET_TRANSPARENCY,
+		final double BRAKE,
+		final double FRAMES_PER_SECOND,
+		final boolean SHOULD_SHOW_WHEN_STARTING,
+		final boolean HIDE_WHEN_FINISHED,
+		final Rectangle RETURN_LOC,
+		final ActionListener END_ACTION,
+		final boolean SHOULD_EXIT_AFTER_MORPH,
+		final int EXIT_STATUS)
+	{
+		if (COMP_TO_MORPH == null)
+			throw new NullPointerException("Cannot manipulate a null component (COMP_TO_MORPH is null)");
+		{
+			double trans = getTransparency(COMP_TO_MORPH);
+			if (!testTranslucencySupport()
+				&& trans != TARGET_TRANSPARENCY)
+				throw new UnsupportedOperationException(
+					"This system does not support decorated translucency, and the requested "
+					+ "operation would change the translucency by "
+					+ (trans - TARGET_TRANSPARENCY)
+					+ " while the target component is decorated");
+		}
+
+		if (morpher != null)
+		{
+			morpher.stop();
+			morpher.reset();
+		}
+
+		final Rectangle BEGIN = COMP_TO_MORPH.getBounds();
+		morpher = new BHTimer(new ActionListener()
+			{
+				private int count = 0;
+				private double l = 0, temp, t;
+				private final double BEGIN_T = getTransparency(COMP_TO_MORPH), tDiff = TARGET_TRANSPARENCY - BEGIN_T;
+				private Rectangle here = BEGIN.getBounds();
+				private final int xDiff = TARGET_LOC.x - BEGIN.x, yDiff = TARGET_LOC.y - BEGIN.y,
+						wDiff = TARGET_LOC.width - BEGIN.width, hDiff = TARGET_LOC.height - BEGIN.height,
+						MAX_ITER = 128; // Added March 5, 2012 (2.0.11) for Marian
+				private final boolean SHOULD_USE_TRANPARENCY = TARGET_TRANSPARENCY != getTransparency(COMP_TO_MORPH);
+
+				@Override public void actionPerformed(ActionEvent actionEvent)
+				{
+					temp = (l + 0) / 100;
+					here.x = (int) (BEGIN.x + (xDiff * temp));
+					here.y = (int) (BEGIN.y + (yDiff * temp));
+					here.width = (int) (BEGIN.width + (wDiff * temp)) + 1;
+					here.height = (int) (BEGIN.height + (hDiff * temp)) + 1;
+					COMP_TO_MORPH.setBounds(here); // Added March 26, 2012 (3.0.0) for rebuilding of CompAction
+
+					temp = (t + 0) / 100;
+					if (SHOULD_USE_TRANPARENCY)
+						setTransparency(COMP_TO_MORPH, BEGIN_T + (tDiff * temp));
+
+					l = l + ((100 - l) / (BRAKE + 1));
+					t = t + ((100 - t) / (BRAKE + 1));
+
+					if ( // if we're done
+							count++ > MAX_ITER // Added March 5, 2012 (2.0.11) for Marian
+									|| l >= 99.99
+									|| (here.x == TARGET_LOC.x
+										&& here.y == TARGET_LOC.y
+										&& here.width == TARGET_LOC.width
+										&& here.height == TARGET_LOC.height))
+					{
+						if (HIDE_WHEN_FINISHED)
+							COMP_TO_MORPH.setVisible(false);
+						COMP_TO_MORPH.setBounds(RETURN_LOC != null ? RETURN_LOC : TARGET_LOC);
+						if (END_ACTION != null)
+							END_ACTION.actionPerformed(actionEvent);
+						if (SHOULD_EXIT_AFTER_MORPH)
+							System.exit(EXIT_STATUS);
+						morpher.reset();
+					}
+				}
+			},
+			Math.round(1000 / FRAMES_PER_SECOND)
+		);
+
+		if (SHOULD_SHOW_WHEN_STARTING)
+			COMP_TO_MORPH.setVisible(true);
+
+		morpher.start();
+	}
   
-  public void morphTo(final Component COMP_TO_MORPH, final Rectangle TARGET_LOC)
-  {
-    morphTo(COMP_TO_MORPH, TARGET_LOC, 0, DEF_BRAKE, DEF_FPS, false, false, null, null, false, 0);
-  }
+	public void morphTo(final Component COMP_TO_MORPH, final Rectangle TARGET_LOC)
+	{
+		morphTo(COMP_TO_MORPH, TARGET_LOC, 0, DEF_BRAKE, DEF_FPS, false, false, null, null, false, 0);
+	}
   
-  //TODO: public void morphInto(final Component START_COMP, final Component END_COMP, final double BRAKE, final double FRAMES_PER_SECOND, final ActionListener END_ACTION, final boolean SHOULD_EXIT_AFTER_MORPH, final int EXIT_STATUS)
+  /*TODO:
+	public void morphInto(
+		final Component START_COMP,
+		final Component END_COMP,
+		final double BRAKE,
+		final double FRAMES_PER_SECOND,
+		final ActionListener END_ACTION,
+		final boolean SHOULD_EXIT_AFTER_MORPH,
+		final int EXIT_STATUS)
+  */
   //</editor-fold>
   
   
@@ -352,12 +417,20 @@ public class CompAction //NOTE: Must be compiled in UTF-8
   }
   
   /**
-   * Returns the transparency of the given component. 0.0 is opaque, 1.0 is invisible, intermediate values are intermediate
+   * Returns the transparency of the given component. 0.0 is opaque, 1.0 is invisible, intermediate values are intermediate.
+   * If {@link #testTranslucencySupport()} has been called already and returned {@code false}, this will always return {@code 1}
+   * 
    * @param comp the component to test
    * @return a {@code float} between 0.0 and 1.0, inclusive
+   * 
+   * @version 1.0.1
+   *		- 2014-08-23 (1.0.1) - Kyli Rouge implemented a shortcut if we already know transparency isn't supported
    */
   public static float getTransparency(Component comp)
   {
+	  if (testedTranslucency && !translucencyResult)
+		  return 1;
+	  
     if (comp instanceof Window)
       try
       {
@@ -597,11 +670,11 @@ public class CompAction //NOTE: Must be compiled in UTF-8
   
   
   
-  private static Hashtable<Component, SnapListener> snapToEdgesDictionary;
+  private static HashMap<Component, SnapListener> snapToEdgesDictionary;
   public static void setSnapsToEdges(Component c, int distanceToSnap)
   {
     if (snapToEdgesDictionary == null)
-      snapToEdgesDictionary = new Hashtable<>();
+      snapToEdgesDictionary = new HashMap<>();
     if (snapToEdgesDictionary.containsKey(c))
     {
       if (distanceToSnap == 0)
@@ -609,8 +682,8 @@ public class CompAction //NOTE: Must be compiled in UTF-8
         c.removeComponentListener(snapToEdgesDictionary.get(c));
         return;
       }
-      snapToEdgesDictionary.get(c).setSnapDistance(distanceToSnap);
-      return;
+	  else
+		 snapToEdgesDictionary.get(c).setSnapDistance(distanceToSnap);
     }
     SnapListener sl;
     snapToEdgesDictionary.put(c, sl = new SnapListener(c, distanceToSnap));
@@ -620,12 +693,14 @@ public class CompAction //NOTE: Must be compiled in UTF-8
   
   
   //<editor-fold defaultstate="collapsed" desc="inner classes">
-  public enum ScreenLoc
-  {
-    TOP_LEFT,    TOP,    TOP_CENTER,    TOP_RIGHT,
-    LEFT, MIDDLE_LEFT,         MIDDLE_CENTER, MIDDLE_RIGHT, RIGHT,
-    BOTTOM_LEFT, BOTTOM, BOTTOM_CENTER, BOTTOM_RIGHT
-  }
+	public enum ScreenLoc
+	{
+		                              TOP,
+		      TOP_LEFT,            TOP_CENTER,            TOP_RIGHT,
+		LEFT, MIDDLE_LEFT,        MIDDLE_CENTER,       MIDDLE_RIGHT, RIGHT,
+		      BOTTOM_LEFT,        BOTTOM_CENTER,       BOTTOM_RIGHT,
+			                         BOTTOM
+	}
   private static class SnapListener implements ComponentListener
   {
     int dist;

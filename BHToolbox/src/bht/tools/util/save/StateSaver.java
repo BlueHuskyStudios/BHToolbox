@@ -1,5 +1,6 @@
 package bht.tools.util.save;
 
+import bht.tools.util.save.general.SaveConstants;
 import bht.tools.util.ArrayPP;
 import bht.tools.util.StringPP;
 import java.io.File;
@@ -101,10 +102,11 @@ public final class StateSaver
    */
   public StateSaver(CharSequence progTitle, CharSequence saveFileName, boolean autoSaveLoad, boolean useXML)
   {
-    this(progTitle, new java.io.File((new StringPP(System.getProperty("os.name")).containsIgnoreCase("windows") ?
-                                      System.getenv("APPDATA") :
-                                      System.getProperty("java.io.tmpdir")) + "\\Blue Husky\\" + progTitle + "\\" + saveFileName
-                                          + "." + (useXML ? "xml" : "properties")), autoSaveLoad);
+    this(
+		progTitle,
+		SaveConstants.inventSaveFileFor(progTitle, saveFileName + "." + (useXML ? "xml" : "properties")),
+		autoSaveLoad
+	);
   }
   
   /**
@@ -126,6 +128,10 @@ public final class StateSaver
    * @param autoSaveLoad If {@code true}, the program will load the state upon starting and adding a saveable, and save upon
    * program exit.
    */
+  @SuppressWarnings(
+  {
+  	"ThrowableInstanceNotThrown", "ThrowableInstanceNeverThrown", "BroadCatchBlock", "TooBroadCatch"
+  })
   public StateSaver(CharSequence progTitle, java.io.File saveFile, boolean autoSaveLoad)
   {
     title = progTitle;

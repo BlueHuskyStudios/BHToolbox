@@ -1,5 +1,6 @@
 package bht.tools.util;
 
+import bht.tools.misc.CompleteObject;
 import java.awt.Window;
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,24 +25,30 @@ import javax.swing.ListModel;
  * @param <T> The type of array with which this object will be dealing.
  * <h3>Examples:</h3>
  * <ul>
- *	<li>{@code ArrayPP<String> strings = new ArrayPP();}
- *		<ul><li>A new array of {@code String}s. Analogous to {@code String[] strings;}</li></ul>
- *	</li>
- *	<li>{@code ArrayPP strings = new ArrayPP<String>(args);}
- *		<ul><li>A clone of an array of {@code String}s. Analogous to {@code String[] strings = args;}</li></ul>
- *	</li>
- *	<li>{@code String[] newArgs = new ArrayPP<String>(args).trim().add("Java").toArray();}
- *		<ul>
- *			<li>A clone of an array of {@code String}s. Analogous to {@code String[] strings = args;}, where all null values in{@code args} have been removed and {@code "Java"} has been placed on the end.</li>
- *		</ul>
- *	</li>
+ * <li>{@code ArrayPP<String> strings = new ArrayPP<>();}
+ * <ul><li>A new array of {@code String}s. Analogous to {@code String[] strings;}</li></ul>
+ * </li>
+ * <li>{@code ArrayPP strings = new ArrayPP<String>(args);}
+ * <ul><li>A clone of an array of {@code String}s. Analogous to {@code String[] strings = args;}</li></ul>
+ * </li>
+ * <li>{@code String[] newArgs = new ArrayPP<String>(args).trim().add("Java").toArray();}
+ * <ul>
+ * <li>A clone of an array of {@code String}s. Analogous to {@code String[] strings = args;}, where all null values
+ * in{@code args} have been removed and {@code "Java"} has been placed on the end.</li>
+ * </ul>
+ * </li>
  * </ul>
  * @author Supuhstar of Blue Husky Programming
- * @version 1.7.0
+ * @version 1.8.0
+ *		- 2014-08-20 (1.8.0) - Kyli Rouge added {@link #toString(CharSequence, CharSequence, CharSequence)}
+ *		- 2014-08-19 (1.7.1) - Kyli Rouge updated formatting and ignored some compiler warnings
  * @since 1.6_24
  * @see <a href="http://download.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html">arrays</a>
  */
-public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneable
+public class ArrayPP<T>
+		implements Comparable<ArrayPP<?>>,
+				   Iterable<T>,
+				   Cloneable
 {
 	/**
 	 * The contents of the array. Feel free to directly interact; the methods of this class are designed not to care!
@@ -60,7 +67,6 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 //  {
 //    this(0);
 //  }
-
 	/**
 	 * Creates a new Array++ of the given size, without anything in it.
 	 * <h5>Analogy:</h5> {@code ArrayPP&lt;String&gt; s = new ArrayPP(5);}<br/>
@@ -82,25 +88,21 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
     
 		 for (int i=0; i < init; i++)
 		 add(null);*/
+
 	}
 
 	/**
 	 * Creates a new Array++ to manage the given array.
-	 * <h5>Analogy:</h5> {@code ArrayPP&lt;String&gt; s = new ArrayPP(args);}<br/>
+	 * <h5>Analogy:</h5> {@code ArrayPP<String> s = new ArrayPP(args);}<br/>
 	 * is analogous to<br/> {@code String s[] = System.arraycopy(args);}
 	 *
 	 * @param array The array to be managed
 	 */
-	@SuppressWarnings(
-			{
-		"null", "ConstantConditions"
-	})
+	@SuppressWarnings({"null", "ConstantConditions"})
 	public ArrayPP(T... array)
 	{
 		boolean n = array == null;
-		t = (T[]) java.util.Arrays.copyOf(n ? new Object[]
-		{
-		} : array, n ? 0 : array.length);
+		t = (T[]) java.util.Arrays.copyOf(n ? new Object[]{} : array, n ? 0 : array.length);
 	}
 
 	/**
@@ -123,9 +125,9 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 	 * @param array the {@code Iterable} of values that will be added to this array
 	 */
 	@SuppressWarnings(
-	{
-		"empty-statement", "OverridableMethodCallInConstructor"
-	})
+			{
+				"empty-statement", "OverridableMethodCallInConstructor"
+			})
 	public ArrayPP(Iterable<T> array)
 	{
 		this();
@@ -170,12 +172,35 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 	{
 		return t.length;
 	}
+	
+	/**
+	 * Returns this array, starting with the given {@code preceding} character sequence, ending with the given
+	 * {@code succeeding} one, and with the given {@code separator} between each element.
+	 * @param preceding the character sequence to start the String with
+	 * @param separator the character sequence to end the String with
+	 * @param succeeding the character sequence to separate each item with
+	 * @return this array, starting with, separated by, and ending with the given sequences
+	 * 
+	 * @author Kyli Rouge
+	 * @since 2014-08-20
+	 * @version 1.0.0
+	 *		- 2014-08-20 (1.8.0) - Kyli Rouge created this method for more powerful stringification
+	 */
+	public String toString(CharSequence preceding, CharSequence separator, CharSequence succeeding)
+	{
+		StringBuilder sb = new StringBuilder(preceding);
+		for (int i = 0, l = length() - 1; i < l; i++)
+			sb.append(get(i)).append(separator);
+		return sb.append(getLastItem()).append(succeeding).toString();
+	}
 
 	/**
 	 * Returns a {@code String} representing the data in the array.<br/>
 	 * <i>Equivalent to {@code java.util.Arrays.toString(toArray())}</i>
 	 *
 	 * @return a {@code String} representing the data in the array
+	 * 
+	 * @see Arrays#toString(Object[])
 	 */
 	@Override
 	public String toString()
@@ -230,7 +255,7 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 
 		for (Object x : t)
 			if (x.equals(item)
-				|| x.toString().equalsIgnoreCase(item.toString()))
+						|| x.toString().equalsIgnoreCase(item.toString()))
 				return true;
 		return false;
 	}
@@ -515,7 +540,9 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 	 */
 	public ArrayPP<T> remove(T val, boolean removeAll)
 	{
-		return removeAll ? remove(getIndicesOf(val)) : remove(getIndexOf(val));
+		return removeAll
+			   ? remove(getIndicesOf(val))
+			   : remove(getIndexOf(val));
 	}
 
 	/**
@@ -677,8 +704,8 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 	 */
 	public boolean isEmpty()
 	{
-		for (int i = 0; i < t.length; i++)
-			if (t[i] != null)
+		for (T item : t)
+			if (item != null)
 				return false;
 		return true;
 	}
@@ -697,13 +724,16 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 	 * Returns a deep clone of a portion of this array.<BR/>
 	 * Cases:
 	 * <UL>
-	 *	<LI>{@code 0 < beginIndex < length()}<WBO/> &ndash; Start from the {@code beginIndex}<SUP>th</SUP> index from the beginning of the array</LI>
-	 *	<LI>{@code 0 > beginIndex > -length()}<WBO/> &ndash; Start from the {@code beginIndex}<SUP>th</SUP> index from the end of the array</LI>
-	 *	<LI>{@code 0 < endIndex < length()}<WBO/> &ndash; End on the {@code endIndex}<SUP>th</SUP> index from the beginning of the array</LI>
-	 *	<LI>{@code 0 > endIndex > length()}<WBO/> &ndash; End on the {@code endIndex}<SUP>th</SUP> index from the end of the array</LI>
-	 *	<LI>{@code endIndex == 0}<WBO/> &ndash; {@code endIndex} is set to {@code length() - 1}</LI>
-	 *	<LI>{@code endIndex < beginIndex}<WBO/> &ndash; The array returned is the reverse of {@code getAll(beginIndex, endIndex)}</LI>
-	 *	<LI>{@code beginIndex > lenth() || endIndex > length()}<WBO/> &ndash; An {@link ArrayIndexOutOfBoundsException} is thrown</LI>
+	 * <LI>{@code 0 < beginIndex < length()} &ndash; Start from the {@code beginIndex}<SUP>th</SUP> index from the beginning of
+	 * the array</LI>
+	 * <LI>{@code 0 > beginIndex > -length()} &ndash; Start from the {@code beginIndex}<SUP>th</SUP> index from the end of the
+	 * array</LI>
+	 * <LI>{@code 0 < endIndex < length()} &ndash; End on the {@code endIndex}<SUP>th</SUP> index from the beginning of the
+	 * array</LI>
+	 * <LI>{@code 0 > endIndex > length()} &ndash; End on the {@code endIndex}<SUP>th</SUP> index from the end of the array</LI>
+	 * <LI>{@code endIndex == 0} &ndash; {@code endIndex} is set to {@code length() - 1}</LI>
+	 * <LI>{@code endIndex < beginIndex} &ndash; The array returned is the reverse of {@code getAll(beginIndex, endIndex)}</LI>
+	 * <LI>{@code beginIndex > lenth() || endIndex > length()} &ndash; An {@link ArrayIndexOutOfBoundsException} is thrown</LI>
 	 * </UL>
 	 *
 	 * @param beginIndex the index of the first item in the clone
@@ -715,19 +745,23 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 	public ArrayPP<T> subSet(int beginIndex, int endIndex)
 	{
 		if (Math.abs(beginIndex) > length() || Math.abs(endIndex) > length())
-		if (beginIndex < 0)
-			beginIndex = length() + beginIndex;
+			if (beginIndex < 0)
+				beginIndex = length() + beginIndex;
 		if (endIndex < 0)
 			endIndex = length() + endIndex;
 		else if (endIndex == 0)
 			endIndex = length();
 		if (beginIndex > endIndex)
 			return subSet(endIndex, beginIndex).reverse();
-		
+
 		ArrayPP<T> ret = new ArrayPP<>();
-		for (int i = beginIndex, l = length(); i <= endIndex && i < l; i++)
+		for (int i = beginIndex, l = length();
+			 i <= endIndex && i < l;
+			 i++)
 			ret.add(get(i));
-		for (int i = beginIndex, l = length(); i <= endIndex && i < l; i++)
+		for (int i = beginIndex, l = length();
+			 i <= endIndex && i < l;
+			 i++)
 			ret.add(get(i));
 		return ret;
 	}
@@ -795,10 +829,10 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 
 	/**
 	 * Returns a clone of this array, but with all non-matching objects removed. If any one object's {@code equals} method
-	 * returns {@code false}, this method will check its {@code toString().containsAll} method, and then try {@code StringPP}'s
-	 * {@code containsIgnoreCase} if that is unsuccessful. If the new array of objects already containsAll an observed object,
-	 * it will <b>NOT</b> be added (this leads to a possible use for cleaning out duplicates by using an empty array as the
-	 * parameter {@code vals})
+	 * returns {@code false}, this method will check its {@code toString().contains} method, and then try {@link StringPP}'s
+	 * {@link StringPP#containsIgnoreCase} if that is unsuccessful. If the new array of objects already contains an observed
+	 * object, it will <b>NOT</b> be added (this leads to a possible use for cleaning out duplicates by using an empty array as
+	 * the parameter {@code vals})
 	 *
 	 * @param vals the values to be isolated.
 	 * @return the resulting ArrayPP
@@ -806,10 +840,9 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 	public ArrayPP<T> isolate(T... vals)
 	{
 		ArrayPP<T> temp = new ArrayPP<>();
-		for (int i = 0; i < vals.length; i++)
+		for (T val : vals)
 			for (int j = 0; j < length(); j++)
-				if (t[j].equals(vals[i])
-					|| t[j].toString().contains(vals[i].toString()))
+				if (t[j].equals(val) || t[j].toString().contains(val.toString()))
 					if (!temp.contains(get(j)))
 						temp.add(get(j));
 		return temp;
@@ -837,6 +870,10 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 	 * @see CompleteObject
 	 */
 	@Override
+	@SuppressWarnings(
+	{
+		"CloneDeclaresCloneNotSupported", "CloneDoesntCallSuperClone"
+	})
 	public ArrayPP<T> clone()
 	{
 		return new ArrayPP<>((T[]) t);
@@ -933,9 +970,9 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 	 *
 	 * @return a {@code javax.swing.JList} version of this array
 	 */
-	public javax.swing.JList/*<T>*/ toJList()
+	public javax.swing.JList<T> toJList()
 	{
-		return new javax.swing.JList/*<>*/(t);
+		return new javax.swing.JList<>(t);
 	}
 
 	/**
@@ -974,6 +1011,7 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 	 *
 	 * @return the resulting array
 	 */
+	@SuppressWarnings("UnnecessaryLabelOnBreakStatement")
 	public ArrayPP<T> bubbleSort()
 	{
 		boolean changed;
@@ -1203,27 +1241,42 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 	}
 
 	/**
-	 * Iterates through all the objects in this array and performs one of the following:
+	 * IF you have passed {@code true} to {@link #setDestructiveFinalize(boolean)}, this iterates through all the objects in
+	 * this array and performs the following:
 	 * <ol>
 	 * <li>If the object being observed implements {@link CompleteObject}, then its {@link Object#finalize()} method is
 	 * called</li>
-	 * <li>Else, if the object being observed is an instance of {@link Window}, then its {@link Window#dispose()} method is
+	 * <li>If the object being observed is an instance of {@link Window}, then its {@link Window#dispose()} method is
 	 * called</li>
-	 * <li>Else, it is set to {@code null}</li>
+	 * <li>It is set to {@code null}</li>
 	 * </ol>
 	 *
 	 * @throws Throwable
+	 * 
+	 * @version 1.2.0
+	 *		- 2014-08-18 (1.2.0) - Kyli Rouge re-added the CompleteObject finalization and added if (destructiveFinalize)
 	 */
 	@Override
-	@SuppressWarnings("FinalizeNotProtected")
+	@SuppressWarnings({"FinalizeNotProtected", "FinalizeDeclaration"})
 	public void finalize() throws Throwable
 	{
-		for (int i = 0, l = length(); i < l; i++)
-			if (get(i) instanceof Window)
-				((Window) get(i)).dispose();
-			else
+		if (destructiveFinalize)
+			for (int i = 0, l = length(); i < l; i++)
+			{
+				if (get(i) instanceof CompleteObject)
+					((CompleteObject)get(i)).finalize();
+				if (get(i) instanceof Window)
+					((Window) get(i)).dispose();
 				set(i, null);
+			}
 		super.finalize();
+	}
+	
+	private boolean destructiveFinalize;
+	
+	public void setDestructiveFinalize(boolean newDestructiveFinalize)
+	{
+		destructiveFinalize = newDestructiveFinalize;
 	}
 
 	public ArrayPP<T> setOrCreate(T value, int index)
@@ -1275,15 +1328,16 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 
 	/**
 	 * Reverses this array and returns it
+	 *
 	 * @return {@code this}
 	 */
 	public ArrayPP<T> reverse()
 	{
-		for(int i=0, l = length(), hl=l / 2; i < hl; i++)
+		for (int i = 0, l = length(), hl = l / 2; i < hl; i++)
 			swap(i, -i);
 		return this;
 	}
-	
+
 	public Collection<T> makeCollection()
 	{
 		return new Collection<T>()
@@ -1307,7 +1361,7 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 					catch (ClassCastException ex)
 					{
 						Logger.getGlobal().log(Level.WARNING, "Could not add item {0} to array; types don''t match.", i);
-						continue;
+//						continue;
 					}
 				return a;
 			}
@@ -1315,7 +1369,7 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 			@Override
 			public boolean add(T e)
 			{
-				System.out.println("derp");
+//				System.out.println("derp");
 				int before = length();
 				getThis().add(e);
 				return length() == before;
@@ -1368,7 +1422,7 @@ public class ArrayPP<T> implements Comparable<ArrayPP<?>>, Iterable<T>, Cloneabl
 					}
 					catch (ClassCastException ex)
 					{
-						continue;
+//						continue;
 					}
 				return length() == before;
 			}

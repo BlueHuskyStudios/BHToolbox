@@ -14,6 +14,13 @@ public class CompressedSaveableLong extends AbstractSaveable<Long>
   }
 
   //<editor-fold defaultstate="collapsed" desc="Saveable overrides">
+  /**
+   * {@inheritDoc}
+   * @return the first, second, third, and fourth bytes separated into characters and assembled into a {@link String}
+   * @version 1.1.0
+   *		- 2014-08-24 (1.1.0) - Kyli Rouge changed from {@code charA+""+charB+"" ...} to
+   *			{@code new String(new char[]{charA,charB,...})}
+   */
   @Override
   public CharSequence getStringToSave()
   {
@@ -21,15 +28,19 @@ public class CompressedSaveableLong extends AbstractSaveable<Long>
      * Separate the 64-bit number into two 32-bit segments, because the char datatype is only 16 bits and combine these into a
      * character sequence and return that sequence
      */
-    return (char)((s & 0xFFFF000000000000L) >> 0x30) + "" +
-           (char)((s & 0x0000FFFF00000000L) >> 0x20) + "" +
-           (char)((s & 0x00000000FFFF0000L) >> 0x10) + "" +
-           (char) (s & 0x000000000000FFFFL);//no need to right-shift zero positions
+    return
+		new String(new char[]{
+			(char)((s & 0xFFFF000000000000L) >> 0x30),
+			(char)((s & 0x0000FFFF00000000L) >> 0x20),
+			(char)((s & 0x00000000FFFF0000L) >> 0x10),
+			(char) (s & 0x000000000000FFFFL)//no need to right-shift zero positions
+		}
+	);
   }
 
   /**
-   * Decodes the given saved string into a long. Note that this only works if the given string is properly formatted (exactly
-   * four 16-bit Unicode characters)
+   * {@inheritDoc}
+   * Note that this only works if the given string is properly formatted (exactly four 16-bit Unicode characters)
    * @param savedString the string to which the  long has been saved. Must be exactly four characters long. If it is any other
    * length or {@code null}, then {@code this} is immediately returned
    * @return {@code this}
@@ -49,30 +60,39 @@ public class CompressedSaveableLong extends AbstractSaveable<Long>
   }
   //</editor-fold>
   
-  /**
-   * This is only for testing purposes. It creates a new {@code CompressedSaveableLong} with a random state assigned to it and
-   * prints that. It then creates a {@link CharSequence} from this {@code CompressedSaveableLong}'s {@link #getStringToSave()}
-   * method and prints that. It then sets the original {@code CompressedSaveableLong}'s state to {@code 0} to ensure the next
-   * step works. Next, it loads the aforementioned {@link CharSequence} into the {@code CompressedSaveableLong}'s {@link
-   * #loadFromSavedString(CharSequence)} and prints the state one last time.
-   * <h5>Example output:</h5>
-   * {@code Encoding "4461515785206973440"...}<br/>
-   * {@code Encoded form is "㷪糷䐀". Decoding...}<br/>
-   * {@code Decoded as "4461515785206973440".}
-   * @param args unused
-   */
-  public static void main(String args[])
-  {
-    CompressedSaveableLong rand = new CompressedSaveableLong((long)(Math.random() * Long.MAX_VALUE), "test");
-    
-    System.out.println("Encoding \"" + rand.getState() + "\"...");
-    
-    CharSequence encodedRand = rand.getStringToSave();
-    
-    System.out.println("Encoded form is \"" + encodedRand + "\". Decoding...");
-    
-    ((CompressedSaveableLong)rand.setState(0L)).loadFromSavedString(encodedRand).getState();
-    
-    System.out.println("Decoded as \"" + rand.getState() + "\".");
-  }
+	/**
+	 * This is only for testing purposes. It creates a new {@code CompressedSaveableLong} with a random state assigned to it and
+	 * prints that. It then creates a {@link CharSequence} from this {@code CompressedSaveableLong}'s {@link #getStringToSave()}
+	 * method and prints that. <!--It then sets the original {@code CompressedSaveableLong}'s state to {@code 0} to ensure the
+	 * next step works.--> Next, it loads the aforementioned {@link CharSequence} into the {@code CompressedSaveableLong}'s
+	 * {@link #loadFromSavedString(CharSequence)} and prints the state one last time.<br/>
+	 * <dl>
+	 *	<dt><b>Example output:</b></dt>
+	 *		<dd>{@code Encoding "4461515785206973440"...}<br/>
+	 *			{@code Encoded form is "㷪糷䐀". Decoding...}<br/>
+	 *			{@code Decoded as "4461515785206973440".}</dd>
+	 *
+	 * @param args unused
+	 */
+	public static void main(String args[])
+	{
+		CompressedSaveableLong rand = new CompressedSaveableLong((long) (Math.random() * Long.MAX_VALUE), "test");
+
+		System.out.println("Encoding \"" + rand.getState() + "\" (" + Long.toBinaryString(rand.getState()) + ")...");
+
+		CharSequence encodedRand = rand.getStringToSave();
+		StringBuilder byteString;
+		{
+			byte[] bytes = String.valueOf(encodedRand).getBytes();
+			byteString = new StringBuilder();
+			for (byte b : bytes)
+				byteString.append(Integer.toHexString(b)).append(',');
+			byteString.deleteCharAt(byteString.length() - 1);
+		}
+		System.out.println("Encoded form is \"" + encodedRand + "\". (" + byteString + ") Decoding...");
+
+		rand.loadFromSavedString(encodedRand);
+
+		System.out.println("Decoded as \"" + rand.getState() + "\" (" + Long.toBinaryString(rand.getState()) + ").");
+	}
 }

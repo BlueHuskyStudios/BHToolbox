@@ -774,12 +774,12 @@ public class Numbers
 	 */
 	public static CharSequence toPrettyDate(double timeInMillis, int limit)
 	{
-		byte secs = (byte) ((timeInMillis / 1000) % 60),
-				mins = (byte) ((timeInMillis / 1000 / 60) % 60),
-				hrs = (byte) ((timeInMillis / 1000 / 60 / 60) % 24);
-		short mils = (short) (timeInMillis % 1000),
-				days = (short) ((timeInMillis / 1000 / 60 / 60 / 24) % 365.24219);
-		long yrs = (long) (timeInMillis / 1000 / 60 / 60 / 24 / 365.24219);
+		byte  secs = (byte)  ((timeInMillis / 1000) % 60),
+		      mins = (byte)  ((timeInMillis / 1000 / 60) % 60),
+		      hrs  = (byte)  ((timeInMillis / 1000 / 60  / 60) % 24);
+		short mils = (short) ( timeInMillis % 1000),
+		      days = (short) ((timeInMillis / 1000 / 60  / 60  / 24) % 365.24219);
+		long  yrs  = (long)  ( timeInMillis / 1000 / 60  / 60  / 24  / 365.24219);
 
 		//TODO: make these booleans into one byte
 		boolean useMs = (limit == Calendar.MILLISECOND),
@@ -791,56 +791,25 @@ public class Numbers
 				useY = (useD || limit == Calendar.YEAR);
 		/*X matters and (previous shows or the user wants X to show)*/
 
-		return ((useY = useY && yrs != 0) ? yrs + " year" + (yrs == 1 ? "" : "s") : "") + ((useD = useD && days != 0) ? (useY ? ", "
-																														 : "")
-																														+ days
-																														+ " day"
-																														+ (days == 1
-																														   ? ""
-																														   : "s")
-																						   : "") + ((useH = useH && hrs != 0)
-																									? ((useD || useY) ? ", " : "")
-																									  + hrs + " hour" + (hrs == 1
-																														 ? "" : "s")
-																									: "") + ((useM = useM && mins
-																															 != 0)
-																											 ? ((useH || useD
-																												 || useY) ? ", "
-																												: "") + mins
-																											   + " minute" + (mins
-																															  == 1
-																															  ? ""
-																															  : "s")
-																											 : "") + ((useS = useS
-																															  && secs
-																																 != 0)
-																													  ? ((useM
-																														  || useH
-																														  || useD
-																														  || useY)
-																														 ? ", " : "")
-																														+ secs
-																														+ " second"
-																														+ (secs == 1
-																														   ? ""
-																														   : "s")
-																													  : "") + (useMs
-																															   && mils
-																																  != 0
-																															   ? (useS
-																																  || useM
-																																  || useH
-																																  || useD
-																																  || useY
-																																  ? ", "
-																																  : "")
-																																 + mils
-																																 + " millisecond"
-																																 + (mils
-																																	== 1
-																																	? ""
-																																	: "s")
-																															   : "");
+		return
+			((useY = useY && yrs != 0)
+				? yrs + " year" + (yrs == 1 ? "" : "s")
+				: "")
+			+ ((useD = useD && days != 0)
+				? (useY ? ", " : "") + days + " day" + (days == 1 ? "" : "s")
+				: "")
+			+ ((useH = useH && hrs != 0)
+				? ((useD || useY) ? ", " : "") + hrs + " hour" + (hrs == 1 ? "" : "s")
+				: "")
+			+ ((useM = useM && mins != 0)
+				? ((useH || useD || useY) ? ", " : "") + mins + " minute" + (mins == 1 ? "" : "s")
+				: "")
+			+ ((useS = useS && secs != 0)
+				? ((useM || useH || useD || useY) ? ", " : "") + secs + " second" + (secs == 1 ? "" : "s")
+				: "")
+			+ ((useMs && mils != 0)
+				? (useS || useM || useH || useD || useY ? ", " : "") + mils + " millisecond" + (mils == 1 ? "" : "s")
+				: "");
 	}
 	//<editor-fold defaultstate="collapsed" desc="Dim Behavior Flags">
 	/**
@@ -882,7 +851,7 @@ public class Numbers
 //    System.out.println("BHImageComp#getScaledDim(): image ratio:" + imageRatio + "; container ratio: " + contRatio);
 //    System.out.println("BHImageComp#getScaledDim(Dimension " + imageDim + ", Dimension " + container + ", final byte " + BEHAVIOR_MASK + ")");
 		Dimension ret = objDim.getSize();
-		if ((BEHAVIOR_MASK & DIM_BEHAVIOR_SCALE_FIT) == DIM_BEHAVIOR_SCALE_FIT)//If the "Scale Fit" bit is on
+		if ((BEHAVIOR_MASK & DIM_BEHAVIOR_SCALE_FIT) == DIM_BEHAVIOR_SCALE_FIT) // If the "Scale Fit" bit is on
 		{
 //      System.out.println("  Fit behavior");
 			ret = new Dimension();
@@ -899,7 +868,7 @@ public class Numbers
 				ret.width = (int) (contDim.height * imageRatio);
 			}
 		}
-		else if ((BEHAVIOR_MASK & DIM_BEHAVIOR_SCALE_FILL) == DIM_BEHAVIOR_SCALE_FILL)//If the "Scale Fill" bit is on
+		else if ((BEHAVIOR_MASK & DIM_BEHAVIOR_SCALE_FILL) == DIM_BEHAVIOR_SCALE_FILL) // If the "Scale Fill" bit is on
 		{
 //      System.out.println("  Fill behavior");
 			ret = new Dimension();
@@ -963,7 +932,7 @@ public class Numbers
 		 */
 	}
 	/**
-	 * {@value Long.MAX_VALUE}
+	 * {@value}
 	 */
 	public static final byte X = 1;
 
@@ -1011,10 +980,10 @@ public class Numbers
 					if (bytes >= 0x10000000000L)//1024^4 (Terabyte - Too big for an int. A long will have to handle it.)
 						if (bytes >= 0x4000000000000L)//1024^5 (Petabyte)
 							if (bytes >= 0x1000000000000000L)//1024^6 (Exabyte)
-								if (bytes >= 1180591620717411303424.0)//1024^7 (Zettabyte - Too big for a long. Hopefully floating-point shenanegans can comprehend it.)
-									if (bytes >= 1208925819614629174706176.0)//1024^8 (Yottabyte)
-										return toPrettyString(bytes / 1208925819614629174706176.0) + "YiB";//Yottabytes
-									else return toPrettyString(bytes / 1180591620717411303424.0) + "ZiB";//Zettabytes
+								if (bytes >= 1180591620717411303424D)//1024^7 (Zettabyte - Too big for a long. Hopefully floating-point shenanegans can comprehend it.)
+									if (bytes >= 1208925819614629174706176D)//1024^8 (Yottabyte)
+										return toPrettyString(bytes / 1208925819614629174706176D) + "YiB";//Yottabytes
+									else return toPrettyString(bytes / 1180591620717411303424D) + "ZiB";//Zettabytes
 								else return toPrettyString(bytes / 1152921504606846976.0) + "EiB";//Exabytes
 							else return toPrettyString(bytes / 1125899906842624.0) + "PiB";//Petabytes
 						else return toPrettyString(bytes / 1099511627776.0) + "TiB";//Terabytes
@@ -1057,11 +1026,15 @@ public class Numbers
 	}
 
 	/**
-	 * Return the minimum value of the given list of doubles as quickly as possible.<BR/> <STRONG>Special Cases:</STRONG> <UL>
-	 * <LI>If the given set of values is null or empty, an exception is thrown</LI> <LI>If the given array only has one value in
-	 * it ({@code vals.length == 1}, then its only value is returned</LI> <LI>If the given array only has two values in it
-	 * ({@code vals.length == 2}, then they are given to {@link Math#min(double,
-	 *      double)}, and that result is returned.</LI> <UL>
+	 * Return the minimum value of the given list of doubles as quickly as possible.
+	 * <BR/>
+	 * <STRONG>Special Cases:</STRONG>
+	 * <UL>
+	 *	<LI>If the given set of values is null or empty, an exception is thrown</LI>
+	 *	<LI>If the given array only has one value in it ({@code vals.length == 1}), then its only value is returned</LI>
+	 *	<LI>If the given array only has two values in it ({@code vals.length == 2}), then they are given to
+	 *		{@link Math#min(double,double)}, and that result is returned.</LI>
+	 * </UL>
 	 *
 	 * @param vals the list of values to compare to find the minimum
 	 * @return the minimum value in the given list
@@ -1151,7 +1124,7 @@ public class Numbers
 				repeats.addWithoutDuplicates(vals[j]);
 				/* Vitrified 2012/10/11: Made unnecessary by addWithoutDuplicates. Also, it only worked if the list was sorted.
 				 do//We don't want repeat values in repeats
-				 j++;
+					j++;
 				 while(j < vals.length && vals[j] == vals[j-1]);
 				 */
 				continue;
