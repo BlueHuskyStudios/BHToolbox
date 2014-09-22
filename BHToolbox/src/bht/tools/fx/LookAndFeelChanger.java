@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package bht.tools.fx;
 
 import bht.tools.misc.YesNoBox;
