@@ -1319,12 +1319,15 @@ public class StringPP implements java.io.Serializable, Comparable<CharSequence>,
 		return ret;
 	}
 
+    /**
+     * 
+     * @return 
+     */
 	public StringPP toAbbreviation()
 	{
 		String ret = /*!isEmpty() && !Character.isWhitespace(charAt(0)) ? Character.toString(charAt(0)) : */ "";
 		boolean shouldAdd = false;
-		for (Character c
-			 : chars)
+		for (Character c : chars)
 		{
 			if (Character.isWhitespace(c))
 			{
