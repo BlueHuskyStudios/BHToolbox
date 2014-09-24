@@ -99,8 +99,7 @@ public class BHCompUtilities
 	public static void setUsesOSMenuBar(boolean uses, CharSequence name)
 	{
 		System.setProperty("apple.laf.useScreenMenuBar", Boolean.toString(uses));
-		if (name != null)
-			System.setProperty("com.apple.mrj.application.apple.menu.about.name", name.toString());
+		System.setProperty("com.apple.mrj.application.apple.menu.about.name", String.valueOf(name));
 
 		//TODO: Unity menu bar, too
 	}
