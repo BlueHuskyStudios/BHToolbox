@@ -1,7 +1,7 @@
 package bht.tools.util;
 
 /**
- * Do, made for J. Jonah JSON NetBeans Project, is copyright Blue Husky Programming ©2014 CC 3.0 BY-SA<HR/>
+ * Do, made for J. Jonah JSON NetBeans Project, is copyright Blue Husky Programming ©2014 GPLv3<HR/>
  * 
  * A class full of tiny-named static methods that act as generalizers or shorten the names of common practices
  * 

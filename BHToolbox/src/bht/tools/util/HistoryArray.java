@@ -18,7 +18,9 @@ import bht.tools.comps.event.NavigationListener;
  */
 public class HistoryArray<T> extends ArrayPP<T>
 {
-	private ArrayPP<NavigationListener> navigationListeners = new ArrayPP<>();
+	private static final long serialVersionUID = 0x1_000_001L;
+	
+	protected ArrayPP<NavigationListener> navigationListeners = new ArrayPP<>();
 	protected int here;
 
 	/**

@@ -4,15 +4,18 @@ import bht.tools.comps.BHTextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.InvalidClassException;
+import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.io.WriteAbortedException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
- * ObjectSaver, made for Saveable Components, is copyright Blue Husky Programming ©2014 CC 3.0 BY-SA<HR/>
+ * ObjectSaver, made for Saveable Components, is copyright Blue Husky Programming ©2014 GPLv3<HR/>
  * A way to very easily save and load objects
  * 
  * @author Kyli of Blue Husky Programming
@@ -31,9 +34,24 @@ public class ObjectSaver
 	
 	public static <T extends Serializable> T load(CharSequence objectName, CharSequence programName) throws IOException, ClassNotFoundException
 	{
+		return load(objectName, programName, true);
+	}
+	
+	public static <T extends Serializable> T load(CharSequence objectName, CharSequence programName, boolean deleteIfInvalid) throws IOException, ClassNotFoundException
+	{
 		ObjectInputStream in = inventInputStreamFor(programName, objectName);
 		
-		Object read = in.readObject();
+		Object read = null;
+		try
+		{
+			read = in.readObject();
+		}
+		catch (InvalidClassException | NotSerializableException | WriteAbortedException e) // if the cache is invalid
+		{
+			if (deleteIfInvalid)
+				delete(objectName, programName);
+			return null;
+		}
 		try
 		{
 			return (T)read;
@@ -47,6 +65,11 @@ public class ObjectSaver
 	public static boolean isSaved(CharSequence objectName, CharSequence programName) throws IOException, ClassNotFoundException
 	{
 		return SaveConstants.inventSaveFileFor(programName, objectName).exists();
+	}
+
+	private static void delete(CharSequence objectName, CharSequence programName)
+	{
+		SaveConstants.inventSaveFileFor(programName, objectName).delete();
 	}
 	
 	

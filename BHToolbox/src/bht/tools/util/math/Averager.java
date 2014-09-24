@@ -60,8 +60,9 @@ public class Averager extends Number //NOTE: Must be compiled in UTF-8
     return this;
   }
   
-  public static void main(String[] args)
+  public strictfp static void main(String[] args)
   {
+	  /*
     System.out.println("Proof of concept:\n");
     System.out.print("How many values should be put into this test? >");
     double array[] = new double[new java.util.Scanner(System.in).nextInt()], range = Double.MAX_VALUE / Short.MAX_VALUE, mRes, tRes;
@@ -105,7 +106,29 @@ public class Averager extends Number //NOTE: Must be compiled in UTF-8
                        " method was faster by " + Numbers.groupDigits(Math.abs(totalDiff)) + "ns (" +
                        (thisWasFaster ? (double)mTotal / tTotal : (double)tTotal / mTotal) +
                        " times faster); average time was " + Numbers.groupDigits(Numbers.mean(tTotal, mTotal)) + "ns");
-  }
+			  */
+		Averager a = new Averager(13);
+		System.out.println("13.0 == " + a.getCurrentAverage());
+		a.addToAverage(3);
+		System.out.println("8.0 == " + a.getCurrentAverage());
+		a.addToAverage(5, 12, 8, 7.3);
+		System.out.println("8.05 == " + a.getCurrentAverage());
+
+		Averager b = new Averager();
+		System.out.println("0.0 == " + b.getCurrentAverage());
+		b.addToAverage(13);
+		System.out.println("13.0 == " + b.getCurrentAverage());
+		b.addToAverage(55, 712.197, 18, 99);
+		System.out.println("179.4394 == " + b.getCurrentAverage());
+		
+		Averager c = new Averager();
+		c.addToAverage(Integer.MIN_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MIN_VALUE);
+		System.out.println("-0.5 == " + c.getCurrentAverage());
+
+		System.out.println(a.getTimesAveraged());
+		System.out.println(b.getTimesAveraged());
+		System.out.println(c.getTimesAveraged());
+	}
 
   @Override
   public int intValue()

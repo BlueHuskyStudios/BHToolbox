@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 
 /**
- * Argument, made for BHToolbox, is copyright Blue Husky Programming ©2013 CC 3.0 BY-SA<HR/>
+ * Argument, made for BHToolbox, is copyright Blue Husky Programming ©2013 GPLv3<HR/>
  *
  * @author Supuhstar of Blue Husky Programming
  * @version 1.0.0

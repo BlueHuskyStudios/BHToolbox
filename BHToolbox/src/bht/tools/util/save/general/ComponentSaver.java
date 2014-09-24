@@ -7,7 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
- * ComponentSaver, made for BHToolbox, is copyright Blue Husky Programming ©2014 CC 3.0 BY-SA<HR/>
+ * ComponentSaver, made for BHToolbox, is copyright Blue Husky Programming ©2014 GPLv3<HR/>
  * 
  * @deprecated doesn't do anything different than {@link ObjectSaver}
  * 

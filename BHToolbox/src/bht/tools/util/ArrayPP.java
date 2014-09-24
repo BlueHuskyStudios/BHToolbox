@@ -1,7 +1,13 @@
 package bht.tools.util;
 
 import bht.tools.misc.CompleteObject;
+import bht.tools.util.save.general.ObjectSaver;
 import java.awt.Window;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -39,7 +45,8 @@ import javax.swing.ListModel;
  * </li>
  * </ul>
  * @author Supuhstar of Blue Husky Programming
- * @version 1.8.0
+ * @version 1.8.1
+ *		- 2014-08-20 (1.8.1) - Kyli Rouge implemented {@link Serializable}
  *		- 2014-08-20 (1.8.0) - Kyli Rouge added {@link #toString(CharSequence, CharSequence, CharSequence)}
  *		- 2014-08-19 (1.7.1) - Kyli Rouge updated formatting and ignored some compiler warnings
  * @since 1.6_24
@@ -48,8 +55,11 @@ import javax.swing.ListModel;
 public class ArrayPP<T>
 		implements Comparable<ArrayPP<?>>,
 				   Iterable<T>,
-				   Cloneable
+				   Cloneable,
+				   Serializable
 {
+	private static final long serialVersionUID = 0x1_008_001L;
+	
 	/**
 	 * The contents of the array. Feel free to directly interact; the methods of this class are designed not to care!
 	 */
@@ -72,19 +82,19 @@ public class ArrayPP<T>
 	 * <h5>Analogy:</h5> {@code ArrayPP&lt;String&gt; s = new ArrayPP(5);}<br/>
 	 * is analogous to<br/> {@code String s[] = new String[5];}
 	 *
-	 * @param init the initial size of the array.
+	 * @param initSize the initial size of the array.
 	 * @deprecated The buffer of empty spaces is never used and simply stays at the front of the array unless a method like
 	 * {@link #trim()} is called. Only useful in conjunction with {@link #set(int, Object)} methods
 	 * @throws NegativeArraySizeException if the size provided is less than 0
 	 */
 //   * @deprecated This might lead to {@code ClassCastException}s. Please use {@code ArrayPP(T... array)}
 	@SuppressWarnings("OverridableMethodCallInConstructor")
-	public ArrayPP(int init) throws NegativeArraySizeException
+	public ArrayPP(int initSize) throws NegativeArraySizeException
 	{
-		if (init < 0)
-			throw new NegativeArraySizeException(init + " is less than 0 (the minimum array size)");
+		if (initSize < 0)
+			throw new NegativeArraySizeException(initSize + " is less than 0 (the minimum array size)");
 
-		t = (T[]) new Object[init];/*ArrayPP<T>(null, null).clear().toArray();
+		t = (T[]) new Object[initSize];/*ArrayPP<T>(null, null).clear().toArray();
     
 		 for (int i=0; i < init; i++)
 		 add(null);*/
@@ -744,25 +754,28 @@ public class ArrayPP<T>
 	 */
 	public ArrayPP<T> subSet(int beginIndex, int endIndex)
 	{
-		if (Math.abs(beginIndex) > length() || Math.abs(endIndex) > length())
-			if (beginIndex < 0)
-				beginIndex = length() + beginIndex;
+		int l = length();
+		if (
+			(Math.abs(beginIndex) > l || Math.abs(endIndex) > l)
+			&& beginIndex < 0
+		)
+			beginIndex = l + beginIndex;
 		if (endIndex < 0)
-			endIndex = length() + endIndex;
+			endIndex = l + endIndex;
 		else if (endIndex == 0)
-			endIndex = length();
+			endIndex = l;
 		if (beginIndex > endIndex)
 			return subSet(endIndex, beginIndex).reverse();
 
 		ArrayPP<T> ret = new ArrayPP<>();
-		for (int i = beginIndex, l = length();
-			 i <= endIndex && i < l;
+		for (int i = beginIndex, m = Math.min(endIndex, l - 1);
+			 i <= m;
 			 i++)
 			ret.add(get(i));
-		for (int i = beginIndex, l = length();
-			 i <= endIndex && i < l;
+		/*for (int i = beginIndex; - why are there two?
+			 i <= endIndex && i < l;    Vitrified 2014-08-26 by Kyli Rouge
 			 i++)
-			ret.add(get(i));
+			ret.add(get(i));*/
 		return ret;
 	}
 
@@ -1336,6 +1349,21 @@ public class ArrayPP<T>
 		for (int i = 0, l = length(), hl = l / 2; i < hl; i++)
 			swap(i, -i);
 		return this;
+	}
+	
+	private void writeObject(ObjectOutputStream out) throws IOException
+	{
+		out.writeObject(t);
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+	{
+		t = (T[])in.readObject();
+	}
+
+	private void readObjectNoData() throws ObjectStreamException
+	{
+		// w wut
 	}
 
 	public Collection<T> makeCollection()
