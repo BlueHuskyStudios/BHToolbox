@@ -10,7 +10,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.script.ScriptEngine;
@@ -18,7 +17,6 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import jdk.nashorn.api.scripting.JSObject;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
-import jdk.nashorn.internal.runtime.Undefined;
 
 /**
  * UpdateChecker, made for BHToolbox, is copyright Blue Husky Programming ©2014 GPLv3<HR/>
@@ -112,6 +110,8 @@ public class UpdateChecker
 			try
 			{
 				Version newVersion = Version.fromString(read);
+				if (newVersion.compareTo(currentVersion) <= 0) // if no update is available, return null as contracted
+					return null;
 				read = scan.nextLine();
 				URI newPackage = new URI(read);
 				return new Update(newVersion, newPackage);
@@ -165,8 +165,10 @@ public class UpdateChecker
 	
 	public static void main(String[] args) throws ScriptException, IOException, URISyntaxException
 	{
-		Update u = checkForUpdates(new URL("http://prog.bhstudios.org/bhmi/update.txt"), new Version(1,0,1));
-		System.out.println(u);
+		System.out.println("What version are you using?");
+		Version v = Version.fromString(new Scanner(System.in).nextLine());
+		Update u = checkForUpdates(new URL("http://prog.bhstudios.org/bhmi/update.txt"), v);
+		System.out.println(u == null ? "No updates available" : u);
 		/*
 		ScriptEngine js = new ScriptEngineManager().getEngineByName("javascript");
 		Object updateData = js.eval("u={\n" +
