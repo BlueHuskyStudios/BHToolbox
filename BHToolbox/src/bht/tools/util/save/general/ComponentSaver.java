@@ -5,6 +5,8 @@ import java.awt.Container;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import javax.swing.JComponent;
 
 /**
  * ComponentSaver, made for BHToolbox, is copyright Blue Husky Programming ©2014 GPLv3<HR/>
@@ -20,13 +22,15 @@ public class ComponentSaver extends ObjectSaver // TODO: Put components in folde
 {
 	protected ComponentSaver(){}
 	
-	public static <T extends Container> void save(T objectToSave, CharSequence objectName, CharSequence programName) throws IOException
+	public static <T extends Container> void save(T objectToSave, CharSequence objectName, CharSequence programName)
+			throws IOException
 	{
 		ObjectOutputStream out = inventOutputStreamFor(programName, objectName);
 		out.writeObject(objectToSave);
 	}
 	
-	public static <T extends Container> T load(CharSequence objectName, CharSequence programName) throws IOException, ClassNotFoundException
+	public static <T extends Serializable> T load(CharSequence objectName, CharSequence programName)
+			throws IOException, ClassNotFoundException
 	{
 		ObjectInputStream in = inventInputStreamFor(programName, objectName);
 		
@@ -41,7 +45,8 @@ public class ComponentSaver extends ObjectSaver // TODO: Put components in folde
 		}
 	}
 	
-	public static boolean isSaved(CharSequence objectName, CharSequence programName) throws IOException, ClassNotFoundException
+	public static boolean isSaved(CharSequence objectName, CharSequence programName)
+			throws IOException, ClassNotFoundException
 	{
 		return SaveConstants.inventSaveFileFor(programName, objectName).exists();
 	}
