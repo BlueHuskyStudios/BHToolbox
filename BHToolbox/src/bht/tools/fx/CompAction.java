@@ -5,9 +5,7 @@ import java.awt.AlphaComposite;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
-import java.awt.DisplayMode;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -17,9 +15,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.HashMap;
-import java.util.Hashtable;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import static bht.tools.Constants.MAX_WIN_BOUNDS;
 
 /**
  * CompAction, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012. License is default.<hr/>
@@ -47,21 +45,6 @@ public class CompAction //NOTE: Must be compiled in UTF-8
    */
   public static final double DEF_BRAKE = 4;
   public static final double DEF_FPS = 30;
-  public static final Dimension MAX_WIN_BOUNDS, SCREEN_BOUNDS, ALL_SCREEN_BOUNDS[];
-  
-  
-  
-  static
-  {
-    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    DisplayMode dm = ge.getScreenDevices()[0].getDisplayMode();
-    MAX_WIN_BOUNDS = new Dimension(dm.getWidth(), dm.getHeight());
-    SCREEN_BOUNDS = new Dimension((dm = ge.getDefaultScreenDevice().getDisplayMode()).getWidth(), dm.getHeight());
-    
-    ALL_SCREEN_BOUNDS = new Dimension[ge.getScreenDevices().length];
-    for (int i = 0; i < ALL_SCREEN_BOUNDS.length; i++)
-      ALL_SCREEN_BOUNDS[i] = new Dimension((dm = ge.getScreenDevices()[i].getDisplayMode()).getWidth(), dm.getHeight());
-  }
   
   
   
