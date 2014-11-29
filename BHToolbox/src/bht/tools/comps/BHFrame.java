@@ -31,16 +31,14 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
  * This frame comes with a {@link JMenuBar} loaded with {@link JMenus} titled "File", "Actions", "Edit", "View", "Tools", and
  * "Help" and a {@link BHMessagePanel} at the bottom. In the "Actions" menu is a dynamic "Exit" {@link JMenuItem} that always
- * stays at the bottom of the menu. In the "Edit" menu, wherein there is a "Copy" {@link JMenuItem}, which must first be told
- * what to clone (There is a method provided for this) using the {@link Copier} class. In the "View" menu, there are two more
- * menus, "Visual Style" and "Look and Feel". Within these two, there are menu items that let you change the color scheme of the
+ * stays at the bottom of the menu. In the "Edit" menu, there is a "Copy" {@link JMenuItem}, which must first be told what to
+ * clone (There is a method provided for this) using the {@link Copier} class. In the "View" menu, there are two more menus,
+ * "Visual Style" and "Look and Feel". Within these two, there are menu items that let you change the color scheme of the
  * window, using the methods from the {@link Colors} class to set the styles and from the {@link LookAndFeelChanger} class to
  * change the Look-And-Feel. The "Help" menu has an "About" item that, much like the "Copy" item, must be told what to display.
  * <br/><br/>
@@ -55,7 +53,8 @@ import javax.swing.*;
  * added will not be shown!
  * @author Supuhstar
  * @since Mar 10, 2011
- * @version 1.2.15
+ * @version 1.2.16
+ *		- 1.2.16 (2014-10-26) - Kyli Rouge changed {@link CompAction} constant references to {@link Constants} references
  */
 @SuppressWarnings({"StaticNonFinalUsedInInitialization", "UseOfSystemOutOrSystemErr"})
 public class BHFrame extends javax.swing.JFrame implements Saveable, Searchable, BHComponent
@@ -96,7 +95,7 @@ public class BHFrame extends javax.swing.JFrame implements Saveable, Searchable,
 
   static
   {
-    System.out.println("BHFrame#static:  Creatng state saver...");
+    System.out.println("BHFrame#static:  Creating state saver...");
     try
     {
       settingsSaver = new StateSaver("Universal Settings");
@@ -1880,10 +1879,10 @@ public class BHFrame extends javax.swing.JFrame implements Saveable, Searchable,
   public String getStringToSave()
   {
     String s = Character.toString(SEP), r = getTitle() + s;
-    r += Numbers.between(getX(), 0, CompAction.SCREEN_BOUNDS.width) + s;
-    r += Numbers.between(getY(), 0, CompAction.SCREEN_BOUNDS.height) + s;
-    r += Numbers.between(getWidth(), 0, CompAction.SCREEN_BOUNDS.width) + s;
-    r += Numbers.between(getHeight(), 0, CompAction.SCREEN_BOUNDS.height) + s;
+    r += Numbers.between(getX()     , 0, Constants.SCREEN_BOUNDS.width) + s;
+    r += Numbers.between(getY()     , 0, Constants.SCREEN_BOUNDS.height) + s;
+    r += Numbers.between(getWidth() , 0, Constants.SCREEN_BOUNDS.width) + s;
+    r += Numbers.between(getHeight(), 0, Constants.SCREEN_BOUNDS.height) + s;
     r += settings.getProperty(SETTING_ANIM.toString()) + s;
     r += getState() + s;
     return r;
@@ -2099,7 +2098,7 @@ public class BHFrame extends javax.swing.JFrame implements Saveable, Searchable,
   {
     settingsTabbedPane.add(settingsTitle.toString(), settingsPanel);
     settingsDialog.pack();
-    settingsDialog.setMinimumSize(Numbers.min(settingsDialog.getPreferredSize(), CompAction.SCREEN_BOUNDS.getSize(),
+    settingsDialog.setMinimumSize(Numbers.min(settingsDialog.getPreferredSize(), Constants.SCREEN_BOUNDS.getSize(),
         (byte)(Numbers.BEHAVIOR_HEIGHT + Numbers.BEHAVIOR_WIDTH)));
     return this;
   }
