@@ -631,149 +631,35 @@ public class StringPP implements java.io.Serializable, Comparable<CharSequence>,
 		switch (C)
 		{
 			// <editor-fold defaultstate="collapsed" desc="A">
-			case 'A':
-			case 'À':
-			case 'Á':
-			case 'Â':
-			case 'Ã':
-			case 'Ä':
-			case 'Å':
-			case 'Ā':
-			case 'Ă':
-			case 'Ą':
-			case 'Ǻ':
-			case 'Ȁ':
-			case 'Ȃ':
-			case 'Ạ':
-			case 'Ả':
-			case 'Ấ':
-			case 'Ầ':
-			case 'Ẩ':
-			case 'Ẫ':
-			case 'Ậ':
-			case 'Ắ':
-			case 'Ằ':
-			case 'Ẳ':
-			case 'Ẵ':
-			case 'Ặ':
-			case 'Ḁ':
-			case 'Æ':
-			case 'Ǽ':// </editor-fold>
+			case 'A': case 'À': case 'Á': case 'Â': case 'Ã': case 'Ä': case 'Å': case 'Ā': case 'Ă': case 'Ą': case 'Ǻ':
+			case 'Ȁ': case 'Ȃ': case 'Ạ': case 'Ả': case 'Ấ': case 'Ầ': case 'Ẩ': case 'Ẫ': case 'Ậ': case 'Ắ': case 'Ằ':
+			case 'Ẳ': case 'Ẵ': case 'Ặ': case 'Ḁ': case 'Æ': case 'Ǽ':
+			// </editor-fold>
 			// <editor-fold defaultstate="collapsed" desc="E">
-			case 'E':
-			case 'Ȅ':
-			case 'Ȇ':
-			case 'Ḕ':
-			case 'Ḗ':
-			case 'Ḙ':
-			case 'Ḛ':
-			case 'Ḝ':
-			case 'Ẹ':
-			case 'Ẻ':
-			case 'Ẽ':
-			case 'Ế':
-			case 'Ề':
-			case 'Ể':
-			case 'Ễ':
-			case 'Ệ':
-			case 'Ē':
-			case 'Ĕ':
-			case 'Ė':
-			case 'Ę':
-			case 'Ě':
-			case 'È':
-			case 'É':
-			case 'Ê':
-			case 'Ë':// </editor-fold>
+			case 'E': case 'Ȅ': case 'Ȇ': case 'Ḕ': case 'Ḗ': case 'Ḙ': case 'Ḛ': case 'Ḝ': case 'Ẹ': case 'Ẻ': case 'Ẽ':
+			case 'Ế': case 'Ề': case 'Ể': case 'Ễ': case 'Ệ': case 'Ē': case 'Ĕ': case 'Ė': case 'Ę': case 'Ě': case 'È':
+			case 'É': case 'Ê': case 'Ë':
+// </editor-fold>
 			// <editor-fold defaultstate="collapsed" desc="I">
-			case 'I':
-			case 'Ȉ':
-			case 'Ȋ':
-			case 'Ḭ':
-			case 'Ḯ':
-			case 'Ỉ':
-			case 'Ị':
-			case 'Ĩ':
-			case 'Ī':
-			case 'Ĭ':
-			case 'Į':
-			case 'İ':
-			case 'Ì':
-			case 'Í':
-			case 'Î':
-			case 'Ï':
-			case 'Ĳ':// </editor-fold>
+			case 'I': case 'Ȉ': case 'Ȋ': case 'Ḭ': case 'Ḯ': case 'Ỉ': case 'Ị': case 'Ĩ': case 'Ī': case 'Ĭ': case 'Į':
+			case 'İ': case 'Ì': case 'Í': case 'Î': case 'Ï': case 'Ĳ':
+			// </editor-fold>
 			// <editor-fold defaultstate="collapsed" desc="O">
-			case 'O':
-			case 'Œ':
-			case 'Ø':
-			case 'Ǿ':
-			case 'Ȍ':
-			case 'Ȏ':
-			case 'Ṍ':
-			case 'Ṏ':
-			case 'Ṑ':
-			case 'Ṓ':
-			case 'Ọ':
-			case 'Ỏ':
-			case 'Ố':
-			case 'Ồ':
-			case 'Ổ':
-			case 'Ỗ':
-			case 'Ộ':
-			case 'Ớ':
-			case 'Ờ':
-			case 'Ở':
-			case 'Ỡ':
-			case 'Ợ':
-			case 'Ō':
-			case 'Ò':
-			case 'Ó':
-			case 'Ŏ':
-			case 'Ő':
-			case 'Ô':
-			case 'Õ':
-			case 'Ö':// </editor-fold>
+			case 'O': case 'Œ': case 'Ø': case 'Ǿ': case 'Ȍ': case 'Ȏ': case 'Ṍ': case 'Ṏ': case 'Ṑ': case 'Ṓ': case 'Ọ':
+			case 'Ỏ': case 'Ố': case 'Ồ': case 'Ổ': case 'Ỗ': case 'Ộ': case 'Ớ': case 'Ờ': case 'Ở': case 'Ỡ': case 'Ợ':
+			case 'Ō': case 'Ò': case 'Ó': case 'Ŏ': case 'Ő': case 'Ô': case 'Õ': case 'Ö':
+			// </editor-fold>
 			// <editor-fold defaultstate="collapsed" desc="U">
-			case 'U':
-			case 'Ũ':
-			case 'Ū':
-			case 'Ŭ':
-			case 'Ů':
-			case 'Ű':
-			case 'Ų':
-			case 'Ù':
-			case 'Ú':
-			case 'Û':
-			case 'Ü':
-			case 'Ȕ':
-			case 'Ȗ':
-			case 'Ṳ':
-			case 'Ṵ':
-			case 'Ṷ':
-			case 'Ṹ':
-			case 'Ṻ':
-			case 'Ụ':
-			case 'Ủ':
-			case 'Ứ':
-			case 'Ừ':
-			case 'Ử':
-			case 'Ữ':
-			case 'Ự':// </editor-fold>
+			case 'U': case 'Ũ': case 'Ū': case 'Ŭ': case 'Ů': case 'Ű': case 'Ų': case 'Ù': case 'Ú': case 'Û': case 'Ü':
+			case 'Ȕ': case 'Ȗ': case 'Ṳ': case 'Ṵ': case 'Ṷ': case 'Ṹ': case 'Ṻ': case 'Ụ': case 'Ủ': case 'Ứ': case 'Ừ':
+			case 'Ử': case 'Ữ': case 'Ự':
+			// </editor-fold>
 			// <editor-fold defaultstate="collapsed" desc="Y">
-			case 'Y':
-			case 'ẙ':
-			case 'Ỳ':
-			case 'Ỵ':
-			case 'Ỷ':
-			case 'Ỹ':
-			case 'Ŷ':
-			case 'Ÿ':
-			case 'Ý':// </editor-fold>
+			case 'Y': case 'ẙ': case 'Ỳ': case 'Ỵ': case 'Ỷ': case 'Ỹ': case 'Ŷ': case 'Ÿ': case 'Ý':
+			// </editor-fold>
 				return true;
-			default:
-				return false;
 		}
+		return false;
 	}
 
 	/**
