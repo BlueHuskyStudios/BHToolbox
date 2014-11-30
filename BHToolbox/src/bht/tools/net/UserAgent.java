@@ -28,6 +28,16 @@ public class UserAgent
 	private ArrayPP<Program> otherPrograms;
 	private Program platform;
 
+	public UserAgent(String initProgramName, Version initProgramVersion)
+	{
+		this(new Program(initProgramName, initProgramVersion));
+	}
+	
+	public UserAgent(String initProgramName, Version initProgramVersion, String initProgramDetails)
+	{
+		this(new Program(initProgramName, initProgramVersion, initProgramDetails));
+	}
+	
 	public UserAgent(Program initMainProgram)
 	{
 		this(initMainProgram, ArrayPP.EMPTY, defaultPlatform);
@@ -60,8 +70,8 @@ public class UserAgent
 	{
 		return
 			s(mainProgram) +
-			(platform == null ? "" : "(" + platform + ')') +
-			(otherPrograms == null ? "" : otherPrograms.toString("", " ", ""));
+			(platform == null ? "" : " " + platform) +
+			(otherPrograms == null ? "" : ' ' + otherPrograms.toString("", " ", ""));
 	}
 	
 	
@@ -78,7 +88,11 @@ public class UserAgent
 		{
 			this(NAME, VERSION, ArrayPP.EMPTY);
 		}
-
+		
+		public Program(String initName, Version initVersion, String initDetails)
+		{
+			this(initName, initVersion, A(initDetails));
+		}
 		
 		public Program(String initName, Version initVersion, ArrayPP<String> initDetails)
 		{
@@ -93,7 +107,7 @@ public class UserAgent
 			return
 				NAME + '/' +
 				(VERSION == null ? "" : VERSION) +
-				(DETAILS == null ? "" : '(' + DETAILS.toString("", "; ", "") + ')');
+				(DETAILS == null || DETAILS.isEmpty() ? "" : " " + DETAILS.toString("(", "; ", ")"));
 		}
 	}
 }
