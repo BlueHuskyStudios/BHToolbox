@@ -7,7 +7,8 @@ package bht.tools.util;
  * 
  * @author Kyli of Blue Husky Programming
  * @since 2014-08-18
- * @version 1.1.0
+ * @version 1.2.0
+ *		- 2014-08-20 (1.2.0) - Kyli Rouge added {@link #a(Object...)} and {@link #A(Object...)}
  *		- 2014-08-20 (1.1.0) - Kyli Rouge moved Do into BHToolbox
  *		- 2014-08-18 (1.0.0) - Kyli Rouge created Do
  */
@@ -90,5 +91,27 @@ public class Do
 		if (o instanceof CharSequence)
 			return "\"" + o + '\"';
 		return s(o);
+	}
+	
+	/**
+	 * Creates an array out of the given parameter(s)
+	 * @param <T> the type of object to make an array out of
+	 * @param t the objects to return in an array
+	 * @return an array of the given objects
+	 */
+	public static <T> T[] a(T... t)
+	{
+		return t;
+	}
+	
+	/**
+	 * Creates an array++ out of the given parameter(s)
+	 * @param <T> the type of object to make an array++ out of
+	 * @param t the objects to return in an array++
+	 * @return an array++ of the given objects
+	 */
+	public static <T> ArrayPP<T> A(T... t)
+	{
+		return new ArrayPP<>(t);
 	}
 }
