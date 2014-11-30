@@ -9,12 +9,13 @@ import java.util.regex.Pattern;
  * 
  * @author Kyli of Blue Husky Programming
  * @version 1.1.0
+ *		- 1.1.1 (2014-11-29) - Kyli Rouge Changed version pattern from \d(\.\d)* to \d+(\.\d+)*
  *		- 1.1.0 (2014-11-29) - Kyli Rouge added support for channels
  * @since 2014-09-22
  */
 public class Version implements Comparable<Version>
 {
-	/** Defines what a version looks like: {@code \d(\.\d)*} */
+	/** Defines what a version looks like: {@code \d+(\.\d+)*} */
 	public static final Pattern VERSION_PATTERN = Pattern.compile("\\d+(\\.\\d+)*");
 	
 	public final Integer[] STAGES;
