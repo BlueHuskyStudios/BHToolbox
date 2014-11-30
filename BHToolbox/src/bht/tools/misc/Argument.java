@@ -1,10 +1,8 @@
 package bht.tools.misc;
 
-import bht.tools.util.ArrayPP;
+import static bht.tools.util.Do.s;
+import static bht.tools.util.Do.S;
 import bht.tools.util.StringPP;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Scanner;
 
 
 
@@ -12,16 +10,39 @@ import java.util.Scanner;
  * Argument, made for BHToolbox, is copyright Blue Husky Programming ©2013 GPLv3<HR/>
  *
  * @author Supuhstar of Blue Husky Programming
- * @version 1.0.0
+ * @version 1.1.0
+ *		- 1.1.0 (2014-11-29) - Kyli Rouge added trigger character, documentation, and more boolean values
  * @since 2013-08-08
  */
 public abstract class Argument
 {
+	private char triggerChar;
 	private CharSequence triggerWord;
 	private Parameter[] parameters;
 
+	public Argument(char initTriggerChar)
+	{
+		this(initTriggerChar, null);
+	}
+
+	public Argument(CharSequence initTriggerWord)
+	{
+		this(initTriggerWord, null);
+	}
+	
 	public Argument(CharSequence initTriggerWord, Parameter[] initParameters)
 	{
+		this(initTriggerWord.charAt(0), initTriggerWord, initParameters);
+	}
+	
+	public Argument(char initTriggerChar, Parameter[] initParameters)
+	{
+		this(initTriggerChar, null, initParameters);
+	}
+	
+	public Argument(char initTriggerChar, CharSequence initTriggerWord, Parameter[] initParameters)
+	{
+		triggerChar = initTriggerChar;
 		triggerWord = initTriggerWord;
 		parameters = initParameters;
 	}
@@ -42,53 +63,100 @@ public abstract class Argument
 	 */
 	public abstract boolean isProvided();
 
+	/**
+	 * Returns the parameters
+	 * @return the parameters
+	 */
 	public Parameter[] getParameters()
 	{
 		return parameters;
 	}
 
+	/**
+	 * Sets the parameters
+	 * @param parameters the new parameters
+	 */
 	public void setParameters(Parameter[] parameters)
 	{
 		this.parameters = parameters;
 	}
 
+	/**
+	 * Returns the trigger word
+	 * @return the trigger word
+	 */
 	public CharSequence getTriggerWord()
 	{
 		return triggerWord;
 	}
 
+	/**
+	 * Sets the trigger word
+	 * @param triggerWord the new trigger word
+	 */
 	public void setTriggerWord(CharSequence triggerWord)
 	{
 		this.triggerWord = triggerWord;
 	}
 
+	/**
+	 * Returns the trigger character
+	 * @return the trigger character
+	 */
+	public char getTriggerChar()
+	{
+		return triggerChar;
+	}
+
+	/**
+	 * Sets the new trigger character. If this is 0, then it is considered to not exist.
+	 * @param triggerChar the new trigger character
+	 */
+	public void setTriggerChar(char triggerChar)
+	{
+		this.triggerChar = triggerChar;
+	}
+
 	@Override
 	public String toString()
 	{
-		return String.valueOf(triggerWord);
+		return
+			(triggerChar == 0
+				? ""
+				: '-' + s(triggerChar)
+			) +
+			(triggerWord == null || triggerWord.length() == 0
+				? (triggerChar == 0
+				   ? "[no arg]"
+				   : "")
+				: "--" + s(triggerWord)
+			);
 	}
 
 
 
+	/**
+	 * A set of default parameters
+	 */
 	public static enum DefaultArg
 	{
 		/** Matches both {@link #POSITIVE} and {@link #NEGATIVE} */
 		BOOLEAN,
-		/** Matches {@code "yes"}, {@code "true"}, {@code "on"}, {@code "positive"}, and {@code "affirmative"} */
+		/** Matches {@code "1"}, {@code "y"}, {@code "yes"}, {@code "true"}, {@code "on"}, {@code "positive"}, and {@code "affirmative"} */
 		POSITIVE,
-		/** Matches {@code "no"}, {@code "false"}, {@code "off"}, and {@code "negative"} */
+		/** Matches {@code "0"}, {@code "n"}, {@code "no"}, {@code "false"}, {@code "off"}, and {@code "negative"} */
 		NEGATIVE;
 
 		public boolean matches(CharSequence cs)
 		{
 			if (cs == null)
 				return false;
-			StringPP s = new StringPP(cs);
+			StringPP s = S(cs);
 
-			if (s.equalsAnyIgnoreCase("no", "false", "off", "negative"))
-				return this == NEGATIVE || this == BOOLEAN;
-			if (s.equalsAnyIgnoreCase("yes", "true", "on", "positive", "affirmative"))
+			if (s.equalsAnyIgnoreCase("1", "y", "yes", "true",  "on",  "positive", "affirmative"))
 				return this == POSITIVE || this == BOOLEAN;
+			if (s.equalsAnyIgnoreCase("0", "n", "no",  "false", "off", "negative"))
+				return this == NEGATIVE || this == BOOLEAN;
 			return false;
 		}
 	}
