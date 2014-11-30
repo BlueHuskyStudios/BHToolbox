@@ -1,6 +1,7 @@
 package bht.tools.util;
 
 import bht.tools.misc.CompleteObject;
+import static bht.tools.util.Do.s;
 import bht.tools.util.save.general.ObjectSaver;
 import java.awt.Window;
 import java.io.IOException;
@@ -45,11 +46,13 @@ import javax.swing.ListModel;
  * </li>
  * </ul>
  * @author Supuhstar of Blue Husky Programming
- * @version 1.8.2
- *		- 2014-11-29 (1.8.2) - Kyli Rouge added {@link #EMPTY}
- *		- 2014-08-20 (1.8.1) - Kyli Rouge implemented {@link Serializable}
- *		- 2014-08-20 (1.8.0) - Kyli Rouge added {@link #toString(CharSequence, CharSequence, CharSequence)}
- *		- 2014-08-19 (1.7.1) - Kyli Rouge updated formatting and ignored some compiler warnings
+ * @version 1.8.4
+ *		- 1.8.4 (2014-11-29) - Kyli Rouge swapped the dates and versions in this documentation comment
+ *		- 1.8.3 (2014-11-29) - Kyli Rouge added shortcut in {@link #toString(CharSequence,CharSequence,CharSequence)} for empty arrays
+ *		- 1.8.2 (2014-11-29) - Kyli Rouge added {@link #EMPTY}
+ *		- 1.8.1 (2014-08-20) - Kyli Rouge implemented {@link Serializable}
+ *		- 1.8.0 (2014-08-20) - Kyli Rouge added {@link #toString(CharSequence, CharSequence, CharSequence)}
+ *		- 1.7.1 (2014-08-19) - Kyli Rouge updated formatting and ignored some compiler warnings
  * @since 1.6_24
  * @see <a href="http://download.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html">arrays</a>
  */
@@ -201,6 +204,8 @@ public class ArrayPP<T>
 	 */
 	public String toString(CharSequence preceding, CharSequence separator, CharSequence succeeding)
 	{
+		if (isEmpty())
+			return s(preceding) + succeeding;
 		StringBuilder sb = new StringBuilder(preceding);
 		for (int i = 0, l = length() - 1; i < l; i++)
 			sb.append(get(i)).append(separator);
