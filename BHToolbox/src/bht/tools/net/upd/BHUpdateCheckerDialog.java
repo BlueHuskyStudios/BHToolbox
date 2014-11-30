@@ -1,4 +1,4 @@
-package bht.tools.util.upd;
+package bht.tools.net.upd;
 
 import bht.tools.Constants;
 import bht.tools.comps.BHCompUtilities;

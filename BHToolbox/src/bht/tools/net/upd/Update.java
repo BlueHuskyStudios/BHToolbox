@@ -1,4 +1,4 @@
-package bht.tools.util.upd;
+package bht.tools.net.upd;
 
 import java.net.URI;
 

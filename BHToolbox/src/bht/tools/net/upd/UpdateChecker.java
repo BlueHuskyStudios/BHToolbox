@@ -1,6 +1,6 @@
-package bht.tools.util.upd;
+package bht.tools.net.upd;
 
-import bht.tools.util.upd.Changelog.ChangeType;
+import bht.tools.net.upd.Changelog.ChangeType;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;

@@ -1,4 +1,4 @@
-package bht.tools.util.upd;
+package bht.tools.net.upd;
 
 import bht.tools.util.ArrayPP;
 import java.util.Arrays;
@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 public class Version implements Comparable<Version>
 {
 	/** Defines what a version looks like: {@code \d(\.\d)*} */
-	public static final Pattern VERSION_PATTERN = Pattern.compile("\\d(\\.\\d)*");
+	public static final Pattern VERSION_PATTERN = Pattern.compile("\\d+(\\.\\d+)*");
 	
 	public final Integer[] STAGES;
 	private String cache;
