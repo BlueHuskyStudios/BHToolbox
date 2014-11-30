@@ -10,7 +10,8 @@ import bht.tools.util.StringPP;
  * Argument, made for BHToolbox, is copyright Blue Husky Programming ©2013 GPLv3<HR/>
  *
  * @author Supuhstar of Blue Husky Programming
- * @version 1.1.0
+ * @version 1.1.1
+ *		- 1.1.1 (2014-11-29) - Kyli Rouge folded and formatted code
  *		- 1.1.0 (2014-11-29) - Kyli Rouge added trigger character, documentation, and more boolean values
  * @since 2013-08-08
  */
@@ -20,11 +21,12 @@ public abstract class Argument
 	private CharSequence triggerWord;
 	private Parameter[] parameters;
 
+	//<editor-fold defaultstate="collapsed" desc="init">
 	public Argument(char initTriggerChar)
 	{
 		this(initTriggerChar, null);
 	}
-
+	
 	public Argument(CharSequence initTriggerWord)
 	{
 		this(initTriggerWord, null);
@@ -46,7 +48,9 @@ public abstract class Argument
 		triggerWord = initTriggerWord;
 		parameters = initParameters;
 	}
+	//</editor-fold>
 
+	//<editor-fold defaultstate="collapsed" desc="core functionality">
 	/**
 	 * Alerts this class that the argument has been provided in the command line
 	 *
@@ -55,14 +59,16 @@ public abstract class Argument
 	 * @return {@code this}
 	 */
 	public abstract Argument provide(Parameter... withParameters);
-
+	
 	/**
 	 * Reports whether the argument has been provided
 	 *
 	 * @return {@code true} iff this argument has been provided already
 	 */
 	public abstract boolean isProvided();
+//</editor-fold>
 
+	//<editor-fold defaultstate="collapsed" desc="set/get">
 	/**
 	 * Returns the parameters
 	 * @return the parameters
@@ -71,7 +77,7 @@ public abstract class Argument
 	{
 		return parameters;
 	}
-
+	
 	/**
 	 * Sets the parameters
 	 * @param parameters the new parameters
@@ -80,7 +86,7 @@ public abstract class Argument
 	{
 		this.parameters = parameters;
 	}
-
+	
 	/**
 	 * Returns the trigger word
 	 * @return the trigger word
@@ -89,7 +95,7 @@ public abstract class Argument
 	{
 		return triggerWord;
 	}
-
+	
 	/**
 	 * Sets the trigger word
 	 * @param triggerWord the new trigger word
@@ -98,7 +104,7 @@ public abstract class Argument
 	{
 		this.triggerWord = triggerWord;
 	}
-
+	
 	/**
 	 * Returns the trigger character
 	 * @return the trigger character
@@ -107,7 +113,7 @@ public abstract class Argument
 	{
 		return triggerChar;
 	}
-
+	
 	/**
 	 * Sets the new trigger character. If this is 0, then it is considered to not exist.
 	 * @param triggerChar the new trigger character
@@ -116,25 +122,29 @@ public abstract class Argument
 	{
 		this.triggerChar = triggerChar;
 	}
+	//</editor-fold>
 
+	//<editor-fold defaultstate="collapsed" desc="overrides">
 	@Override
 	public String toString()
 	{
 		return
-			(triggerChar == 0
-				? ""
-				: '-' + s(triggerChar)
+				(triggerChar == 0
+			 ? ""
+			 : '-' + s(triggerChar)
 			) +
 			(triggerWord == null || triggerWord.length() == 0
-				? (triggerChar == 0
+			 ? (triggerChar == 0
 				   ? "[no arg]"
 				   : "")
-				: "--" + s(triggerWord)
+			 : "--" + s(triggerWord)
 			);
 	}
+	//</editor-fold>
 
 
 
+	//<editor-fold defaultstate="collapsed" desc="inner classes">
 	/**
 	 * A set of default parameters
 	 */
@@ -146,13 +156,13 @@ public abstract class Argument
 		POSITIVE,
 		/** Matches {@code "0"}, {@code "n"}, {@code "no"}, {@code "false"}, {@code "off"}, and {@code "negative"} */
 		NEGATIVE;
-
+		
 		public boolean matches(CharSequence cs)
 		{
 			if (cs == null)
 				return false;
 			StringPP s = S(cs);
-
+			
 			if (s.equalsAnyIgnoreCase("1", "y", "yes", "true",  "on",  "positive", "affirmative"))
 				return this == POSITIVE || this == BOOLEAN;
 			if (s.equalsAnyIgnoreCase("0", "n", "no",  "false", "off", "negative"))
@@ -160,4 +170,5 @@ public abstract class Argument
 			return false;
 		}
 	}
+	//</editor-fold>
 }
