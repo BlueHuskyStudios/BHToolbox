@@ -7,8 +7,9 @@ package bht.tools.util;
  * 
  * @author Kyli of Blue Husky Programming
  * @since 2014-08-18
- * @version 1.2.0
- *		- 2014-08-20 (1.2.0) - Kyli Rouge added {@link #a(Object...)} and {@link #A(Object...)}
+ * @version 1.3.0
+ *		- 2014-11-29 (1.3.0) - Kyli Rouge added {@link #S(Object...)} and {@link #S2(Object...)}
+ *		- 2014-11-29 (1.2.0) - Kyli Rouge added {@link #a(Object...)} and {@link #A(Object...)}
  *		- 2014-08-20 (1.1.0) - Kyli Rouge moved Do into BHToolbox
  *		- 2014-08-18 (1.0.0) - Kyli Rouge created Do
  */
@@ -91,6 +92,51 @@ public class Do
 		if (o instanceof CharSequence)
 			return "\"" + o + '\"';
 		return s(o);
+	}
+	
+	/**
+	 * A way to safely convert the given object to a string++ with a tiny method name. Works best along with a static import.
+	 * 
+	 *	<UL>
+	 *		<LI>If the value is an array, all elements are recursively stringified, separated by commas ({@code ,}), and
+	 *			surrounded by square brackets ({@code []})</LI>
+	 *		<LI>Else, the value is passed through {@link StringPP#valueOf(Object)}</LI>
+	 *	</UL>
+	 * @param o the object to be stringified
+	 * @return the {@code StringPP} version of the given object
+	 */
+	public static StringPP S(Object o)
+	{
+		if (o instanceof Object[])
+		{
+			StringBuilder sb = new StringBuilder("[");
+			for(int i = 0, l = ((Object[])o).length; i < l; i++)
+			{
+				sb.append(s(((Object[])o)[i]));
+				if (i != l - 1)
+					sb.append(',');
+			}
+			return new StringPP(sb.append(']'));
+		}
+		return StringPP.valueOf(o);
+	}
+	
+	/**
+	 * A way to safely convert the given object to a string++ with a tiny method name, while putting character sequences in
+	 * quotes. Works best along with a static import.
+	 * 
+	 *	<UL>
+	 *		<LI>If the value is a CharSequence, the value is surrounded by quotes ({@code ""})</LI>
+	 *		<LI>Else, the value is passed through {@link #S(Object)}</LI>
+	 *	</UL>
+	 * @param o the object to be stringified
+	 * @return the {@code StringPP} version of the given object
+	 */
+	public static StringPP S2(Object o)
+	{
+		if (o instanceof CharSequence)
+			return S("\"" + o + '\"');
+		return S(o);
 	}
 	
 	/**
