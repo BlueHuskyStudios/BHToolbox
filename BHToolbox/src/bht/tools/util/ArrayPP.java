@@ -45,7 +45,8 @@ import javax.swing.ListModel;
  * </li>
  * </ul>
  * @author Supuhstar of Blue Husky Programming
- * @version 1.8.1
+ * @version 1.8.2
+ *		- 2014-11-29 (1.8.2) - Kyli Rouge added {@link #EMPTY}
  *		- 2014-08-20 (1.8.1) - Kyli Rouge implemented {@link Serializable}
  *		- 2014-08-20 (1.8.0) - Kyli Rouge added {@link #toString(CharSequence, CharSequence, CharSequence)}
  *		- 2014-08-19 (1.7.1) - Kyli Rouge updated formatting and ignored some compiler warnings
@@ -58,7 +59,9 @@ public class ArrayPP<T>
 				   Cloneable,
 				   Serializable
 {
-	private static final long serialVersionUID = 0x1_008_001L;
+	private static final long serialVersionUID = 0x1_008_002L;
+	
+	public static final ArrayPP EMPTY = new ArrayPP(0);
 	
 	/**
 	 * The contents of the array. Feel free to directly interact; the methods of this class are designed not to care!
