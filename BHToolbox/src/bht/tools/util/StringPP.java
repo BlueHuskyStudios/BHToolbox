@@ -13,7 +13,8 @@ import java.util.Iterator;
  *
  * @author Supuhstar
  * @since 1.6_23
- * @version 1.4.0
+ * @version 1.4.1
+ *		- 1.4.1 (2014-11-29) - Kyli Rouge made {@link #valueOf(Object)} for compatibility purposes
  */
 public class StringPP implements java.io.Serializable, Comparable<CharSequence>, CharSequence, /*Iterable<StringPP>, */
 								 Iterable<Character>, ToPrimitives, Saveable
@@ -110,6 +111,18 @@ public class StringPP implements java.io.Serializable, Comparable<CharSequence>,
 		if (o instanceof StringPP)
 			return (StringPP) o;
 		return new StringPP(o);
+	}
+	
+	/**
+	 * Compatibility method for {@link #makeStringPP(Object)}
+	 *
+	 * @param o the {@link CharSequence} to be turned into a {@link StringPP}
+	 * @return a {@link StringPP} made out of the given {@link CharSequence}
+	 * @since 2014-11-29 (1.4.1) for Wulfkonto
+	 */
+	public static StringPP valueOf(Object o)
+	{
+		return makeStringPP(o);
 	}
 
 	/**
