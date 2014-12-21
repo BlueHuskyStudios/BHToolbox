@@ -83,20 +83,20 @@ public class Quadruple extends Number implements CompleteObject, ToPrimitives
    *
    * @since July 20, 2012 (1.0.0)
    */
-  public static final int MAX_EXPONENT = 1023;
+  public static final int MAX_EXPONENT = 0x3ff;
   /**
    * Minimum exponent a normalized {@code double} variable may have. It is equal to the value returned by
    * {@code Math.getExponent(Double.MIN_NORMAL)}.
    *
    * @since July 20, 2012 (1.0.0)
    */
-  public static final int MIN_EXPONENT = -1022;
+  public static final int MIN_EXPONENT = 0xfffffc02;
   /**
    * The number of bits used to represent a {@code double} value.
    *
    * @since July 20, 2012 (1.0.0)
    */
-  public static final int SIZE = 128;
+  public static final int SIZE = 0x80;
   
   
   
