@@ -1,6 +1,8 @@
 package bht.tools.util.math;
 
-import bht.tools.util.*;
+import bht.tools.util.ArrayPP;
+import static bht.tools.util.Do.s;
+import bht.tools.util.StringPP;
 import java.awt.Dimension;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -10,8 +12,9 @@ import java.util.Calendar;
  * convenience class for dealing with numbers
  *
  * @author Supuhstar
- * @version 2.2.0
+ * @version 2.2.1
  */
+@SuppressWarnings({"ConfusingArrayVararg", "PrimitiveArrayArgumentToVariableArgMethod","BroadCatchBlock", "TooBroadCatch"})
 public class Numbers
 {
 	//<editor-fold defaultstate="collapsed" desc="Behavior Flags">
@@ -685,7 +688,7 @@ public class Numbers
 	 */
 	public static double teaseUp(double d1)
 	{
-		String s = Double.toString(d1), o = s.toString();//In order to evaluate the digits, let's look at it digit-by-digit.
+		String s = Double.toString(d1), o = s(s);//In order to evaluate the digits, let's look at it digit-by-digit.
 		byte b;
 //    double teaser;
 //    
@@ -998,7 +1001,7 @@ public class Numbers
 	 * <LI>If the given set of values is null or empty, an exception is thrown</LI> <LI>If the given array only has one value in
 	 * it ({@code vals.length == 1}, then its only value is returned</LI> <LI>If the given array only has two values in it
 	 * ({@code vals.length == 2}, then they are given to {@link Math#max(double,
-	 *      double)}, and that result is returned.</LI> <UL>
+	 *      double)}, and that result is returned.</LI> </UL>
 	 *
 	 * @param vals the list of values to compare to find the maximum
 	 * @return the maximum value in the given list
@@ -1065,7 +1068,7 @@ public class Numbers
 	 * Return the sum of the given list of doubles as quickly as possible.<BR/> <STRONG>Special Cases:</STRONG> <UL> <LI>If the
 	 * given set of values is null or empty, an exception is thrown</LI> <LI>If the given array only has one value in it
 	 * ({@code vals.length == 1}, then its only value is returned</LI> <LI>If the given array only has two values in it
-	 * ({@code vals.length == 2}, then the sum of the two is returned.</LI> <UL>
+	 * ({@code vals.length == 2}, then the sum of the two is returned.</LI> </UL>
 	 *
 	 * @param vals the list of values to summize
 	 * @return the sum value in the given list
@@ -1096,13 +1099,15 @@ public class Numbers
 	 * {@code Numbers.repeats(Numbers.repeats(list))} will <EM>always</EM> return an empty array.<BR/> <STRONG>Special
 	 * Cases:</STRONG> <UL> <LI>If the given set of values is null or empty, an exception is thrown</LI> <LI>If the given array
 	 * only has one value in it ({@code vals.length == 1}, then its only value is returned</LI> <LI>If the given array only has
-	 * two values in it ({@code vals.length == 2}, then the sum of the two is returned.</LI> <UL>
+	 * two values in it ({@code vals.length == 2}, then the sum of the two is returned.</LI> </UL>
 	 *
 	 * @param vals the list of values to summize
 	 * @return the sum value in the given list
 	 * @throws NullPointerException if {@code vals} is {@code null}
 	 * @throws IllegalArgumentException if {@code vals} is empty (has length {@code 0})
 	 * @since 2012/10/10 (2.1.13)
+	 * @version 1.0.1
+	 *		- 1.0.1 (2014-12-18) - Kyli Rouge commented out unnecessary continue; statement
 	 */
 	public static double[] getDuplicates(double... vals)
 	{
@@ -1127,7 +1132,7 @@ public class Numbers
 					j++;
 				 while(j < vals.length && vals[j] == vals[j-1]);
 				 */
-				continue;
+//				continue;
 			}
 
 		double[] ret = new double[repeats.length()];
@@ -1272,7 +1277,7 @@ public class Numbers
 	 * asPHPRange(6, 2, -1);  // returns (2, 5)
 	 * asPHPRange(6, 4, -4);  // returns null
 	 * asPHPRange(6, -3, -1); // returns (3, 5)
-	 * <PRE>
+	 * </PRE>
 	 *
 	 * @param size the number of items in the list
 	 * @return the {@link Range} from {@code low} to {@code high}, as bounded like PHP
@@ -1407,6 +1412,52 @@ public class Numbers
 			System.out.println("    de: " + test.substring((range = asPHPRange(test.length(), -3, -1)).low, range.high)); // returns "de"
 		}
 		//</editor-fold>
+	}
+
+	/**
+	 * Clamps the given value between the given minimum and maximum
+	 * @param value the value to clamp
+	 * @param min the minimum value
+	 * @param max the maximum value
+	 * @return {@code min} if {@code value} is lower than it, else {@code max} if {@code value} is higher than that, else
+	 * {@code value}
+	 * 
+	 * @since 2014-12-18 (2.2.1) for bht.test.tools.util.Half}
+	 * @author Kyli Rouge
+	 * @version 1.0.0
+	 */
+	public static byte clamp(byte value, byte min, byte max)
+	{
+		return
+			value < min
+				? min
+				: value > max
+					? max
+					: value
+		;
+	}
+
+	/**
+	 * Clamps the given value between the given minimum and maximum
+	 * @param value the value to clamp
+	 * @param min the minimum value
+	 * @param max the maximum value
+	 * @return {@code min} if {@code value} is lower than it, else {@code max} if {@code value} is higher than that, else
+	 * {@code value}
+	 * 
+	 * @since 2014-12-18 (2.2.1) for bht.test.tools.util.Half
+	 * @author Kyli Rouge
+	 * @version 1.0.0
+	 */
+	public static double clamp(double value, double min, double max)
+	{
+		return
+			value < min
+				? min
+				: value > max
+					? max
+					: value
+		;
 	}
 
 	public static class IrrationalRatioException extends Exception
@@ -1549,6 +1600,7 @@ public class Numbers
 		}
 
 		@Override
+		@SuppressWarnings("CloneDoesntCallSuperClone")
 		protected Range clone() throws CloneNotSupportedException
 		{
 			return new Range(low, high);
