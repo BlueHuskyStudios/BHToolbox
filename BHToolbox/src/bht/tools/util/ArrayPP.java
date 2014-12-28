@@ -4,6 +4,7 @@ import bht.tools.misc.CompleteObject;
 import static bht.tools.util.Do.s;
 import bht.tools.util.save.general.ObjectSaver;
 import java.awt.Window;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -47,6 +48,7 @@ import javax.swing.ListModel;
  * </ul>
  * @author Supuhstar of Blue Husky Programming
  * @version 1.8.4
+ *		- 1.8.5 (2014-12-28) - Kyli Rouge added prepend method
  *		- 1.8.4 (2014-11-29) - Kyli Rouge swapped the dates and versions in this documentation comment
  *		- 1.8.3 (2014-11-29) - Kyli Rouge added shortcut in {@link #toString(CharSequence,CharSequence,CharSequence)} for empty arrays
  *		- 1.8.2 (2014-11-29) - Kyli Rouge added {@link #EMPTY}
@@ -1501,5 +1503,19 @@ public class ArrayPP<T>
 				getThis().clear();
 			}
 		};
+	}
+
+	/**
+	 * Adds the given item to the beginning of the array++
+	 * @param items the items to prepend
+	 * 
+	 * @author Kyli Rouge
+	 * @since 2014-12-28 (1.8.5)
+	 * @version 1.0.0
+	 */
+	public void prepend(T... items)
+	{
+		for (T item : items)
+			insert(item, 0);
 	}
 }
