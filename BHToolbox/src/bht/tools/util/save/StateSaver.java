@@ -1,12 +1,11 @@
 package bht.tools.util.save;
 
-import bht.tools.util.save.general.SaveConstants;
 import bht.tools.util.ArrayPP;
-import bht.tools.util.StringPP;
+import bht.tools.util.save.general.SaveConstants;
 import java.io.File;
 import java.io.IOException;
 import java.util.InvalidPropertiesFormatException;
-import java.util.Set;
+import java.util.Properties;
 
 /**
  * A class that manages saving and loading of states to any object which extends {@link Saveable}. This class is {@code final}
@@ -14,7 +13,8 @@ import java.util.Set;
  * @author Supuhstar of Blue Husky Programming
  * @see Saveable
  * @since 1.6_29
- * @version 1.1.2
+ * @version 1.1.3
+ *		- 1.1.3 (2014-12-29) - Kyli Rouge updated imports
  */
 public final class StateSaver
 {
@@ -24,8 +24,8 @@ public final class StateSaver
   private SaveableBoolean autoSL;
   private ArrayPP<SaveListener> saveListeners;
   public static final String AUTO_SL_SAVE_NAME = "autoSL";
-  private java.io.File saveFile;
-  private java.util.Properties p = new java.util.Properties();
+  private File saveFile;
+  private Properties p = new Properties();
   //</editor-fold>
   
   /**
@@ -128,10 +128,7 @@ public final class StateSaver
    * @param autoSaveLoad If {@code true}, the program will load the state upon starting and adding a saveable, and save upon
    * program exit.
    */
-  @SuppressWarnings(
-  {
-  	"ThrowableInstanceNotThrown", "ThrowableInstanceNeverThrown", "BroadCatchBlock", "TooBroadCatch"
-  })
+  @SuppressWarnings({"ThrowableInstanceNotThrown", "ThrowableInstanceNeverThrown", "BroadCatchBlock", "TooBroadCatch"})
   public StateSaver(CharSequence progTitle, java.io.File saveFile, boolean autoSaveLoad)
   {
     title = progTitle;
