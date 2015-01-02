@@ -2,9 +2,7 @@ package bht.tools.util;
 
 import bht.tools.misc.CompleteObject;
 import static bht.tools.util.Do.s;
-import bht.tools.util.save.general.ObjectSaver;
 import java.awt.Window;
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -47,7 +45,9 @@ import javax.swing.ListModel;
  * </li>
  * </ul>
  * @author Supuhstar of Blue Husky Programming
- * @version 1.8.4
+ * @version 1.8.7
+ *		- 1.8.7 (2014-12-29) - Kyli Rouge added move(int,int), toEnumeration()
+ *		- 1.8.6 (2014-12-28) - Kyli Rouge fixed a bug in contains()
  *		- 1.8.5 (2014-12-28) - Kyli Rouge added prepend method
  *		- 1.8.4 (2014-11-29) - Kyli Rouge swapped the dates and versions in this documentation comment
  *		- 1.8.3 (2014-11-29) - Kyli Rouge added shortcut in {@link #toString(CharSequence,CharSequence,CharSequence)} for empty arrays
@@ -267,6 +267,9 @@ public class ArrayPP<T>
 	 *
 	 * @param item the item to be searched for
 	 * @return {@code true} if and only if this array contains the specified {@code item}
+	 * 
+	 * @version 1.1.0
+	 *		1.1.0 (2014-12-28; 1.8.6) - Kyli Rouge changed item.toString() to s(item)
 	 */
 	public boolean contains(T item)
 	{
@@ -274,8 +277,7 @@ public class ArrayPP<T>
 			return false;
 
 		for (Object x : t)
-			if (x.equals(item)
-						|| x.toString().equalsIgnoreCase(item.toString()))
+			if (x.equals(item) || x.toString().equalsIgnoreCase(s(item)))
 				return true;
 		return false;
 	}
@@ -558,6 +560,7 @@ public class ArrayPP<T>
 	 * @see #getIndexOf(java.lang.Object)
 	 * @see #getIndicesOf(java.lang.Object)
 	 */
+	@SuppressWarnings({"ConfusingArrayVararg", "PrimitiveArrayArgumentToVariableArgMethod"})
 	public ArrayPP<T> remove(T val, boolean removeAll)
 	{
 		return removeAll
@@ -1517,5 +1520,62 @@ public class ArrayPP<T>
 	{
 		for (T item : items)
 			insert(item, 0);
+	}
+
+	/**
+	 * Moves the item at the first index to the second index.
+	 * 
+	 * @param oldIndex the index of the item to move
+	 * @param newIndex the index of the item after which it should be placed. See the below illustration for clarification.
+	 * <pre>
+	 * Before:
+	 * +---+-----+---+-----+---+
+	 * | X | old | Y | new | Z |
+	 * +---+-----+---+-----+---+
+	 *         \
+	 *          -------
+	 * After:          \
+	 * +---+---+-----+-----+---+
+	 * | X | Y | new | old | Z |
+	 * +---+---+-----+-----+---+
+	 * </pre>
+	 * 
+	 * @author Kyli ROuge
+	 * @since 2014-12-29 (1.8.7)
+	 * @version 1.0.0
+	 */
+	public void move(int oldIndex, int newIndex)
+	{
+		T old = get(oldIndex);
+		remove(oldIndex);
+		insert(old, newIndex > oldIndex ? newIndex - 1 : newIndex); // -1 because the array is now shorter
+	}
+
+	/**
+	 * Returns an {@link Enumeration} version of this array. This is done by using an iterator from {@link #iterator()}
+	 * @return an {@link Enumeration} version of this array
+	 * 
+	 * @author Kyli Rouge
+	 * @since 2014-12-29 (1.8.7)
+	 * @version 1.0.0
+	 */
+	public Enumeration<T> toEnumeration()
+	{
+		return new Enumeration<T>()
+		{
+			Iterator<T> iterator = iterator();
+			
+			@Override
+			public boolean hasMoreElements()
+			{
+				return iterator.hasNext();
+			}
+
+			@Override
+			public T nextElement()
+			{
+				return iterator.next();
+			}
+		};
 	}
 }
