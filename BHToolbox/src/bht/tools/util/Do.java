@@ -1,13 +1,16 @@
 package bht.tools.util;
 
+import java.io.PrintStream;
+
 /**
- * Do, made for J. Jonah JSON NetBeans Project, is copyright Blue Husky Programming ©2014 GPLv3<HR/>
+ * Do, made for J. Jonah JSON, is copyright Blue Husky Programming ©2014 GPLv3<HR/>
  * 
  * A class full of tiny-named static methods that act as generalizers or shorten the names of common practices
  * 
  * @author Kyli of Blue Husky Programming
  * @since 2014-08-18
  * @version 1.3.0
+ *		- 2015-02-05 (1.4.0) - Kyli Rouge added {@link #p(Object...)}
  *		- 2014-11-29 (1.3.0) - Kyli Rouge added {@link #S(Object...)} and {@link #S2(Object...)}
  *		- 2014-11-29 (1.2.0) - Kyli Rouge added {@link #a(Object...)} and {@link #A(Object...)}
  *		- 2014-08-20 (1.1.0) - Kyli Rouge moved Do into BHToolbox
@@ -159,5 +162,30 @@ public class Do
 	public static <T> ArrayPP<T> A(T... t)
 	{
 		return new ArrayPP<>(t);
+	}
+	
+	/**
+	 * Prints the given object(s) to the standard output stream, {@link System#out}. If given nothing, a blank line is printed.
+	 * If given one or more objects, each is printed on its own line using {@code System.out.println} after passing each object
+	 * through {@link #s(Object)}.
+	 * 
+	 * @param o the object(s) to print.
+	 * 
+	 * @see System#out
+	 * @see PrintStream#println()
+	 * @see PrintStream#println(Object)
+	 * @see #s
+	 * 
+	 * @since 1.4.0
+	 * @author Kyli Rouge
+	 * @version 1.0.0
+	 */
+	@SuppressWarnings("UseOfSystemOutOrSystemErr")
+	public static void p(Object... o)
+	{
+		if (o == null || o.length == 0)
+			System.out.println();
+		else for (Object object : o)
+			System.out.println(s(object));
 	}
 }
