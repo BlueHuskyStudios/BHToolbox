@@ -12,7 +12,7 @@ import bht.tools.util.ArrayPP;
 import bht.tools.util.Copier;
 import bht.tools.util.math.Numbers;
 import bht.tools.util.ProgLog;
-import bht.tools.util.Searchable;
+import bht.tools.util.search.Needle;
 import bht.tools.util.StringPP;
 import bht.tools.util.save.Saveable;
 import bht.tools.util.save.SaveableBoolean;
@@ -57,7 +57,7 @@ import javax.swing.*;
  *		- 1.2.16 (2014-10-26) - Kyli Rouge changed {@link CompAction} constant references to {@link Constants} references
  */
 @SuppressWarnings({"StaticNonFinalUsedInInitialization", "UseOfSystemOutOrSystemErr"})
-public class BHFrame extends javax.swing.JFrame implements Saveable, Searchable, BHComponent
+public class BHFrame extends javax.swing.JFrame implements Saveable, Needle, BHComponent
 {
   private static final long serialVersionUID = 1L;
   private java.awt.event.ActionListener copyListener, updDLActionListener, updRestartActionListener, updManualActionListener;
@@ -1760,11 +1760,11 @@ public class BHFrame extends javax.swing.JFrame implements Saveable, Searchable,
   @Override
   public ArrayPP<Keyword> getKeywords()
   {
-    return new ArrayPP<>(new Searchable.Keyword(TITLE), new Searchable.Keyword(searchTitle), new Searchable.Keyword(VERSION));
+    return new ArrayPP<>(new Needle.Keyword(TITLE), new Needle.Keyword(searchTitle), new Needle.Keyword(VERSION));
   }
 
   @Override
-  public double getMatchStrength(Searchable otherSearchable)
+  public double getMatchStrength(Needle otherSearchable)
   {
     if (otherSearchable == this)
       return 1;
@@ -1813,25 +1813,25 @@ public class BHFrame extends javax.swing.JFrame implements Saveable, Searchable,
   }
 
   @Override
-  public int compareTo(Searchable otherSearchable)
+  public int compareTo(Needle otherSearchable)
   {
     return (int)compareTo64(otherSearchable);
   }
 
   @Override
-  public long compareTo64(Searchable otherSearchable)
+  public long compareTo64(Needle otherSearchable)
   {
     return (long)(getMatchStrength(otherSearchable) * 200) - 100;
   }
 
   @Override
-  public Searchable setSearchDisplay(Object display)
+  public Needle setSearchDisplay(Object display)
   {
     throw new UnsupportedOperationException("The frame IS the display");
   }
 
   @Override
-  public Searchable setSearchTitle(CharSequence title)
+  public Needle setSearchTitle(CharSequence title)
   {
     searchTitle = title;
     if (super.getTitle() == null || super.getTitle().isEmpty())

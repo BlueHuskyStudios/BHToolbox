@@ -2,10 +2,10 @@ package bht.tools.comps;
 
 import bht.resources.Icons;
 import bht.tools.util.ArrayPP;
-import bht.tools.util.DefSearchable;
-import bht.tools.util.Searchable;
-import bht.tools.util.Searchable.Keyword;
-import bht.tools.util.Searcher;
+import bht.tools.util.search.DefDisplayableNeedle;
+import bht.tools.util.search.Needle;
+import bht.tools.util.search.Needle.Keyword;
+import bht.tools.util.search.Searcher;
 import bht.tools.util.StringPP;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -25,14 +25,14 @@ import javax.swing.JPanel;
  */
 public class BHSearchableList extends JPanel //NOTE: Must be compiled in UTF-8
 {
-  private ArrayPP<Searchable> fullArray, dispArray;
+  private ArrayPP<Needle> fullArray, dispArray;
   private ArrayPP<ActionListener> als;
   private BHTextField searchField;
   private BHImageComp searchIcon;
   private JList<String> list;
-  private Searchable previousSearch;
+  private Needle previousSearch;
   
-  public BHSearchableList(Searchable... initSearchables)
+  public BHSearchableList(Needle... initSearchables)
   {
     als = new ArrayPP<>();
     
@@ -114,7 +114,7 @@ public class BHSearchableList extends JPanel //NOTE: Must be compiled in UTF-8
     add(searchIcon, gbc);
   }
   
-  public BHSearchableList add(Searchable... items)
+  public BHSearchableList add(Needle... items)
   {
     fullArray.add(items);
     searchFor(previousSearch);
@@ -122,7 +122,7 @@ public class BHSearchableList extends JPanel //NOTE: Must be compiled in UTF-8
     return this;
   }
   
-  public BHSearchableList remove(Searchable... items)
+  public BHSearchableList remove(Needle... items)
   {
     fullArray.remove(items, true);
     searchFor(previousSearch);
@@ -130,7 +130,7 @@ public class BHSearchableList extends JPanel //NOTE: Must be compiled in UTF-8
     return this;
   }
   
-  public Searchable get(int index)
+  public Needle get(int index)
   {
     return fullArray.get(index);
   }
@@ -141,11 +141,11 @@ public class BHSearchableList extends JPanel //NOTE: Must be compiled in UTF-8
     ArrayPP<Keyword> ks = new ArrayPP<>();
     for (StringPP s : new StringPP(cs).getWords())
       ks.add(new Keyword(s));
-    Searchable s = new DefSearchable(cs, ks);
+    Needle s = new DefDisplayableNeedle(cs, ks);
     searchFor(s);
   }
   
-  public void searchFor(Searchable s)
+  public void searchFor(Needle s)
   {
     previousSearch = s;
     
@@ -212,7 +212,7 @@ public class BHSearchableList extends JPanel //NOTE: Must be compiled in UTF-8
     }
   }
 
-  public Searchable getSelectedItem()
+  public Needle getSelectedItem()
   {
     return dispArray.get(list.getSelectedIndex());
   }
