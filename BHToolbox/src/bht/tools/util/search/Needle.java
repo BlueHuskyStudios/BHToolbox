@@ -9,7 +9,8 @@ import java.util.Objects;
  * An interface that defines an object that can be searched for.
  * 
  * @author Supuhstar of Blue Husky Programming
- * @version 2.0.0
+ * @version 2.0.1
+ *		- 2.0.1 (2015-02-08) - Kyli made better documentation, var names, and default weight
  *		- 2.0.0 (2015-02-04) - Kyli separated Searchable into Needle and DisplayableNeedle
  */
 public interface Needle extends Comparable64<Needle>
@@ -28,6 +29,7 @@ public interface Needle extends Comparable64<Needle>
    *    <tr><td>{@code Minimizable}</td></tr>
    *    <tr><td>{@code Maximizable}</td></tr>
    *    <tr><td>{@code Iconifiable}</td></tr>
+   *    <tr><td>{@code Saveable}</td></tr>
    *    <tr><td>{@code Message}</td></tr>
    *    <tr><td>{@code Time}</td></tr>
    *    <tr><td>{@code Clock}</td></tr>
@@ -46,10 +48,10 @@ public interface Needle extends Comparable64<Needle>
    * <li>They have equal or similar titles</li>
    * <li>They have equal displays</li>
    * </ol>
-   * @param otherSearchable the other <tt>Needle</tt> to which this one will be compared
+   * @param otherNeedle the other <tt>Needle</tt> to which this one will be compared
    * @return the <tt>double</tt> representing the strength of the match between the two items
    */
-  public double getMatchStrength(Needle otherSearchable);
+  public double getMatchStrength(Needle otherNeedle);
   
   /**
    * Returns the title of this Needle as a <tt>String</tt>
@@ -57,14 +59,8 @@ public interface Needle extends Comparable64<Needle>
    */
   public CharSequence getSearchTitle();
 
-  /**
-   * The same as <tt>(long)(getMatchStrength(otherSearchable) * 100)</tt>
-   * @param otherSearchable the other <tt>Needle</tt> that  
-   * @return <tt>(long)(getMatchStrength(otherSearchable) * 100)</tt>
-   * @see Comparable64#compareTo(java.lang.Object) 
-   */
   @Override
-  public long compareTo64(Needle otherSearchable);
+  public long compareTo64(Needle otherNeedle);
 
   
   /**
@@ -91,7 +87,7 @@ public interface Needle extends Comparable64<Needle>
 	 */
     public Keyword(CharSequence keyword)
     {
-      this(keyword, 1);
+      this(keyword, .5);
     }
 
 	/**
