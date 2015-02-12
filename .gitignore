@@ -3,3 +3,4 @@
 /BHToolbox/dist/
 *.bak
 *.lnk
+/BHToolbox/src/bht/tools/util/nppBackup/
