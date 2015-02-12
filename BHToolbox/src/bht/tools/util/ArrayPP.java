@@ -45,7 +45,8 @@ import javax.swing.ListModel;
  * </li>
  * </ul>
  * @author Supuhstar of Blue Husky Programming
- * @version 1.8.7
+ * @version 1.8.8
+ *		- 1.8.8 (2015-02-09) - Kyli Rouge made {@link #destroy()} comply to its documentation
  *		- 1.8.7 (2014-12-29) - Kyli Rouge added move(int,int), toEnumeration()
  *		- 1.8.6 (2014-12-28) - Kyli Rouge fixed a bug in contains()
  *		- 1.8.5 (2014-12-28) - Kyli Rouge added prepend method
@@ -842,7 +843,7 @@ public class ArrayPP<T>
 	/**
 	 * Removes ALL items from the array. Analogous to {@code t = new T[0];}.
 	 *
-	 * @return the resulting array
+	 * @return {@code this}
 	 */
 	public ArrayPP<T> clear()
 	{
@@ -1212,16 +1213,35 @@ public class ArrayPP<T>
 	}
 
 	/**
-	 * Destroys this array. All items are observed. If an individual item is an instance of {@link CompleteObject}, then its
-	 * {@link CompleteObject#finalize()} method is called. Whether or not it implements {@link CompleteObject}, it is then set
-	 * to {@code null}. After all items in this array have been set to null, the {@link #clear()} method is called
+	 * Destroys this array. All items are observed. If an individual item is an instance of {@link CompleteObject},
+	 * then its {@link CompleteObject#finalize()} method is called. Whether or not it implements
+	 * {@link CompleteObject}, it is then set to {@code null}. After all items in this array have been set to null, the
+	 * {@link #clear()} method is called
+	 * 
+	 * @return the return value of {@link #clear()}
+	 * @see #clear()
+	 * 
+	 * @version 1.1.0
+	 *		- 1.1.0 (2015-02-09; 1.8.8) - Kyli implemented functionality described in JavaDoc, returned the result of
+	 *		                              {@link #clear()}
 	 */
 	@SuppressWarnings("UseOfSystemOutOrSystemErr")
-	public void destroy()
+	public ArrayPP<T> destroy()
 	{
 		for (int i = 0, l = length(); i < l; i++)
+		{
+			if (t[i] instanceof CompleteObject)
+				try
+				{
+					((CompleteObject) t[i]).finalize();
+				}
+				catch (Throwable ex)
+				{
+					Logger.getLogger(ArrayPP.class.getName()).log(Level.WARNING, "Object at index " + i + " could not be finalized: " + t[i], ex);
+				}
 			t[i] = null;
-		clear();
+		}
+		return clear();
 	}
 
 	/**
