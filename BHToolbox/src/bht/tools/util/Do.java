@@ -9,7 +9,18 @@ import java.io.PrintStream;
  * 
  * @author Kyli of Blue Husky Programming
  * @since 2014-08-18
- * @version 1.3.0
+ * @version 1.5.0
+ *		- 2015-02-12 (1.5.0) for BH Font Manager
+ *			+ Kyli added {@link #i32(Number)}
+ *			+ Kyli added {@link #i(Number)}
+ *			+ Kyli added {@link #i64(Number)}
+ *			+ Kyli added {@link #l(Number)}
+ *			+ Kyli added {@link #i16(Number)}
+ *			+ Kyli added {@link #i8(Number)}
+ *			+ Kyli added {@link #f64(Number)}
+ *			+ Kyli added {@link #d(Number)}
+ *			+ Kyli added {@link #f32(Number)}
+ *			+ Kyli added {@link #f(Number)}
  *		- 2015-02-05 (1.4.0) - Kyli Rouge added {@link #p(Object...)}
  *		- 2014-11-29 (1.3.0) - Kyli Rouge added {@link #S(Object...)} and {@link #S2(Object...)}
  *		- 2014-11-29 (1.2.0) - Kyli Rouge added {@link #a(Object...)} and {@link #A(Object...)}
@@ -188,4 +199,152 @@ public class Do
 		else for (Object object : o)
 			System.out.println(s(object));
 	}
+	
+	//<editor-fold defaultstate="collapsed" desc="number conversion">
+		/**
+		 * Converts the given number to a 32-bit integer
+		 * @param n the number to convert
+		 * @return {@code n} as a 32-bit integer
+		 * 
+		 * @author Kyli Rouge
+		 * @since 1.5.0
+		 * @version 1.0.0
+		 */
+		public static int i32(Number n)
+		{
+			if (n instanceof Integer)
+				return (Integer)n;
+			return Math.round(n.floatValue());
+		}
+		/**
+		 * Shorthand for {@link #i32(Number)}. Converts the given number to a 32-bit integer
+		 * @param n the number to convert
+		 * @return {@code n} as a 32-bit integer
+		 */
+		public static int i(Number n)
+		{
+			return i32(n);
+		}
+
+		/**
+		 * Converts the given number to a 64-bit integer
+		 * @param n the number to convert
+		 * @return {@code n} as a 64-bit integer
+		 * 
+		 * @author Kyli Rouge
+		 * @since 1.5.0
+		 * @version 1.0.0
+		 */
+		public static long i64(Number n)
+		{
+			if (n instanceof Long)
+				return (Long)n;
+			return Math.round(n.doubleValue());
+		}
+		/**
+		 * Shorthand for {@link #i64(Number)}. Converts the given number to a 64-bit integer
+		 * @param n the number to convert
+		 * @return {@code n} as a 64-bit integer
+		 * 
+		 * @author Kyli Rouge
+		 * @since 1.5.0
+		 * @version 1.0.0
+		 */
+		public static long l(Number n)
+		{
+			return i64(n);
+		}
+
+		/**
+		 * Converts the given number to a 16-bit integer
+		 * @param n the number to convert
+		 * @return {@code n} as a 16-bit integer
+		 * 
+		 * @author Kyli Rouge
+		 * @since 1.5.0
+		 * @version 1.0.0
+		 */
+		public static short i16(Number n)
+		{
+			if (n instanceof Short)
+				return (Short)n;
+			return n.shortValue();
+		}
+
+		/**
+		 * Converts the given number to an 8-bit integer
+		 * @param n the number to convert
+		 * @return {@code n} as an 8-bit integer
+		 * 
+		 * @author Kyli Rouge
+		 * @since 1.5.0
+		 * @version 1.0.0
+		 */
+		public static byte i8(Number n)
+		{
+			if (n instanceof Byte)
+				return (Byte)n;
+			return n.byteValue();
+		}
+
+		/**
+		 * Converts the given number to a 64-bit floating-point decimal
+		 * @param n the number to convert
+		 * @return {@code n} as a 64-bit floating-point decimal
+		 * 
+		 * @author Kyli Rouge
+		 * @since 1.5.0
+		 * @version 1.0.0
+		 */
+		public static double f64(Number n)
+		{
+			if (n instanceof Double)
+				return (Double)n;
+			return n.doubleValue();
+		}
+
+		/**
+		 * Shorthand for {@link #f64(Number)}. Converts the given number to a 64-bit floating-point decimal
+		 * @param n the number to convert
+		 * @return {@code n} as a 64-bit floating-point decimal
+		 * 
+		 * @author Kyli Rouge
+		 * @since 1.5.0
+		 * @version 1.0.0
+		 */
+		public static double d(Number n)
+		{
+			return f64(n);
+		}
+
+		/**
+		 * Converts the given number to a 32-bit floating-point decimal
+		 * @param n the number to convert
+		 * @return {@code n} as a 32-bit floating-point decimal
+		 * 
+		 * @author Kyli Rouge
+		 * @since 1.5.0
+		 * @version 1.0.0
+		 */
+		public static float f32(Number n)
+		{
+			if (n instanceof Float)
+				return (Float)n;
+			return n.floatValue();
+		}
+
+		/**
+		 * Shorthand for {@link #f32(Number)}. Converts the given number to a 32-bit floating-point decimal
+		 * @param n the number to convert
+		 * @return {@code n} as a 32-bit floating-point decimal
+		 * 
+		 * @author Kyli Rouge
+		 * @since 1.5.0
+		 * @version 1.0.0
+		 */
+		public static float f(Number n)
+		{
+			return f32(n);
+		}
+	//</editor-fold>
 }
