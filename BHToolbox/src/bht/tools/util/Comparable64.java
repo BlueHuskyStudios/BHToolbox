@@ -5,6 +5,7 @@ package bht.tools.util;
  * The general behavior of any object that implements {@code Comparable64} should be equal to that of one that implements
  * {@link Comparable}, but using 64-bit integers instead of 32-bit ones
  * @author Supuhstar of Blue Husky Programming
+ * @param <T> The type of object to compare
  * @since Mar 10, 2012
  * @version 1.0.0
  * @see Comparable
