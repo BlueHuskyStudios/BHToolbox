@@ -3,80 +3,12 @@ package bht.tools.util.save;
 
 //<editor-fold defaultstate="collapsed" desc="AWT Components">
 import bht.tools.util.StringPP;
-import bht.tools.util.save.Saveable;
 import java.awt.Component;
 import java.awt.Button;
 import java.awt.Checkbox;
-import java.awt.CheckboxGroup;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dialog;
-import java.awt.FileDialog;
-import java.awt.Frame;
 import java.awt.Label;
-import java.awt.List;
-import java.awt.Menu;
-import java.awt.MenuBar;
-import java.awt.MenuComponent;
-import java.awt.MenuItem;
-import java.awt.Panel;
-import java.awt.ScrollPane;
-import java.awt.Scrollbar;
-import java.awt.SplashScreen;
-import java.awt.TextArea;
-import java.awt.TextComponent;
-import java.awt.TextField;
-import java.awt.Window;
-//</editor-fold>
-
-//<editor-fold defaultstate="collapsed" desc="Swing Components">
-import javax.swing.AbstractButton;
-import javax.swing.JApplet;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JColorChooser;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JDesktopPane;
-import javax.swing.JDialog;
-import javax.swing.JEditorPane;
-import javax.swing.JFileChooser;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-//import javax.swing.JLayer; //For 1.7
-import javax.swing.JLayeredPane;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JPopupMenu;
-import javax.swing.JProgressBar;
-import javax.swing.JRadioButton;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JRootPane;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JSlider;
-import javax.swing.JSpinner;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.JToggleButton;
-import javax.swing.JToolBar;
-import javax.swing.JToolTip;
-import javax.swing.JTree;
-import javax.swing.JViewport;
-import javax.swing.JWindow;
         
 //</editor-fold>
 

@@ -1,7 +1,6 @@
 package bht.tools.util.save;
 
 import bht.tools.util.StringPP;
-import bht.tools.util.save.Saveable;
 import java.awt.Component;
 import java.awt.Container;
 import java.io.File;
