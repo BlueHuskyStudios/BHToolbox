@@ -266,7 +266,7 @@ public class BHMessagePanel extends javax.swing.JPanel
 
   private void initScrollTimer()
   {
-    scrollTimer = new javax.swing.Timer(100, new java.awt.event.ActionListener()
+    scrollTimer = new javax.swing.Timer(20, new java.awt.event.ActionListener()
     {
       boolean b = true;
       int pos, lastPos;
@@ -282,7 +282,7 @@ public class BHMessagePanel extends javax.swing.JPanel
         catch (NullPointerException ex)
         {
           System.err.println("Null pointer exception in bht.tools.comps.BHMessagePanel on line 282."
-                  + " Probably has to do with the message panel bot having been shown, yet.");
+                  + " Probably has to do with the message panel not having been shown, yet.");
         }
 
         pos = messageLabelScrollPane.getHorizontalScrollBar().getModel().getValue();
