@@ -68,7 +68,10 @@ public class ArrayPP<T>
 				   Serializable
 {
 
-	public static final ArrayPP EMPTY = new ArrayPP(0);
+	/**
+	 * An empty Array++. This contains 0 items of type Object
+	 */
+	public static final ArrayPP<Object> EMPTY = new ArrayPP<>(0);
 	private static final long serialVersionUID = 0x001_008_009L;
 
 	/**
