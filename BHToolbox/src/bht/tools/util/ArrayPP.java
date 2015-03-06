@@ -1,6 +1,7 @@
 package bht.tools.util;
 
 import bht.tools.misc.CompleteObject;
+import bht.tools.misc.FactoryDelegate;
 import static bht.tools.util.Do.s;
 import java.awt.Window;
 import java.io.IOException;
@@ -46,6 +47,7 @@ import javax.swing.ListModel;
  * </ul>
  * @author Supuhstar of Blue Husky Programming
  * @version 1.8.8
+ * - 1.8.9 (2015-02-09) - Kyli Rouge added {@link #transfer(Iterable, FactoryDelegate)}
  *		- 1.8.8 (2015-02-09) - Kyli Rouge made {@link #destroy()} comply to its documentation
  *		- 1.8.7 (2014-12-29) - Kyli Rouge added move(int,int), toEnumeration()
  *		- 1.8.6 (2014-12-28) - Kyli Rouge fixed a bug in contains()
@@ -65,14 +67,70 @@ public class ArrayPP<T>
 				   Cloneable,
 				   Serializable
 {
-	private static final long serialVersionUID = 0x1_008_002L;
-	
-	public static final ArrayPP EMPTY = new ArrayPP(0);
-	
+
+	/**
+	 * An empty Array++. This contains 0 items of type Object
+	 */
+	public static final ArrayPP<Object> EMPTY = new ArrayPP<>(0);
+	private static final long serialVersionUID = 0x001_008_009L;
+
+	/**
+	 * Performs a quicksort on the given array.
+	 *
+	 * @param array the array to sort
+	 *
+	 * @return the sorted array
+	 */
+	public static ArrayPP<Comparable> quicksort(ArrayPP<Comparable> array) {
+		if (array.length() <= 1) {
+			return array;  // an array of zero or one elements is already sorted
+		}
+		Comparable pivot = 0; //select and remove a pivot value 'pivot' from 'array'
+		ArrayPP<Comparable> less = new ArrayPP<>(), greater = new ArrayPP<>();// create empty lists 'less' and 'greater'
+		for (Comparable x : array) {
+			if (x.compareTo(pivot) <= 0) {
+				less.add(x); // append 'x' to 'less'
+			}
+			else {
+				greater.add(x); // append 'x' to 'greater'
+			}
+		}
+		return quicksort(less).add(pivot).add(quicksort(greater)); // two recursive calls
+	}
+
+	/**
+	 * Takes the items in the {@link Iterable} {@code a} (which is full of objects of type {@code A}), then uses {@code b} to
+	 * create a new array full of objects of type {@code B}, in the same order as they are in {@code a}.<br/>
+	 * <br/>
+	 * <strong>Example</strong>
+	 * <pre>
+	 * public void method(CharSequence... text) {
+	 *	ArrayPP&lt;StringPP&gt; stringPPs = ArrayPP.transfer(text, new StringPPFactory());
+	 *	// do things with the array++ of string++s
+	 * }
+	 * </pre>
+	 *
+	 * @param <From>  The first type of object, which fills the given {@link Iterable}
+	 * @param <To>    The second type of object, which will fill the returned array
+	 * @param origin  The {@link Iterable} (native array, array++, etc.) with the original set of objects
+	 * @param factory The {@link FactoryDelegate} which will make {@code B}s out of {@code A}s
+	 *
+	 * @return An {@code ArrayPP<B>} version of {@code origin}
+	 */
+	public static <From, To> ArrayPP<To> transfer(Iterable<? extends From> origin,
+												  FactoryDelegate<From, To> factory) {
+		ArrayPP<To> ret = new ArrayPP<>();
+		for (From f : origin) {
+			ret.add(factory.makeFromFactory(f));
+		}
+		return ret;
+	}
+
 	/**
 	 * The contents of the array. Feel free to directly interact; the methods of this class are designed not to care!
 	 */
 	public T[] t;
+	private boolean destructiveFinalize;
 
 //  /**
 //   * Creates a new Array++, without anything in it.
@@ -104,7 +162,7 @@ public class ArrayPP<T>
 			throw new NegativeArraySizeException(initSize + " is less than 0 (the minimum array size)");
 
 		t = (T[]) new Object[initSize];/*ArrayPP<T>(null, null).clear().toArray();
-    
+
 		 for (int i=0; i < init; i++)
 		 add(null);*/
 
@@ -160,7 +218,7 @@ public class ArrayPP<T>
 	 *
 	 * @param jList the {@code javax.swing.JList} of values that will be added to this array
 	 */
-//   * @throws ClassCastException If {@code jList} contains an item that does not extend {@code T} 
+//   * @throws ClassCastException If {@code jList} contains an item that does not extend {@code T}
 	@SuppressWarnings("OverridableMethodCallInConstructor")
 	public ArrayPP(javax.swing.JList<T> jList)
 	{
@@ -183,76 +241,187 @@ public class ArrayPP<T>
 	}
 
 	/**
-	 * Returns the number of items in the array
+	 * Appends a set of values to the end of the array
 	 *
-	 * @return an {@code int} representing the number of items in the array
+	 * @param vals the values to be appended
+	 *
+	 * @return the resulting array.
 	 */
-	public int length()
-	{
-		return t.length;
-	}
-	
-	/**
-	 * Returns this array, starting with the given {@code preceding} character sequence, ending with the given
-	 * {@code succeeding} one, and with the given {@code separator} between each element.
-	 * @param preceding the character sequence to start the String with
-	 * @param separator the character sequence to end the String with
-	 * @param succeeding the character sequence to separate each item with
-	 * @return this array, starting with, separated by, and ending with the given sequences
-	 * 
-	 * @author Kyli Rouge
-	 * @since 2014-08-20
-	 * @version 1.0.0
-	 *		- 2014-08-20 (1.8.0) - Kyli Rouge created this method for more powerful stringification
-	 */
-	public String toString(CharSequence preceding, CharSequence separator, CharSequence succeeding)
-	{
-		if (isEmpty())
-			return s(preceding) + succeeding;
-		StringBuilder sb = new StringBuilder(preceding);
-		for (int i = 0, l = length() - 1; i < l; i++)
-			sb.append(get(i)).append(separator);
-		return sb.append(getLastItem()).append(succeeding).toString();
+	public ArrayPP<T> add(T... vals)	{
+		int i1 = length(), i2, l;
+		t = java.util.Arrays.copyOf(t, i1 + vals.length);
+		for (l = length(), i2 = 0; i1 < l; i1++, i2++) {
+			t[i1] = vals[i2];
+		}
+		/* for (int i=0; i < vals.length; i++)
+		 * addAll(vals[i]); */
+		return this;
 	}
 
 	/**
-	 * Returns a {@code String} representing the data in the array.<br/>
-	 * <i>Equivalent to {@code java.util.Arrays.toString(toArray())}</i>
+	 * Appends a set of values to the end of the array
 	 *
-	 * @return a {@code String} representing the data in the array
-	 * 
-	 * @see Arrays#toString(Object[])
+	 * @param vals the values to be appended, as represented by an {@code Iterable}
+	 *
+	 * @return the resulting array.
+	 */
+	public ArrayPP<T> addAll(Iterable<T> vals)	{
+		ArrayPP<T> app = new ArrayPP<>(vals);
+		int l = 0, i1 = length();
+		for (T t1 : vals) {
+			l++;
+		}
+
+		t = java.util.Arrays.copyOf(t, i1 + l);
+		for (T t1 : vals) {
+			t[i1++] = t1;
+		}
+		return this;
+	}
+
+	/**
+	 * Adds the given item to the array if and only if it is not already in the array
+	 *
+	 * @return {@code this}
+	 *
+	 * @param item the item to be added
+	 *
+	 * @see #containsExactly(java.lang.Object)
+	 * @since Feb 26, 2012 (1.4.14) for Marian
+	 */
+	public ArrayPP addWithoutDuplicates(T item)	{
+		if (!containsExactly(item)) {
+			add(item);
+		}
+		return this;
+	}
+
+	/**
+	 * Sorts the contents of this array based on the "bubble sort" technique, where each item has meta information about its
+	 * weight
+	 *
+	 * @param strengthMarkers higher strength means the corresponding item becomes higher in the final array
+	 *
+	 * @return the resulting array
+	 */
+	public ArrayPP<T> bubbleSort(ArrayPP<Double> strengthMarkers)	{
+		boolean changed;
+		ArrayPP<Double> mk = strengthMarkers.clone();
+out:
+		for (int i = 0, j, l = length() - 1; i < l; i++)//Efficiency added Mar 11, 2012 (1.4.14) for Marian
+		{
+			changed = false;
+			for (j = 0; j < l; j++) {
+				if (mk.get(j) < mk.get(j + 1))//Dunno how I got this wrong... Mar 11, 2012 (1.4.14) for Marian
+				{
+					changed = true;
+					mk.swap(j, j + 1);
+					swap(j, j + 1);
+				}
+				if (!changed) {
+					break out;// Better apply cream
+				}
+			}
+		}
+
+		return this;
+	}
+
+	/**
+	 * Sorts the array using the "bubble sort" algorithm.
+	 *
+	 * @return the resulting array
+	 */
+	@SuppressWarnings("UnnecessaryLabelOnBreakStatement")
+	public ArrayPP<T> bubbleSort()	{
+		boolean changed;
+		T get, t1 = null;
+out:
+		for (int i = 0, l = length() - 1; i < l; i++)//Changed to "l = length() - 1" Mar 11, 2012 (1.4.14) for Marian
+		{
+			changed = false;
+in:
+			for (int j = 0; j < l; j++) {
+				if (((get = get(j)) instanceof Comparable && ((Comparable) get).compareTo(t1 = get(j + 1)) < 0)) {
+					changed = true;
+					swap(j, j + 1);//Changed to "j + 1" Mar 11, 2012 (1.4.14) for Marian
+				}
+			}
+			if (!changed) {
+				break out;// Sound the alarm! D:
+			}
+		}
+
+		return this;
+	}
+
+	/**
+	 * Removes ALL items from the array. Analogous to {@code t = new T[0];}.
+	 *
+	 * @return {@code this}
+	 */
+	public ArrayPP<T> clear() {
+		if (t == null) {
+			t = (T[]) new Object[0];
+		}
+		else if (length() > 0) {
+			t = Arrays.copyOf(t, 0);
+		}
+		return this;
+	}
+
+	/**
+	 * Returns a copy of this array, such that<br/>
+	 * <pre>
+	 * ArrayPP&lt;T&gt; one = new ArrayPP(new T[]{itemOfTypeT}), two = one.clone();
+	 * System.out.println(one.equals(two));
+	 * System.out.println(one.getClass() == two.getClass());
+	 * System.out.println(one.clone().getClass() == two.getClass());
+	 * System.out.println(one == two);
+	 * </pre> prints
+	 * <pre>
+	 * true
+	 * true
+	 * true
+	 * false
+	 * </pre>
+	 * <br/>
+	 * <b>This method works best when this array is made up of objects which implement {@link CompleteObject}</b>
+	 *
+	 * @return a new {@code ArrayPP} that contains all the objects within this one
+	 *
+	 * @see CompleteObject
 	 */
 	@Override
-	public String toString()
-	{
-		return java.util.Arrays.toString(t);
+	@SuppressWarnings(
+			{
+				"CloneDeclaresCloneNotSupported", "CloneDoesntCallSuperClone"
+			})
+	public ArrayPP<T> clone() {
+		return new ArrayPP<>((T[]) t);
 	}
 
 	/**
-	 * Returns a <b>copy</b> of the array at the core of this class
+	 * if this {@code ArrayPP} AND {@code app} are arrays of {@code Comparable}s, then this method returns the average of the
+	 * return values of all the objects' {@code .compareTo} methods, else returns the difference in length between this array's
+	 * length and the provided one's.
 	 *
-	 * @return a <b>copy</b> of the array at the core of this class
-	 */
-	public T[] toArray()
-	{
-		T[] ret = (T[]) new Object[length()];
-		for (int i = 0, l = ret.length; i < l; i++)
-			ret[i] = get(i);
-		return ret;
-	}
-
-	/**
-	 * Returns whether this array does not contain anything but the specified items
+	 * @param app the array to compare
 	 *
-	 * @param items the items of which the array should consist
-	 * @return whether the array has any other item within it
+	 * @return an {@code int} representation of the comparison of the two arrays
 	 */
-	public boolean hasOnly(T... items)
-	{
-		ArrayPP<T> temp = clone();
-		temp.remove(items, true);
-		return temp.isEmpty();
+	@Override
+	public int compareTo(ArrayPP<?> app) {
+		if (t instanceof Comparable[] && app.toArray() instanceof Comparable[]) {
+			double avg = 0;
+			if (app.length() > t.length) {
+				for (int i = 0; i < Math.min(t.length, app.length()); i++) {
+					avg += ((Comparable) app.get(i)).compareTo(t[i]);
+				}
+			}
+			return (int) (avg / Math.min(t.length, app.length()));
+		}
+		return t.length - app.length();
 	}
 
 	/**
@@ -268,7 +437,7 @@ public class ArrayPP<T>
 	 *
 	 * @param item the item to be searched for
 	 * @return {@code true} if and only if this array contains the specified {@code item}
-	 * 
+	 *
 	 * @version 1.1.0
 	 *		1.1.0 (2014-12-28; 1.8.6) - Kyli Rouge changed item.toString() to s(item)
 	 */
@@ -298,6 +467,45 @@ public class ArrayPP<T>
 	}
 
 	/**
+	 * Returns true if and only if the array contains <b>ANY</b> of the given items
+	 *
+	 * @param items the items to be searched for
+	 *
+	 * @return true if and only if the array contains <b>ANY</b> of the given items
+	 */
+	public boolean containsAny(T... items) {
+		for (T item : items) {
+			if (contains(item)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Searches the array to see if this exact item is in it. If there is no item in this array for which
+	 * {@code arrayItem == item} returns true, this method returns false
+	 *
+	 * @param item the item to be searched for
+	 *
+	 * @return {@code true} if and only if there is an item in this array such that {@code arrayItem == item} returns true
+	 */
+	public boolean containsExactly(T item) {
+		if (t.length == 0)//a shortcut, to cut down on read time of an empty array
+		{
+			return false;
+		}
+
+		for (int i = 0; i < length(); i++) {
+			if (t[i].equals(item)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Returns true if and only if the array contains <b>NONE</b> of the given items
 	 *
 	 * @param items the items to be searched for
@@ -309,39 +517,149 @@ public class ArrayPP<T>
 	}
 
 	/**
-	 * Returns true if and only if the array contains <b>ANY</b> of the given items
+	 * Searches the array to see if this exact sequence of items is in it. If there is no sequence items in this array that
+	 * exactly matches the given sequence, this method returns {@code false}
 	 *
 	 * @param items the items to be searched for
-	 * @return true if and only if the array contains <b>ANY</b> of the given items
+	 * @return {@code true} if and only if all these items appear in this array in the same sequence
 	 */
-	public boolean containsAny(T... items)
-	{
-		for (T item : items)
-			if (contains(item))
+	public boolean containsSequence(T... items)	{
+		if (items.length == 0 || items.length > length()) {
+			return false;
+		}
+s:
+		for (int i = 0, j = 0, l = length() - items.length; i < l; i++, j = i) {
+			if (get(i).equals(items[0])) {
+				for (T item : items) {
+					if (!get(j).equals(item)) {
+						continue s;
+					}
+					j++;
+				}
 				return true;
+			}
+		}
 		return false;
 	}
 
 	/**
-	 * if this {@code ArrayPP} AND {@code app} are arrays of {@code Comparable}s, then this method returns the average of the
-	 * return values of all the objects' {@code .compareTo} methods, else returns the difference in length between this array's
-	 * length and the provided one's.
+	 * Destroys this array. All items are observed. If an individual item is an instance of {@link CompleteObject},
+	 * then its {@link CompleteObject#finalize()} method is called. Whether or not it implements
+	 * {@link CompleteObject}, it is then set to {@code null}. After all items in this array have been set to null, the
+	 * {@link #clear()} method is called
 	 *
-	 * @param app the array to compare
-	 * @return an {@code int} representation of the comparison of the two arrays
+	 * @return the return value of {@link #clear()}
+	 *
+	 * @see #clear()
+	 *
+	 * @version 1.1.0
+	 * - 1.1.0 (2015-02-09; 1.8.8) - Kyli implemented functionality described in JavaDoc, returned the result of
+	 * {@link #clear()}
+	 */
+	@SuppressWarnings("UseOfSystemOutOrSystemErr")
+	public ArrayPP<T> destroy()	{
+		for (int i = 0, l = length(); i < l; i++)		{
+			if (t[i] instanceof CompleteObject) {
+				try {
+					((CompleteObject) t[i]).finalize();
+				}
+				catch (Throwable ex) {
+					Logger.getLogger(ArrayPP.class.getName()).log(Level.WARNING, "Object at index " + i
+																				 + " could not be finalized: " + t[i], ex);
+				}
+			}
+			t[i] = null;
+		}
+		return clear();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		return o instanceof ArrayPP && equals((ArrayPP<T>) o);
+	}
+
+	/**
+	 * Returns {@code true} if, and only if, the {@code ArrayPP}s are exactly the same length and the {@code .equals} methods of
+	 * each and every corresponding object in each array return {@code true}
+	 *
+	 * @param a the {@code ArrayPP} which will be subject to comparison to this one
+	 *
+	 * @return {@code true} if and only if both arrays contain the same objects
+	 */
+	public boolean equals(ArrayPP<T> a) {
+		int l = length();
+		if (l != a.length()) {
+			return false;
+		}
+		for (int i = 0; i < l; i++) {
+			if (!get(i).equals(a.get(i))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Fills the {@code null} values in the array with the value specified
+	 *
+	 * @param val the value with which the empty spaces in the array will be filled
+	 *
+	 * @return the resulting array.
+	 */
+	public ArrayPP<T> fillEmptyWith(T val) {
+		for (int i = 0; i < t.length; i++) {
+			if (t[i] == null) {
+				t[i] = val;
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * Fills the array with the value specified
+	 *
+	 * @param val the value with which the array will be filled
+	 *
+	 * @return the resulting array.
+	 */
+	public ArrayPP<T> fillWith(T val) {
+		for (int i = 0; i < t.length; i++) {
+			t[i] = val;
+		}
+		return this;
+	}
+
+	/**
+	 * IF you have passed {@code true} to {@link #setDestructiveFinalize(boolean)}, this iterates through all the objects in
+	 * this array and performs the following:
+	 * <ol>
+	 * <li>If the object being observed implements {@link CompleteObject}, then its {@link Object#finalize()} method is
+	 * called</li>
+	 * <li>If the object being observed is an instance of {@link Window}, then its {@link Window#dispose()} method is
+	 * called</li>
+	 * <li>It is set to {@code null}</li>
+	 * </ol>
+	 *
+	 * @throws Throwable
+	 *
+	 * @version 1.2.0
+	 * - 2014-08-18 (1.2.0) - Kyli Rouge re-added the CompleteObject finalization and added if (destructiveFinalize)
 	 */
 	@Override
-	public int compareTo(ArrayPP<?> app)
-	{
-		if (t instanceof Comparable[] && app.toArray() instanceof Comparable[])
-		{
-			double avg = 0;
-			if (app.length() > t.length)
-				for (int i = 0; i < Math.min(t.length, app.length()); i++)
-					avg += ((Comparable) app.get(i)).compareTo(t[i]);
-			return (int) (avg / Math.min(t.length, app.length()));
+	@SuppressWarnings({"FinalizeNotProtected", "FinalizeDeclaration"})
+	public void finalize() throws Throwable {
+		if (destructiveFinalize) {
+			for (int i = 0, l = length(); i < l; i++) {
+				if (get(i) instanceof CompleteObject) {
+					((CompleteObject) get(i)).finalize();
+				}
+				if (get(i) instanceof Window) {
+					((Window) get(i)).dispose();
+				}
+				set(i, null);
+			}
 		}
-		return t.length - app.length();
+		super.finalize();
 	}
 
 	/**
@@ -376,6 +694,19 @@ public class ArrayPP<T>
 		return (T[]) t1;
 	}
 
+	public void setDestructiveFinalize(boolean newDestructiveFinalize) {
+		destructiveFinalize = newDestructiveFinalize;
+	}
+
+	/**
+	 * Returns the first item from this array
+	 *
+	 * @return the resulting {@code ArrayPP}
+	 */
+	public T getFirstItem() {
+		return get(0);
+	}
+
 	/**
 	 * Returns the index of the first instance of {@code val}, or -1 if it isn't found.
 	 *
@@ -388,18 +719,6 @@ public class ArrayPP<T>
 			if (val.equals(t[i]))
 				return i;
 		return -1;
-	}
-
-	/**
-	 * Finds and returns the index of the last index of {@code val} in the array, or {@code -1} if no such value is found.
-	 *
-	 * @param val the value for which the last index will be found.
-	 * @return the index of the last index of {@code val} in the array, or {@code -1} if no such value is found.
-	 */
-	public int getLastIndexOf(T val)
-	{
-		int[] i = getIndicesOf(val);
-		return i.length > 0 ? i[i.length - 1] : -1;
 	}
 
 	/**
@@ -428,6 +747,30 @@ public class ArrayPP<T>
 	}
 
 	/**
+	 * Finds and returns the index of the last index of {@code val} in the array, or {@code -1} if no such value is found.
+	 *
+	 * @param val the value for which the last index will be found.
+	 *
+	 * @return the index of the last index of {@code val} in the array, or {@code -1} if no such value is found.
+	 */
+	public int getLastIndexOf(T val) {
+		int[] i = getIndicesOf(val);
+		return i.length > 0 ? i[i.length - 1] : -1;
+	}
+
+	/**
+	 * Returns the last item from this array
+	 *
+	 * @return the resulting {@code ArrayPP}
+	 */
+	public T getLastItem() {
+		if (length() <= 0) {
+			throw new IllegalStateException("There are no items in the array, last item not gotten.");
+		}
+		return get(length() - 1);
+	}
+
+	/**
 	 * Returns the number of times this value occurs in the array
 	 *
 	 * @param val the value whose instances are to be counted
@@ -439,53 +782,39 @@ public class ArrayPP<T>
 	}
 
 	/**
-	 * Sets the value in the array at index {@code index} to be {@code val}
+	 * Will return {@code true} if and only if <b>ALL</b> the given conditions are satisfied:
+	 * <ol>
+	 * <li>The given index is non-negative</li>
+	 * <li>The given index is less than the number of objects in this array</li>
+	 * <li>The item at the given index (now knowing that the array contains the given index) is non-null</li>
+	 * </ol>
 	 *
-	 * @param index the index of the value to be changed
-	 * @param val the new value of the slot in the array at index {@code index}
-	 * @return the resulting array.
-	 * @throws ArrayIndexOutOfBoundsException if the index is out of the boundaries of the array (if {@code index} &lt; 0 or
-	 * {@code index} &gt; {@code length()})
+	 * @param index the index to test
+	 *
+	 * @return {@code true} if there is an item in this array at the index {@code index}
 	 */
-	public ArrayPP<T> set(int index, T val) throws ArrayIndexOutOfBoundsException
-	{
-		t[index] = val;
-		return this;
+	public boolean has(int index)	{
+		return index >= 0 && index < length() && get(index) != null;
 	}
 
 	/**
-	 * Appends a set of values to the end of the array
+	 * Returns whether this array does not contain anything but the specified items
 	 *
-	 * @param vals the values to be appended
-	 * @return the resulting array.
+	 * @param items the items of which the array should consist
+	 *
+	 * @return whether the array has any other item within it
 	 */
-	public ArrayPP<T> add(T... vals)
-	{
-		int i1 = length(), i2, l;
-		t = java.util.Arrays.copyOf(t, i1 + vals.length);
-		for (l = length(), i2 = 0; i1 < l; i1++, i2++)
-			t[i1] = vals[i2];
-		/*for (int i=0; i < vals.length; i++)
-		 addAll(vals[i]);*/
-		return this;
+	public boolean hasOnly(T... items)	{
+		ArrayPP<T> temp = clone();
+		temp.remove(items, true);
+		return temp.isEmpty();
 	}
 
-	/**
-	 * Appends a set of values to the end of the array
-	 *
-	 * @param vals the values to be appended, as represented by an {@code Iterable}
-	 * @return the resulting array.
-	 */
-	public ArrayPP<T> addAll(Iterable<T> vals)
-	{
-		ArrayPP<T> app = new ArrayPP<>(vals);
-		int l = 0, i1 = length();
-		for (T t1 : vals) l++;
-
-		t = java.util.Arrays.copyOf(t, i1 + l);
-		for (T t1 : vals)
-			t[i1++] = t1;
-		return this;
+	@Override
+	public int hashCode()	{
+		int hash = 7;
+		hash = 29 * hash + Arrays.deepHashCode(this.t);
+		return hash;
 	}
 
 	/**
@@ -534,6 +863,323 @@ public class ArrayPP<T>
 		for (int i = 0, l = indices.length; i < l; i++)//Fill the prepared spaces with the given values
 			set(indices[i], vals[i]);
 		return this;
+	}
+
+	/**
+	 * Returns true if the array is full of only {@code null} values or has a size of {@code 0}
+	 *
+	 * @return whether the array is empty
+	 */
+	public boolean isEmpty() {
+		for (T item : t) {
+			if (item != null) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Returns true if and only if the array has a size of {@code 0}
+	 *
+	 * @return whether the array is flat
+	 */
+	public boolean isFlat() {
+		return t.length == 0;
+	}
+
+	/**
+	 * Returns a clone of this array, but with all non-matching objects removed. If any one object's {@code equals} method
+	 * returns {@code false}, this method will check its {@code toString().contains} method, and then try {@link StringPP}'s
+	 * {@link StringPP#containsIgnoreCase} if that is unsuccessful. If the new array of objects already contains an observed
+	 * object, it will <b>NOT</b> be added (this leads to a possible use for cleaning out duplicates by using an empty array as
+	 * the parameter {@code vals})
+	 *
+	 * @param vals the values to be isolated.
+	 *
+	 * @return the resulting ArrayPP
+	 */
+	public ArrayPP<T> isolate(T... vals) {
+		ArrayPP<T> temp = new ArrayPP<>();
+		for (T val : vals) {
+			for (int j = 0; j < length(); j++) {
+				if (t[j].equals(val) || t[j].toString().contains(val.toString())) {
+					if (!temp.contains(get(j))) {
+						temp.add(get(j));
+					}
+				}
+			}
+		}
+		return temp;
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return new java.util.Iterator<T>() {
+			boolean hasRem = false;
+			int pos = 0, rem = 0;
+
+			@Override
+			public boolean hasNext() {
+				return pos < length();
+			}
+
+			@Override
+			public T next() throws ArrayIndexOutOfBoundsException {
+				hasRem = false;
+				pos++;
+				return get(pos - 1);
+			}
+
+			@Override
+			public void remove() {
+				if (!hasRem) {
+					getThis().remove(pos);
+				}
+				hasRem = true;
+			}
+		};
+	}
+
+	/**
+	 * Returns the number of items in the array
+	 *
+	 * @return an {@code int} representing the number of items in the array
+	 */
+	public int length() {
+		return t.length;
+	}
+
+	public Collection<T> makeCollection() {
+		return new Collection<T>() {
+			@Override
+			public int size() {
+				return length();
+			}
+
+			@Override
+			public <T2> T2[] toArray(T2[] a) {
+				if (a == null || size() > a.length) {
+					a = (T2[]) new Object[size()];
+				}
+				for (int i = 0; i < a.length; i++) {
+					try {
+						a[i] = (T2) get(i);
+					}
+					catch (ClassCastException ex) {
+						Logger.getGlobal().log(Level.WARNING, "Could not add item {0} to array; types don''t match.", i);
+//						continue;
+					}
+				}
+				return a;
+			}
+
+			@Override
+			public boolean add(T e) {
+//				System.out.println("derp");
+				int before = length();
+				getThis().add(e);
+				return length() == before;
+			}
+
+			@Override
+			public boolean remove(Object o) {
+				int before = length();
+				try {
+					getThis().remove((T) o, false);
+				}
+				catch (ClassCastException ex) {
+					return false;
+				}
+				return length() == before;
+			}
+
+			@Override
+			@SuppressWarnings("element-type-mismatch")
+			public boolean containsAll(Collection<?> c) {
+				for (Object object : c) {
+					if (!contains(object)) {
+						return false;
+					}
+				}
+				return true;
+			}
+
+			@Override
+			public boolean addAll(Collection<? extends T> c) {
+				if (c == null) {
+					return false;
+				}
+				int before = length();
+				for (T x : c) {
+					add(x);
+				}
+				return length() == before;
+			}
+
+			@Override
+			public boolean removeAll(Collection<?> c) {
+				int before = length();
+				for (Object x : c) {
+					try {
+						getThis().remove((T) x, true);
+					}
+					catch (ClassCastException ex) {
+//						continue;
+					}
+				}
+				return length() == before;
+			}
+
+			@Override
+			public boolean retainAll(Collection<?> c) {
+				int before = length();
+				removeAllBut(c.toArray());
+				return length() == before;
+			}
+
+			@Override
+			public boolean isEmpty() {
+				throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+			}
+
+			@Override
+			public boolean contains(Object o) {
+				throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+			}
+
+			@Override
+			public Iterator<T> iterator() {
+				throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+			}
+
+			@Override
+			public Object[] toArray() {
+				return getThis().toArray();
+			}
+
+			@Override
+			public void clear() {
+				getThis().clear();
+			}
+		};
+	}
+
+	/**
+	 * Moves the item at the first index to the second index.
+	 *
+	 * @param oldIndex the index of the item to move
+	 * @param newIndex the index of the item after which it should be placed. See the below illustration for clarification.
+	 *                 <pre>
+	 * Before:
+	 * +---+-----+---+-----+---+
+	 * | X | old | Y | new | Z |
+	 * +---+-----+---+-----+---+
+	 *         \
+	 *          -------
+	 * After:          \
+	 * +---+---+-----+-----+---+
+	 * | X | Y | new | old | Z |
+	 * +---+---+-----+-----+---+
+	 *                 </pre>
+	 *
+	 * @author Kyli ROuge
+	 * @since 2014-12-29 (1.8.7)
+	 * @version 1.0.0
+	 */
+	public void move(int oldIndex, int newIndex) {
+		T old = get(oldIndex);
+		remove(oldIndex);
+		insert(old, newIndex > oldIndex ? newIndex - 1 : newIndex); // -1 because the array is now shorter
+	}
+
+	/**
+	 * For use as a stack, semantically equivalent to {@link #getFirstItem()}
+	 *
+	 * @return the top value
+	 *
+	 * @since 2012/10/01 (1.5.1)
+	 * @see #getFirstItem()
+	 */
+	public T peek() {
+		return getFirstItem();
+	}
+
+	/**
+	 * For use as a stack, semantically equivalent to {@link #getFirstItem()} and then {@link #removeFirstItem()}
+	 *
+	 * @return the top value
+	 *
+	 * @since 2012/10/01 (1.5.1)
+	 * @see #getFirstItem()
+	 * @see #removeFirstItem()
+	 */
+	public T pop() {
+		T ret = getFirstItem();
+		removeFirstItem();
+		return ret;
+	}
+
+	/**
+	 * Adds the given item to the beginning of the array++
+	 *
+	 * @param items the items to prepend
+	 *
+	 * @author Kyli Rouge
+	 * @since 2014-12-28 (1.8.5)
+	 * @version 1.0.0
+	 */
+	public void prepend(T... items) {
+		for (T item : items) {
+			insert(item, 0);
+		}
+	}
+
+	/**
+	 * For use as a stack, semantically equivalent to {@link #insert(val, 0)}
+	 *
+	 * @param val The value to push
+	 *
+	 * @return {@code this}
+	 *
+	 * @since 2012/10/01 (1.5.1)
+	 * @see #insert(java.lang.Object, int)
+	 */
+	public ArrayPP<T> push(T val) {
+		return insert(val, 0);
+	}
+
+	/**
+	 * Performs a quicksort on this array <STRONG>if and only if this array is made up of {@link Comparable}s</STRONG>. If this
+	 * is not an array of {@link Comparable}s, then a {@link IllegalStateException} is returned.<BR/>
+	 * In order to guarantee that this array is full of {@link Comparable} elements, then initialize it as
+	 * {@code ArrayPP<Comparable>}. <STRONG>Using a {@link Comparable64} will also work.</STRONG>
+	 *
+	 * @return {@code this}
+	 *
+	 * @throws IllegalStateException if {@code this} is not an array of {@link Comparable} elements.
+	 */
+	public ArrayPP<? extends Comparable> quicksort() {
+		try {
+			if (length() <= 1) {
+				return (ArrayPP<? extends Comparable>) this;  // an array of zero or one elements is already sorted
+			}
+			Comparable pivot = 0; //select and remove a pivot value 'pivot' from 'array'
+			ArrayPP<Comparable> less = new ArrayPP<>(), greater = new ArrayPP<>(); // create empty lists 'less' and 'greater'
+			for (Comparable x : (ArrayPP<? extends Comparable>) this) {
+				if (x.compareTo(pivot) <= 0) {
+					less.add(x); // append 'x' to 'less'
+				}
+				else {
+					greater.add(x); // append 'x' to 'greater'
+				}
+			}
+			return quicksort(less).add(pivot).add(quicksort(greater)); // two recursive calls
+		}
+		catch (ClassCastException e) // If this is not an instance of ArrayPP<Comparable>
+		{
+			throw new IllegalStateException("Tried to sort an array does not contain Comparable elements", e);
+		}
 	}
 
 	/**
@@ -603,12 +1249,67 @@ public class ArrayPP<T>
 					indices[j]--;//shift next values to fit the changing array
 		}
 		//Possible other solution:
-    /*
-		 for(int i=indices.length; i >= 0; i--)
-		 {
-		 remove(indices[i]);
-		 }
+		/*
+		 * for(int i=indices.length; i >= 0; i--)
+		 * {
+		 * remove(indices[i]);
+		 * }
 		 */
+		return this;
+	}
+
+	/**
+	 * Removes every item in the array except the given ones
+	 *
+	 * @param keepObjects the items to keep
+	 *
+	 * @return the resulting array
+	 */
+	public ArrayPP<T> removeAllBut(Object... keepObjects) {
+		for (int i = 0; i < length(); i++) {
+			for (Object objToKeep : keepObjects) {
+				if (!get(i).equals(objToKeep)) {
+					remove(i--);
+					break;
+				}
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * Removes every item in the array except the ones at the given indices
+	 *
+	 * @param keepIndices the indices of the items to keep
+	 *
+	 * @return the resulting array
+	 */
+	public ArrayPP<T> removeAllBut(int... keepIndices) {
+		ArrayPP<T> temp = new ArrayPP<>();
+		for (int i : keepIndices) {
+			temp.add(get(i));
+		}
+		clear().addAll(temp);
+		return this;
+	}
+
+	/**
+	 * Removes the first item from this array
+	 *
+	 * @return the resulting {@code ArrayPP}
+	 */
+	public ArrayPP<T> removeFirstItem() {
+		remove(0);
+		return this;
+	}
+
+	/**
+	 * Removes the last item from this array
+	 *
+	 * @return the resulting {@code ArrayPP}
+	 */
+	public ArrayPP<T> removeLastItem() {
+		remove(length() - 1);
 		return this;
 	}
 
@@ -668,80 +1369,48 @@ public class ArrayPP<T>
 	}
 
 	/**
-	 * Removes null values from the array
+	 * Ensures that the array is at least large enough to contain the given index
 	 *
-	 * @return the resulting array
+	 * @param rowIndex
 	 */
-	public ArrayPP<T> trimInside()
-	{
-		for (int i = 0; i < length(); i++)
-			while (i < length() && get(i) == null)
-				remove(i);
+	public void reserve(int rowIndex)	{
+		while (length() < rowIndex) {
+			add((T) null);
+		}
+	}
+
+	/**
+	 * Reverses this array and returns it
+	 *
+	 * @return {@code this}
+	 */
+	public ArrayPP<T> reverse()	{
+		for (int i = 0, l = length(), hl = l / 2; i < hl; i++) {
+			swap(i, -i);
+		}
 		return this;
 	}
 
 	/**
-	 * Removes null values from the ends of the array
+	 * Sets the value in the array at index {@code index} to be {@code val}
 	 *
-	 * @return the resulting array
-	 */
-	public ArrayPP<T> trim()
-	{
-		while (get(0) == null)
-			remove(0);
-		while (get(length() - 1) == null)
-			remove(length() - 1);
-		return this;
-	}
-
-	/**
-	 * Fills the array with the value specified
+	 * @param index the index of the value to be changed
+	 * @param val   the new value of the slot in the array at index {@code index}
 	 *
-	 * @param val the value with which the array will be filled
 	 * @return the resulting array.
+	 * @throws ArrayIndexOutOfBoundsException if the index is out of the boundaries of the array (if {@code index} &lt; 0 or
+	 *                                        {@code index} &gt; {@code length()})
 	 */
-	public ArrayPP<T> fillWith(T val)
-	{
-		for (int i = 0; i < t.length; i++)
-			t[i] = val;
+	public ArrayPP<T> set(int index, T val) throws ArrayIndexOutOfBoundsException	{
+		t[index] = val;
 		return this;
 	}
 
-	/**
-	 * Fills the {@code null} values in the array with the value specified
-	 *
-	 * @param val the value with which the empty spaces in the array will be filled
-	 * @return the resulting array.
-	 */
-	public ArrayPP<T> fillEmptyWith(T val)
-	{
-		for (int i = 0; i < t.length; i++)
-			if (t[i] == null)
-				t[i] = val;
-		return this;
-	}
-
-	/**
-	 * Returns true if the array is full of only {@code null} values or has a size of {@code 0}
-	 *
-	 * @return whether the array is empty
-	 */
-	public boolean isEmpty()
-	{
-		for (T item : t)
-			if (item != null)
-				return false;
-		return true;
-	}
-
-	/**
-	 * Returns true if and only if the array has a size of {@code 0}
-	 *
-	 * @return whether the array is flat
-	 */
-	public boolean isFlat()
-	{
-		return t.length == 0;
+	public ArrayPP<T> setOrCreate(T value, int index)	{
+		while (length() < index) {
+			add((T) null);
+		}
+		return set(index, value);
 	}
 
 	/**
@@ -770,9 +1439,9 @@ public class ArrayPP<T>
 	{
 		int l = length();
 		if (
-			(Math.abs(beginIndex) > l || Math.abs(endIndex) > l)
-			&& beginIndex < 0
-		)
+(Math.abs(beginIndex) > l || Math.abs(endIndex) > l)
+					&& beginIndex < 0
+)
 			beginIndex = l + beginIndex;
 		if (endIndex < 0)
 			endIndex = l + endIndex;
@@ -787,42 +1456,10 @@ public class ArrayPP<T>
 			 i++)
 			ret.add(get(i));
 		/*for (int i = beginIndex; - why are there two?
-			 i <= endIndex && i < l;    Vitrified 2014-08-26 by Kyli Rouge
-			 i++)
-			ret.add(get(i));*/
+		 * i <= endIndex && i < l; Vitrified 2014-08-26 by Kyli Rouge
+		 * i++)
+		 * ret.add(get(i)); */
 		return ret;
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 7;
-		hash = 29 * hash + Arrays.deepHashCode(this.t);
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object o)
-	{
-		return o instanceof ArrayPP && equals((ArrayPP<T>) o);
-	}
-
-	/**
-	 * Returns {@code true} if, and only if, the {@code ArrayPP}s are exactly the same length and the {@code .equals} methods of
-	 * each and every corresponding object in each array return {@code true}
-	 *
-	 * @param a the {@code ArrayPP} which will be subject to comparison to this one
-	 * @return {@code true} if and only if both arrays contain the same objects
-	 */
-	public boolean equals(ArrayPP<T> a)
-	{
-		int l = length();
-		if (l != a.length())
-			return false;
-		for (int i = 0; i < l; i++)
-			if (!get(i).equals(a.get(i)))
-				return false;
-		return true;
 	}
 
 	/**
@@ -840,156 +1477,43 @@ public class ArrayPP<T>
 		return this;
 	}
 
+
 	/**
-	 * Removes ALL items from the array. Analogous to {@code t = new T[0];}.
+	 * Returns a <b>copy</b> of the array at the core of this class
 	 *
-	 * @return {@code this}
+	 * @return a <b>copy</b> of the array at the core of this class
 	 */
-	public ArrayPP<T> clear()
-	{
-		if (t == null)
-			t = (T[]) new Object[0];
-		else if (length() > 0)
-			t = Arrays.copyOf(t, 0);
-		return this;
+	public T[] toArray()	{
+		T[] ret = (T[]) new Object[length()];
+		for (int i = 0, l = ret.length; i < l; i++) {
+			ret[i] = get(i);
+		}
+		return ret;
 	}
 
 	/**
-	 * Returns a clone of this array, but with all non-matching objects removed. If any one object's {@code equals} method
-	 * returns {@code false}, this method will check its {@code toString().contains} method, and then try {@link StringPP}'s
-	 * {@link StringPP#containsIgnoreCase} if that is unsuccessful. If the new array of objects already contains an observed
-	 * object, it will <b>NOT</b> be added (this leads to a possible use for cleaning out duplicates by using an empty array as
-	 * the parameter {@code vals})
+	 * Returns an {@link Enumeration} version of this array. This is done by using an iterator from {@link #iterator()}
 	 *
-	 * @param vals the values to be isolated.
-	 * @return the resulting ArrayPP
-	 */
-	public ArrayPP<T> isolate(T... vals)
-	{
-		ArrayPP<T> temp = new ArrayPP<>();
-		for (T val : vals)
-			for (int j = 0; j < length(); j++)
-				if (t[j].equals(val) || t[j].toString().contains(val.toString()))
-					if (!temp.contains(get(j)))
-						temp.add(get(j));
-		return temp;
-	}
-
-	/**
-	 * Returns a copy of this array, such that<br/>
-	 * <pre>
-	 * ArrayPP&lt;T&gt; one = new ArrayPP(new T[]{itemOfTypeT}), two = one.clone();
-	 * System.out.println(one.equals(two));
-	 * System.out.println(one.getClass() == two.getClass());
-	 * System.out.println(one.clone().getClass() == two.getClass());
-	 * System.out.println(one == two);
-	 * </pre> prints
-	 * <pre>
-	 * true
-	 * true
-	 * true
-	 * false
-	 * </pre>
-	 * <br/>
-	 * <b>This method works best when this array is made up of objects which implement {@link CompleteObject}</b>
+	 * @return an {@link Enumeration} version of this array
 	 *
-	 * @return a new {@code ArrayPP} that contains all the objects within this one
-	 * @see CompleteObject
+	 * @author Kyli Rouge
+	 * @since 2014-12-29 (1.8.7)
+	 * @version 1.0.0
 	 */
-	@Override
-	@SuppressWarnings(
-	{
-		"CloneDeclaresCloneNotSupported", "CloneDoesntCallSuperClone"
-	})
-	public ArrayPP<T> clone()
-	{
-		return new ArrayPP<>((T[]) t);
-	}
-
-	/**
-	 * Returns the last item from this array
-	 *
-	 * @return the resulting {@code ArrayPP}
-	 */
-	public T getLastItem()
-	{
-		if (length() <= 0)
-			throw new IllegalStateException("There are no items in the array, last item not gotten.");
-		return get(length() - 1);
-	}
-
-	/**
-	 * Returns the first item from this array
-	 *
-	 * @return the resulting {@code ArrayPP}
-	 */
-	public T getFirstItem()
-	{
-		return get(0);
-	}
-
-	/**
-	 * Removes the last item from this array
-	 *
-	 * @return the resulting {@code ArrayPP}
-	 */
-	public ArrayPP<T> removeLastItem()
-	{
-		remove(length() - 1);
-		return this;
-	}
-
-	/**
-	 * Removes the first item from this array
-	 *
-	 * @return the resulting {@code ArrayPP}
-	 */
-	public ArrayPP<T> removeFirstItem()
-	{
-		remove(0);
-		return this;
-	}
-
-	@Override
-	public Iterator<T> iterator()
-	{
-		return new java.util.Iterator<T>()
-		{
-			boolean hasRem = false;
-			int pos = 0, rem = 0;
+	public Enumeration<T> toEnumeration()	{
+		return new Enumeration<T>()		{
+			Iterator<T> iterator = iterator();
 
 			@Override
-			public boolean hasNext()
-			{
-				return pos < length();
+			public boolean hasMoreElements()			{
+				return iterator.hasNext();
 			}
 
 			@Override
-			public T next() throws ArrayIndexOutOfBoundsException
-			{
-				hasRem = false;
-				pos++;
-				return get(pos - 1);
-			}
-
-			@Override
-			public void remove()
-			{
-				if (!hasRem)
-					getThis().remove(pos);
-				hasRem = true;
+			public T nextElement()			{
+				return iterator.next();
 			}
 		};
-	}
-
-	/**
-	 * Returns {@code this}
-	 *
-	 * @return {@code this}
-	 */
-	private ArrayPP<T> getThis()
-	{
-		return this;
 	}
 
 	/**
@@ -1000,115 +1524,6 @@ public class ArrayPP<T>
 	public javax.swing.JList<T> toJList()
 	{
 		return new javax.swing.JList<>(t);
-	}
-
-	/**
-	 * Sorts the contents of this array based on the "bubble sort" technique, where each item has meta information about its
-	 * weight
-	 *
-	 * @param strengthMarkers higher strength means the corresponding item becomes higher in the final array
-	 * @return the resulting array
-	 */
-	public ArrayPP<T> bubbleSort(ArrayPP<Double> strengthMarkers)
-	{
-		boolean changed;
-		ArrayPP<Double> mk = strengthMarkers.clone();
-		out:
-		for (int i = 0, j, l = length() - 1; i < l; i++)//Efficiency added Mar 11, 2012 (1.4.14) for Marian
-		{
-			changed = false;
-			for (j = 0; j < l; j++)
-			{
-				if (mk.get(j) < mk.get(j + 1))//Dunno how I got this wrong... Mar 11, 2012 (1.4.14) for Marian
-				{
-					changed = true;
-					mk.swap(j, j + 1);
-					swap(j, j + 1);
-				}
-				if (!changed)
-					break out;// Better apply cream
-			}
-		}
-
-		return this;
-	}
-
-	/**
-	 * Sorts the array using the "bubble sort" algorithm.
-	 *
-	 * @return the resulting array
-	 */
-	@SuppressWarnings("UnnecessaryLabelOnBreakStatement")
-	public ArrayPP<T> bubbleSort()
-	{
-		boolean changed;
-		T get, t1 = null;
-		out:
-		for (int i = 0, l = length() - 1; i < l; i++)//Changed to "l = length() - 1" Mar 11, 2012 (1.4.14) for Marian
-		{
-			changed = false;
-			in:
-			for (int j = 0; j < l; j++)
-				if (((get = get(j)) instanceof Comparable && ((Comparable) get).compareTo(t1 = get(j + 1)) < 0))
-				{
-					changed = true;
-					swap(j, j + 1);//Changed to "j + 1" Mar 11, 2012 (1.4.14) for Marian
-				}
-			if (!changed)
-				break out;// Sound the alarm! D:
-		}
-
-		return this;
-	}
-
-	/**
-	 * Performs a quicksort on the given array.
-	 *
-	 * @param array the array to sort
-	 * @return the sorted array
-	 */
-	public static ArrayPP<Comparable> quicksort(ArrayPP<Comparable> array)
-	{
-		if (array.length() <= 1)
-			return array;  // an array of zero or one elements is already sorted
-		Comparable pivot = 0; //select and remove a pivot value 'pivot' from 'array'
-		ArrayPP<Comparable> less = new ArrayPP<>(), greater = new ArrayPP<>();// create empty lists 'less' and 'greater'
-		for (Comparable x : array)
-			if (x.compareTo(pivot) <= 0)
-				less.add(x); // append 'x' to 'less'
-			else
-				greater.add(x); // append 'x' to 'greater'
-		return quicksort(less).add(pivot).add(quicksort(greater)); // two recursive calls
-	}
-
-	/**
-	 * Performs a quicksort on this array <STRONG>if and only if this array is made up of {@link Comparable}s</STRONG>. If this
-	 * is not an array of {@link Comparable}s, then a {@link IllegalStateException} is returned.<BR/>
-	 * In order to guarantee that this array is full of {@link Comparable} elements, then initialize it as
-	 * {@code ArrayPP<Comparable>}. <STRONG>Using a {@link Comparable64} will also work.</STRONG>
-	 *
-	 * @return {@code this}
-	 * @throws IllegalStateException if {@code this} is not an array of {@link Comparable} elements.
-	 */
-	public ArrayPP<? extends Comparable> quicksort()
-	{
-		try
-		{
-			if (length() <= 1)
-				return (ArrayPP<? extends Comparable>) this;  // an array of zero or one elements is already sorted
-			Comparable pivot = 0; //select and remove a pivot value 'pivot' from 'array'
-			ArrayPP<Comparable> less = new ArrayPP<>(), greater = new ArrayPP<>(); // create empty lists 'less' and 'greater'
-			for (Comparable x : (ArrayPP<? extends Comparable>) this)
-				if (x.compareTo(pivot) <= 0)
-					less.add(x); // append 'x' to 'less'
-				else
-					greater.add(x); // append 'x' to 'greater'
-			return quicksort(less).add(pivot).add(quicksort(greater)); // two recursive calls
-		}
-		catch (ClassCastException e) // If this is not an instance of ArrayPP<Comparable>
-		{
-			throw new IllegalStateException("Tried to sort an array does not contain Comparable elements", e);
-		}
 	}
 
 	/**
@@ -1135,258 +1550,80 @@ public class ArrayPP<T>
 	}
 
 	/**
-	 * Removes every item in the array except the given ones
+	 * Returns this array, starting with the given {@code preceding} character sequence, ending with the given
+	 * {@code succeeding} one, and with the given {@code separator} between each element.
 	 *
-	 * @param keepObjects the items to keep
-	 * @return the resulting array
-	 */
-	public ArrayPP<T> removeAllBut(Object... keepObjects)
-	{
-		for (int i = 0; i < length(); i++)
-			for (Object objToKeep : keepObjects)
-				if (!get(i).equals(objToKeep))
-				{
-					remove(i--);
-					break;
-				}
-		return this;
-	}
-
-	/**
-	 * Removes every item in the array except the ones at the given indices
+	 * @param preceding  the character sequence to start the String with
+	 * @param separator  the character sequence to end the String with
+	 * @param succeeding the character sequence to separate each item with
 	 *
-	 * @param keepIndices the indices of the items to keep
-	 * @return the resulting array
-	 */
-	public ArrayPP<T> removeAllBut(int... keepIndices)
-	{
-		ArrayPP<T> temp = new ArrayPP<>();
-		for (int i : keepIndices)
-			temp.add(get(i));
-		clear().addAll(temp);
-		return this;
-	}
-
-	/**
-	 * Searches the array to see if this exact item is in it. If there is no item in this array for which
-	 * {@code arrayItem == item} returns true, this method returns false
+	 * @return this array, starting with, separated by, and ending with the given sequences
 	 *
-	 * @param item the item to be searched for
-	 * @return {@code true} if and only if there is an item in this array such that {@code arrayItem == item} returns true
+	 * @author Kyli Rouge
+	 * @since 2014-08-20
+	 * @version 1.0.0
+	 * - 2014-08-20 (1.8.0) - Kyli Rouge created this method for more powerful stringification
 	 */
-	public boolean containsExactly(T item)
-	{
-		if (t.length == 0)//a shortcut, to cut down on read time of an empty array
-			return false;
-
-		for (int i = 0; i < length(); i++)
-			if (t[i].equals(item))
-				return true;
-
-		return false;
-	}
-
-	/**
-	 * Searches the array to see if this exact sequence of items is in it. If there is no sequence items in this array that
-	 * exactly matches the given sequence, this method returns {@code false}
-	 *
-	 * @param items the items to be searched for
-	 * @return {@code true} if and only if all these items appear in this array in the same sequence
-	 */
-	public boolean containsSequence(T... items)
-	{
-		if (items.length == 0 || items.length > length())
-			return false;
-		s:
-		for (int i = 0, j = 0, l = length() - items.length; i < l; i++, j = i)
-			if (get(i).equals(items[0]))
-			{
-				for (T item : items)
-				{
-					if (!get(j).equals(item))
-						continue s;
-					j++;
-				}
-				return true;
-			}
-		return false;
-	}
-
-	/**
-	 * Destroys this array. All items are observed. If an individual item is an instance of {@link CompleteObject},
-	 * then its {@link CompleteObject#finalize()} method is called. Whether or not it implements
-	 * {@link CompleteObject}, it is then set to {@code null}. After all items in this array have been set to null, the
-	 * {@link #clear()} method is called
-	 * 
-	 * @return the return value of {@link #clear()}
-	 * @see #clear()
-	 * 
-	 * @version 1.1.0
-	 *		- 1.1.0 (2015-02-09; 1.8.8) - Kyli implemented functionality described in JavaDoc, returned the result of
-	 *		                              {@link #clear()}
-	 */
-	@SuppressWarnings("UseOfSystemOutOrSystemErr")
-	public ArrayPP<T> destroy()
-	{
-		for (int i = 0, l = length(); i < l; i++)
-		{
-			if (t[i] instanceof CompleteObject)
-				try
-				{
-					((CompleteObject) t[i]).finalize();
-				}
-				catch (Throwable ex)
-				{
-					Logger.getLogger(ArrayPP.class.getName()).log(Level.WARNING, "Object at index " + i + " could not be finalized: " + t[i], ex);
-				}
-			t[i] = null;
+	public String toString(CharSequence preceding, CharSequence separator, CharSequence succeeding)	{
+		if (isEmpty()) {
+			return s(preceding) + succeeding;
 		}
-		return clear();
+		StringBuilder sb = new StringBuilder(preceding);
+		for (int i = 0, l = length() - 1; i < l; i++) {
+			sb.append(get(i)).append(separator);
+		}
+		return sb.append(getLastItem()).append(succeeding).toString();
 	}
 
 	/**
-	 * Will return {@code true} if and only if <b>ALL</b> the given conditions are satisfied:
-	 * <ol>
-	 * <li>The given index is non-negative</li>
-	 * <li>The given index is less than the number of objects in this array</li>
-	 * <li>The item at the given index (now knowing that the array contains the given index) is non-null</li>
-	 * </ol>
+	 * Returns a {@code String} representing the data in the array.<br/>
+	 * <i>Equivalent to {@code java.util.Arrays.toString(toArray())}</i>
 	 *
-	 * @param index the index to test
-	 * @return {@code true} if there is an item in this array at the index {@code index}
-	 */
-	public boolean has(int index)
-	{
-		return index >= 0 && index < length() && get(index) != null;
-	}
-
-	/**
-	 * Ensures that the array is at least large enough to contain the given index
+	 * @return a {@code String} representing the data in the array
 	 *
-	 * @param rowIndex
-	 */
-	public void reserve(int rowIndex)
-	{
-		while (length() < rowIndex)
-			add((T) null);
-	}
-
-	/**
-	 * Adds the given item to the array if and only if it is not already in the array
-	 *
-	 * @return {@code this}
-	 * @param item the item to be added
-	 * @see #containsExactly(java.lang.Object)
-	 * @since Feb 26, 2012 (1.4.14) for Marian
-	 */
-	public ArrayPP addWithoutDuplicates(T item)
-	{
-		if (!containsExactly(item))
-			add(item);
-		return this;
-	}
-
-	/**
-	 * IF you have passed {@code true} to {@link #setDestructiveFinalize(boolean)}, this iterates through all the objects in
-	 * this array and performs the following:
-	 * <ol>
-	 * <li>If the object being observed implements {@link CompleteObject}, then its {@link Object#finalize()} method is
-	 * called</li>
-	 * <li>If the object being observed is an instance of {@link Window}, then its {@link Window#dispose()} method is
-	 * called</li>
-	 * <li>It is set to {@code null}</li>
-	 * </ol>
-	 *
-	 * @throws Throwable
-	 * 
-	 * @version 1.2.0
-	 *		- 2014-08-18 (1.2.0) - Kyli Rouge re-added the CompleteObject finalization and added if (destructiveFinalize)
+	 * @see Arrays#toString(Object[])
 	 */
 	@Override
-	@SuppressWarnings({"FinalizeNotProtected", "FinalizeDeclaration"})
-	public void finalize() throws Throwable
-	{
-		if (destructiveFinalize)
-			for (int i = 0, l = length(); i < l; i++)
-			{
-				if (get(i) instanceof CompleteObject)
-					((CompleteObject)get(i)).finalize();
-				if (get(i) instanceof Window)
-					((Window) get(i)).dispose();
-				set(i, null);
-			}
-		super.finalize();
-	}
-	
-	private boolean destructiveFinalize;
-	
-	public void setDestructiveFinalize(boolean newDestructiveFinalize)
-	{
-		destructiveFinalize = newDestructiveFinalize;
-	}
-
-	public ArrayPP<T> setOrCreate(T value, int index)
-	{
-		while (length() < index)
-			add((T) null);
-		return set(index, value);
+	public String toString()	{
+		return java.util.Arrays.toString(t);
 	}
 
 	/**
-	 * For use as a stack, semantically equivalent to {@link #insert(val, 0)}
+	 * Removes null values from the ends of the array
 	 *
-	 * @param val The value to push
-	 * @return {@code this}
-	 * @since 2012/10/01 (1.5.1)
-	 * @see #insert(java.lang.Object, int)
+	 * @return the resulting array
 	 */
-	public ArrayPP<T> push(T val)
-	{
-		return insert(val, 0);
-	}
-
-	/**
-	 * For use as a stack, semantically equivalent to {@link #getFirstItem()}
-	 *
-	 * @return the top value
-	 * @since 2012/10/01 (1.5.1)
-	 * @see #getFirstItem()
-	 */
-	public T peek()
-	{
-		return getFirstItem();
-	}
-
-	/**
-	 * For use as a stack, semantically equivalent to {@link #getFirstItem()} and then {@link #removeFirstItem()}
-	 *
-	 * @return the top value
-	 * @since 2012/10/01 (1.5.1)
-	 * @see #getFirstItem()
-	 * @see #removeFirstItem()
-	 */
-	public T pop()
-	{
-		T ret = getFirstItem();
-		removeFirstItem();
-		return ret;
-	}
-
-	/**
-	 * Reverses this array and returns it
-	 *
-	 * @return {@code this}
-	 */
-	public ArrayPP<T> reverse()
-	{
-		for (int i = 0, l = length(), hl = l / 2; i < hl; i++)
-			swap(i, -i);
+	public ArrayPP<T> trim()	{
+		while (get(0) == null) {
+			remove(0);
+		}
+		while (get(length() - 1) == null) {
+			remove(length() - 1);
+		}
 		return this;
 	}
-	
-	private void writeObject(ObjectOutputStream out) throws IOException
-	{
-		out.writeObject(t);
+
+	/**
+	 * Removes null values from the array
+	 *
+	 * @return the resulting array
+	 */
+	public ArrayPP<T> trimInside()	{
+		for (int i = 0; i < length(); i++) {
+			while (i < length() && get(i) == null) {
+				remove(i);
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * Returns {@code this}
+	 *
+	 * @return {@code this}
+	 */
+	private ArrayPP<T> getThis()	{
+		return this;
 	}
 
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
@@ -1399,203 +1636,8 @@ public class ArrayPP<T>
 		// w wut
 	}
 
-	public Collection<T> makeCollection()
-	{
-		return new Collection<T>()
-		{
-			@Override
-			public int size()
-			{
-				return length();
-			}
-
-			@Override
-			public <T2> T2[] toArray(T2[] a)
-			{
-				if (a == null || size() > a.length)
-					a = (T2[]) new Object[size()];
-				for (int i = 0; i < a.length; i++)
-					try
-					{
-						a[i] = (T2) get(i);
-					}
-					catch (ClassCastException ex)
-					{
-						Logger.getGlobal().log(Level.WARNING, "Could not add item {0} to array; types don''t match.", i);
-//						continue;
-					}
-				return a;
-			}
-
-			@Override
-			public boolean add(T e)
-			{
-//				System.out.println("derp");
-				int before = length();
-				getThis().add(e);
-				return length() == before;
-			}
-
-			@Override
-			public boolean remove(Object o)
-			{
-				int before = length();
-				try
-				{
-					getThis().remove((T) o, false);
-				}
-				catch (ClassCastException ex)
-				{
-					return false;
-				}
-				return length() == before;
-			}
-
-			@Override
-			@SuppressWarnings("element-type-mismatch")
-			public boolean containsAll(Collection<?> c)
-			{
-				for (Object object : c)
-					if (!contains(object))
-						return false;
-				return true;
-			}
-
-			@Override
-			public boolean addAll(Collection<? extends T> c)
-			{
-				if (c == null)
-					return false;
-				int before = length();
-				for (T x : c)
-					add(x);
-				return length() == before;
-			}
-
-			@Override
-			public boolean removeAll(Collection<?> c)
-			{
-				int before = length();
-				for (Object x : c)
-					try
-					{
-						getThis().remove((T) x, true);
-					}
-					catch (ClassCastException ex)
-					{
-//						continue;
-					}
-				return length() == before;
-			}
-
-			@Override
-			public boolean retainAll(Collection<?> c)
-			{
-				int before = length();
-				removeAllBut(c.toArray());
-				return length() == before;
-			}
-
-			@Override
-			public boolean isEmpty()
-			{
-				throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-			}
-
-			@Override
-			public boolean contains(Object o)
-			{
-				throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-			}
-
-			@Override
-			public Iterator<T> iterator()
-			{
-				throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-			}
-
-			@Override
-			public Object[] toArray()
-			{
-				return getThis().toArray();
-			}
-
-			@Override
-			public void clear()
-			{
-				getThis().clear();
-			}
-		};
+	private void writeObject(ObjectOutputStream out) throws IOException	{
+		out.writeObject(t);
 	}
 
-	/**
-	 * Adds the given item to the beginning of the array++
-	 * @param items the items to prepend
-	 * 
-	 * @author Kyli Rouge
-	 * @since 2014-12-28 (1.8.5)
-	 * @version 1.0.0
-	 */
-	public void prepend(T... items)
-	{
-		for (T item : items)
-			insert(item, 0);
-	}
-
-	/**
-	 * Moves the item at the first index to the second index.
-	 * 
-	 * @param oldIndex the index of the item to move
-	 * @param newIndex the index of the item after which it should be placed. See the below illustration for clarification.
-	 * <pre>
-	 * Before:
-	 * +---+-----+---+-----+---+
-	 * | X | old | Y | new | Z |
-	 * +---+-----+---+-----+---+
-	 *         \
-	 *          -------
-	 * After:          \
-	 * +---+---+-----+-----+---+
-	 * | X | Y | new | old | Z |
-	 * +---+---+-----+-----+---+
-	 * </pre>
-	 * 
-	 * @author Kyli ROuge
-	 * @since 2014-12-29 (1.8.7)
-	 * @version 1.0.0
-	 */
-	public void move(int oldIndex, int newIndex)
-	{
-		T old = get(oldIndex);
-		remove(oldIndex);
-		insert(old, newIndex > oldIndex ? newIndex - 1 : newIndex); // -1 because the array is now shorter
-	}
-
-	/**
-	 * Returns an {@link Enumeration} version of this array. This is done by using an iterator from {@link #iterator()}
-	 * @return an {@link Enumeration} version of this array
-	 * 
-	 * @author Kyli Rouge
-	 * @since 2014-12-29 (1.8.7)
-	 * @version 1.0.0
-	 */
-	public Enumeration<T> toEnumeration()
-	{
-		return new Enumeration<T>()
-		{
-			Iterator<T> iterator = iterator();
-			
-			@Override
-			public boolean hasMoreElements()
-			{
-				return iterator.hasNext();
-			}
-
-			@Override
-			public T nextElement()
-			{
-				return iterator.next();
-			}
-		};
-	}
 }

@@ -12,7 +12,17 @@ import java.util.Calendar;
  * convenience class for dealing with numbers
  *
  * @author Supuhstar
- * @version 2.2.1
+ * @version 2.3.0
+ * <pre>
+ *		- 2.3.0 (2015-03-02)
+ *			+ Kyli added:
+ *				{@link #isIntegerOfSize(java.lang.CharSequence, int)}
+ *				{@link #isByte(CharSequence)}
+ *				{@link #isShort(CharSequence)}
+ *				{@link #isShort(CharSequence)}
+ *				{@link #isInt(CharSequence)}
+ *				{@link #isLong(CharSequence)}
+ * </pre>
  */
 @SuppressWarnings({"ConfusingArrayVararg", "PrimitiveArrayArgumentToVariableArgMethod","BroadCatchBlock", "TooBroadCatch"})
 public class Numbers
@@ -691,7 +701,7 @@ public class Numbers
 		String s = Double.toString(d1), o = s(s);//In order to evaluate the digits, let's look at it digit-by-digit.
 		byte b;
 //    double teaser;
-//    
+//
 //    {//Only keep teaserS in memory when it's needed
 //      String teaserS = "1";
 //      while (teaserS.length() < o.length() - 2)
@@ -913,7 +923,7 @@ public class Numbers
 		 * fromIndex == 6
 		 * toIndex == 2
 		 * d == Math.min(6, 2) == 2
-		 * 
+		 *
 		 * Math.pow(2, Math.abs(6 - 2) + 1) - 1 == Math.pow(2, 5) - 1 == 31 == 0000 0000 0001 1111
 		 * (Math.pow(2, Math.abs(6 - 2) + 1) - 1) << d == 31 << 2 == 0000 0000 0001 1111 << 2 == 0000 0000 0111 1100
 		 * value & ((Math.pow(2, Math.abs(6 - 2) + 1) - 1) << d) == 10662 & 0000 0000 0111 1100 == 0010 1001 1010 0110 & 0000 0000 0111 1100 == 0000 0000 0010 0100
@@ -926,7 +936,7 @@ public class Numbers
 		 * fromIndex == 3
 		 * toIndex == 8
 		 * d == Math.min(3, 8) == 3
-		 * 
+		 *
 		 * Math.pow(2, Math.abs(3 - 8) + 1) - 1 == Math.pow(3, 6) - 1 == 31 == 0000 0000 0001 1111
 		 * (Math.pow(2, Math.abs(3 - 8) + 1) - 1) << d == 31 << 3 == 0000 0000 0001 1111 << 3 == 0000 0000 1111 1000
 		 * value & ((Math.pow(2, Math.abs(3 - 8) + 1) - 1) << d) == 10662 & 0000 0000 1111 1000 == 0010 1001 1010 0110 & 0000 0000 1111 1000 == 0000 0000 1010 0000
@@ -1227,7 +1237,7 @@ public class Numbers
 
 	/**
 	 * Returns the given subset of items in the list. This uses the PHP-style bounding model
-	 * 
+	 *
 	 * @param start
 	 * If {@code start} is non-negative, the returned range will start at the {@code start}'th position, counting from zero. For instance, in the array {@code char[]{'a', 'b', 'c', 'd', 'e', 'f'}}, the character at position {@code 0} is {@code 'a'}, the character at position {@code 2} is {@code 'c'}, and so forth.<br/>
 	 * If {@code start} is negative, the returned range will start at the {@code start}'th position from the end.<BR/>
@@ -1241,9 +1251,9 @@ public class Numbers
 	 * @param size the number of items in the list
 	 * @return the {@link Range} from {@code low} to {@code high}, as bounded like PHP
 	 * @throws IndexOutOfBoundsException If {@code size} is less than or equal to {@code start}
-	 * 
+	 *
 	 * @see Any PHP functions such as http://www.php.net/manual/en/function.array-slice.php
-	 * 
+	 *
 	 * @since 2013-12-22 (2.2.0)
 	 * @version 1.0.0
 	 * @author Kyli Rouge of Blue Husky Studios
@@ -1255,7 +1265,7 @@ public class Numbers
 
 	/**
 	 * Returns the given subset of items in the list. This uses the PHP-style bounding model
-	 * 
+	 *
 	 * @param start
 	 * If {@code start} is non-negative, the returned range will start at the {@code start}'th position, counting from zero. For instance, in the array {@code char[]{'a', 'b', 'c', 'd', 'e', 'f'}}, the character at position {@code 0} is {@code 'a'}, the character at position {@code 2} is {@code 'c'}, and so forth.<br/>
 	 * If {@code start} is negative, the returned range will start at the {@code start}'th position from the end.<BR/>
@@ -1265,7 +1275,7 @@ public class Numbers
 	 * 	asPHPRange(6, -2);    // returns (4, 6)
 	 * 	asPHPRange(6, -3, 1); // returns (3, 4)
 	 * </PRE>
-	 * 
+	 *
 	 * @param length
 	 * If {@code length} is given and is <STRONG>positive</STRONG>, the range returned will contain at most {@code length} values beginning from {@code start} (depending on {@code size}).<BR/>
 	 * If {@code length} is given and is <STRONG>negative</STRONG>, then that many values will be omitted from the end (after the {@code start} position has been calculated when a {@code start} is negative). If {@code start} denotes the position of this truncation or beyond, {@code null} will be returned.<BR/>
@@ -1282,9 +1292,9 @@ public class Numbers
 	 * @param size the number of items in the list
 	 * @return the {@link Range} from {@code low} to {@code high}, as bounded like PHP
 	 * @throws IndexOutOfBoundsException If {@code size} is less than or equal to {@code start}
-	 * 
+	 *
 	 * @see Any PHP functions such as http://www.php.net/manual/en/function.array-slice.php
-	 * 
+	 *
 	 * @since 2013-12-22 (2.2.0)
 	 * @version 1.0.0
 	 * @author Kyli Rouge of Blue Husky Studios
@@ -1297,7 +1307,7 @@ public class Numbers
 			start += size;
 		if (start < 0)
 			start = 0;
-		
+
 		if (length < 0)
 			length += size - start;
 		if (length >= size)
@@ -1385,7 +1395,7 @@ public class Numbers
 
 		//<editor-fold defaultstate="collapsed" desc="lists">
 		final double[] vals = new double[]{-2, 8, 3, -7, 5, 0.0, -0.0, 10, 5, 1, 2};
-		
+
 		System.out.println("==== Evaluating lists ====");
 		System.out.println("List which is being evaluated: " + Arrays.toString(vals));
 		System.out.println("=== sum ===");
@@ -1397,7 +1407,7 @@ public class Numbers
 		System.out.println("=== getDuplicates ===");
 		System.out.println(Arrays.toString(getDuplicates(vals)));
 		//</editor-fold>
-		
+
 		//<editor-fold defaultstate="collapsed" desc="asPHPRange">
 		{
 			System.out.println("==== asPHPRange ====");
@@ -1421,7 +1431,7 @@ public class Numbers
 	 * @param max the maximum value
 	 * @return {@code min} if {@code value} is lower than it, else {@code max} if {@code value} is higher than that, else
 	 * {@code value}
-	 * 
+	 *
 	 * @since 2014-12-18 (2.2.1) for bht.test.tools.util.Half}
 	 * @author Kyli Rouge
 	 * @version 1.0.0
@@ -1444,7 +1454,7 @@ public class Numbers
 	 * @param max the maximum value
 	 * @return {@code min} if {@code value} is lower than it, else {@code max} if {@code value} is higher than that, else
 	 * {@code value}
-	 * 
+	 *
 	 * @since 2014-12-18 (2.2.1) for bht.test.tools.util.Half
 	 * @author Kyli Rouge
 	 * @version 1.0.0
@@ -1459,6 +1469,48 @@ public class Numbers
 					: value
 		;
 	}
+
+	public static boolean isIntegerOfSize(CharSequence text, int bitCount)
+	{
+		if (text == null)
+			return false;
+		String textString = text.toString();
+		long longValue;
+		try
+		{
+			longValue = Long.valueOf(textString);
+		}
+		catch (NumberFormatException numberFormatException)
+		{
+			return false;
+		}
+		return (longValue & (1 << bitCount - 1)) == longValue;
+	}
+
+	public static boolean isByte(CharSequence text)
+	{
+		return isIntegerOfSize(text, Byte.SIZE);
+	}
+
+	public static boolean isShort(CharSequence text)
+	{
+		return isIntegerOfSize(text, Short.SIZE);
+	}
+
+	public static boolean isInt(CharSequence text)
+	{
+		return isIntegerOfSize(text, Integer.SIZE);
+	}
+
+	public static boolean isLong(CharSequence text)
+	{
+		return isIntegerOfSize(text, Long.SIZE);
+	}
+
+	/*public static boolean isDouble(CharSequence text)
+	{
+		return ;
+	}*/
 
 	public static class IrrationalRatioException extends Exception
 	{

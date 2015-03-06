@@ -1,9 +1,8 @@
 package bht.tools.util.search;
 
 import bht.tools.util.ArrayPP;
-import bht.tools.util.search.Needle.Keyword;
 import bht.tools.util.StringPP;
-import java.util.Collection;
+import bht.tools.util.search.Needle.Keyword;
 
 /**
  *
