@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 /**
- * Numbers, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012. License is default.<hr/> A
- * convenience class for dealing with numbers
+ * Numbers, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS<hr/>
+ * A convenience class for dealing with numbers
  *
  * @author Supuhstar
  * @version 2.3.0
