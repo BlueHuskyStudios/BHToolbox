@@ -8,6 +8,8 @@ import java.util.function.Supplier;
 
 /**
  * Lazily instantiates an object when and only when it's needed. Also allows the object to be temporarily nullified.
+ * 
+ * @param <T> The type of object this will maintain.
  *
  * @author Ben Leggiero of Blue Husky Studios
  * @version 1.0.0
