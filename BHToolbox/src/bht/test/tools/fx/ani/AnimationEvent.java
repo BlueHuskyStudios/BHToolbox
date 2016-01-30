@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.util.EventObject;
 
 /**
- * AnimationEvent, made for BHToolbox, is copyright Blue Husky Programming ©2013 GPLv3<HR/>
+ * AnimationEvent, made for BHToolbox, is copyright Blue Husky Programming ©2013 BH-1-PS<HR/>
  *
  * @author Supuhstar of Blue Husky Programming
  * @version 1.0.0

@@ -1,7 +1,7 @@
 package bht.tools.util.dynamics;
 
 /**
- * ObjectFactory, made for BHToolbox, is copyright Blue Husky Programming ©2015 GPLv3 <hr/>
+ * ObjectFactory, made for BHToolbox, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
  * 
  * Allows for dynamic creation of objects on-the-fly, so instead of passing a set value, you can have that value created later
  * 

@@ -1,7 +1,7 @@
 package bht.tools.misc;
 
 /**
- * Factory, made for BHToolbox, is copyright Blue Husky Programming ©2015 GPLv3 <hr/>
+ * Factory, made for BHToolbox, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
  *
  * @param <T> The type of object that this factory makes
  *

@@ -3,7 +3,7 @@
     <type>org.netbeans.modules.java.j2seproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
-            <name>BHToolbox</name>
+            <name>BHToolbox 2</name>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>
@@ -13,6 +13,7 @@
         </data>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
             <word>finalziation</word>
+            <word>iff</word>
             <word>Lamda</word>
             <word>ordinals</word>
         </spellchecker-wordlist>

@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
- * ObjectSaver, made for Saveable Components, is copyright Blue Husky Programming ©2014 GPLv3<HR/>
+ * ObjectSaver, made for Saveable Components, is copyright Blue Husky Programming ©2014 BH-1-PS<HR/>
  * A way to very easily save and load objects
  * 
  * @author Kyli of Blue Husky Programming

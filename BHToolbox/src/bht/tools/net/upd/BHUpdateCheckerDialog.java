@@ -22,7 +22,7 @@ import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
 
 /**
- * BHUpdateCheckerDialog, made for BHToolbox, is copyright Blue Husky Programming ©2014 GPLv3 <hr/>
+ * BHUpdateCheckerDialog, made for BHToolbox, is copyright Blue Husky Programming ©2014 BH-1-PS <hr/>
  * 
  * @author Kyli of Blue Husky Programming
  * @version 1.0.0

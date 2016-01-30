@@ -3,7 +3,7 @@ package bht.tools.util.math;
 import java.awt.geom.Point2D;
 
 /**
- * Vector2D, made for BLISS, is copyright Blue Husky Programming ©2013 GPLv3<HR/>
+ * Vector2D, made for BLISS, is copyright Blue Husky Programming ©2013 BH-1-PS<HR/>
  * Allows for easy vector math
  *
  * @author Supuhstar of Blue Husky Programming

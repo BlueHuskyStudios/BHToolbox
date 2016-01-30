@@ -1,18 +1,27 @@
 package org.bh.tools.util;
 
-import static bht.tools.util.Do.i;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Objects;
 import java.util.logging.Logger;
+
+import static bht.tools.util.Do.i;
+
 import org.bh.tools.math.Averager;
+
+import static org.bh.tools.util.Do.S.as;
+import static org.bh.tools.util.ImmutableArrayPP.ArrayPosition.START;
+import static org.bh.tools.util.ImmutableArrayPP.SearchResults.NOT_FOUND;
 
 
 
 /**
- * ImmutableArrayPP, made for BHToolbox, is copyright Blue Husky Programming ©2015 GPLv3 <hr/>
- * Would have been called "ImmutableArray++" if "+" were an acceptable character. This class is made to give enhanced features
- * to arrays, such as basic search functions and comparability, along with the standard accessing methods. The internal
- * structure is an array, so as to make the interactions as memory-efficient as possible.<br/>
+ * ImmutableArrayPP, made for BHToolbox, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
+ * Would have been called "{@code ImmutableArray++}" if "{@code +}" were an acceptable character. This class is made to
+ * give enhanced features to arrays, such as basic search functions and comparability, along with the standard accessing
+ * methods. The internal structure is an array, so as to make the interactions as memory-efficient as possible.<br/>
  * <br/>
  * Many array-management methods return {@code this}, so as to allow daisy-chaining of commands, like you can with
  * {@code String}s.<br/>
@@ -21,13 +30,13 @@ import org.bh.tools.math.Averager;
  * {@code Array++} of {@code String}s:
  * {@code final ImmutableArrayPP<String> S = new ImmutableArrayPP<String>("Won", "too", "tree!");}
  *
- * @param <T> The type of array with which this object will be dealing.
+ * @param <T> The type of object to store
  * <h3>Examples:</h3>
  * <ul>
  * <li>{@code ImmutableArrayPP<String> strings = new ImmutableArrayPP<>();}
  * <ul><li>A new ImmutableArray++ of {@code String}s. Analogous to {@code final String[] strings;}</li></ul>
  * </li>
- * <li>{@code ImmutableArrayPP<String> strings = new ImmutableArrayPP<String>(args);}
+ * <li>{@code ImmutableArrayPP<String> strings = new ImmutableArrayPP<>(args);}
  * <ul><li>A clone of an array of {@code String}s. Analogous to {@code final String[] strings = args;}</li></ul>
  * </li>
  * <li>{@code String[] newArgs = new ImmutableArrayPP<String>(args).toArray();}
@@ -41,7 +50,8 @@ import org.bh.tools.math.Averager;
  * @author Kyli of Blue Husky Programming
  * @version 2.0.0
  * <pre>
- *		- 2015-03-03 (2.0.0) - Kyli created this completely new ArrayPP, as an immutable rewrite of the old version.
+ *		~ 2015-08-30 (2.1.0) - Kyli renamed {@code ContainsBehavior} to {@code SearchBehavior}.
+ *		+ 2015-03-03 (2.0.0) - Kyli created this completely new ArrayPP, as an immutable rewrite of {@link bht.tools.util.ArrayPP}.
  * </pre>
  *
  * @since 2015-03-03
@@ -50,17 +60,39 @@ public class ImmutableArrayPP<T>
 		implements Comparable<ImmutableArrayPP<?>>,
 				   Iterable<T>,
 				   Serializable {
-	private T[] array;
+	public static final long serialVersionUID = 02_000_0000L;
 
-	@Override
+	/**
+	 * The internal array that holds all the data for this Array++
+	 */
+	@SuppressWarnings("ProtectedField")
+	protected T[] array;
+
+	@SafeVarargs
+	public ImmutableArrayPP(T... basis) {
+		array = Arrays.copyOf(basis, basis.length);
+	}
+
+	/**
+	 * Creates a new, empty, immutable array++ of the given size.
+	 *
+	 * @param initSize    The size of the new, empty, immutable array++
+	 * @param emptySample An empty array to use to guarantee the new, empty, immutable array++ is of the right type. If
+	 *                    this is not empty, its contents will be at the beginning of the new, immutable array++.
+	 */
+	public ImmutableArrayPP(int initSize, T[] emptySample) {
+		array = Arrays.copyOf(emptySample, initSize);
+	}
+
 	@SuppressWarnings("unchecked")
+	@Override
 	public int compareTo(ImmutableArrayPP<?> other) {
 		if (array instanceof Comparable[]
 					&& other.toArray() instanceof Comparable[]) {
 			Averager avg = new Averager();
 			if (other.length() > array.length) {
 				for (int i = 0; i < Math.min(array.length, other.length()); i++) {
-					avg.addToAverage(((Comparable) other.get(i)).compareTo(array[i]));
+					avg.average(((Comparable) other.get(i)).compareTo(array[i]));
 				}
 			}
 			return i(avg);
@@ -68,6 +100,15 @@ public class ImmutableArrayPP<T>
 		return array.length - other.length();
 	}
 
+	/**
+	 * Returns the item at the given position
+	 *
+	 * @param index the index of the item to get
+	 *
+	 * @return the item you wanted
+	 *
+	 * @throws ArrayIndexOutOfBoundsException if the given index is lower than 0 or greater than {@link #length()}
+	 */
 	public T get(int index) {
 		return array[index];
 	}
@@ -94,8 +135,32 @@ public class ImmutableArrayPP<T>
 		};
 	}
 
+	/**
+	 * Returns the length of the array
+	 *
+	 * @return the length of the array
+	 */
 	public int length() {
 		return array.length;
+	}
+
+	/**
+	 * Indicates whether this array has a length of {@code 0}
+	 *
+	 * @return {@code true} iff this array has a length of {@code 0}
+	 */
+	public boolean isEmpty() {
+		return array.length == 0;
+	}
+
+	/**
+	 * Indicates whether this array contains nothing but {@code null}s
+	 *
+	 * @return {@code true} iff this array contains nothing but {@code null}s
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean isFlat() {
+		return contains(SearchBehavior.SOLELY, (T) null);
 	}
 
 	/**
@@ -116,4 +181,235 @@ public class ImmutableArrayPP<T>
 			return array;
 		}
 	}
+
+	/**
+	 * Gets the indices of all occurrences where {@code needle.equals(occurrence)}. If {@code needle} is {@code null},
+	 * {@link #indicesOfNulls()} is called.
+	 *
+	 * @param needle the item to search for
+	 *
+	 * @return the indices where {@code needle} occurs
+	 */
+	public int[] indicesOf(T needle) {
+		if (needle == null) {
+			return indicesOfNulls();
+		}
+		LinkedList<Integer> indices = new LinkedList<>();
+		for (int i = 0, l = length(); i < l; i++) {
+			if (needle.equals(get(i))) {
+				indices.add(i);
+			}
+		}
+		Integer[] result = indices.toArray(new Integer[0]);
+		int[] ret = new int[result.length];
+		for (int i = 0; i < ret.length; i++) {
+			ret[i] = result[i];
+		}
+		return ret;
+	}
+
+	/**
+	 * Returns the indices of all {@code null} values in this array.
+	 *
+	 * @return the indices of all {@code null{ values in this array.
+	 */
+	public int[] indicesOfNulls() {
+		LinkedList<Integer> indices = new LinkedList<>();
+		for (int i = 0, l = length(); i < l; i++) {
+			if (get(i) == null) {
+				indices.add(i);
+			}
+		}
+		Integer[] result = indices.toArray(new Integer[0]);
+		int[] ret = new int[result.length];
+		for (int i = 0; i < ret.length; i++) {
+			ret[i] = result[i];
+		}
+		return ret;
+	}
+
+	/**
+	 * Returns the index of the given needle near the given position in the array. If the given needle can't be found
+	 * at all, {@link SearchResults#NOT_FOUND NOT_FOUND}.{@link SearchResults#INTVAL} is returned.
+	 *
+	 * @param near   the position to start searching from
+	 * @param needle the needle to search from
+	 *
+	 * @return the index of the given needle near the given position, or {@code -1} if none can be found.
+	 */
+	public int indexOf(ArrayPosition near, T needle) {
+		if (needle == null) {
+			return indexOfNull(near);
+		}
+		switch (near) {
+			case START:
+				for (int i = 0, l = length(); i < l; i++) {
+					if (needle.equals(get(i))) {
+						return i;
+					}
+				}
+				break;
+			case END:
+				for (int i = length(); i > 0; i--) {
+					if (needle.equals(get(i))) {
+						return i;
+					}
+				}
+		}
+		return NOT_FOUND.INTVAL;
+	}
+
+
+	/**
+	 * Returns the index of the first {@code null} value near the given position in the array. If no {@code null} can
+	 * be found at all, {@code -1} is returned
+	 *
+	 * @param near the position to start searching from
+	 *
+	 * @return the index of the first null near the given position, or {@code -1} if none can be found.
+	 */
+	private int indexOfNull(ArrayPosition near) {
+		switch (near) {
+			case START:
+				for (int i = 0, l = length(); i < l; i++) {
+					if (get(i) == null) {
+						return i;
+					}
+				}
+				break;
+			case END:
+				for (int i = length(); i > 0; i--) {
+					if (get(i) == null) {
+						return i;
+					}
+				}
+		}
+		return NOT_FOUND.INTVAL;
+	}
+
+	/**
+	 * Determines if the given {@code needle} exists within this array
+	 *
+	 * @param needle the needle to search for
+	 *
+	 * @return {@code true} iff the given {@code needle} was found.
+	 */
+	public boolean contains(T needle) {
+		return indexOf(START, needle) >= 0;
+	}
+
+	/**
+	 * Determines if the given {@code needles} exist within this array, based on the {@code behavior} given. When using
+	 * ANY and SOLELY behavior, this is more efficient when {@code needles.length < this.length()}. The opposite is
+	 * true with ALL behavior.
+	 *
+	 * @param behavior the behavior of this search
+	 * @param needles  the needles to search for
+	 *
+	 * @return {@code true} iff the given needles are found with the given behavior
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean contains(SearchBehavior behavior, T... needles) {
+		switch (behavior) {
+			case ANY:
+				// TODO: If this array is smaller than the needle list, make the outer loop the needles
+				for (int i = 0, l = length(); i < l; i++) { // let's hope this array has more items than are being searched for
+					T t = get(i);
+					for (T needle : needles) {
+						if (Objects.equals(needle, t)) {
+							return true;
+						}
+					}
+				}
+				break;
+			case ALL:
+				needleLooper:
+				for (T needle : needles) { // for all needles...
+					for (int i = 0, l = length(); i < l; i++) { // compare against all items in this array
+						T t = get(i);
+						if (Objects.equals(needle, t)) { // if there is an item in the array that matches this needle
+							continue needleLooper; // start back up top
+						}
+					}
+					return false; // if that if statement was never entered, we never found it.
+				}
+				break;
+			case SOLELY:
+				for (int i = 0, l = length(); i < l; i++) {
+					T t = get(i);
+					for (T needle : needles) {
+						if (Objects.equals(needle, t)) {
+							return true;
+						}
+					}
+				}
+				break;
+		}
+		return false;
+	}
+
+	@Override
+	public String toString() {
+		return as(this);
+	}
+
+
+
+	/**
+	 * Basic, universal positions in an array
+	 */
+	public static enum ArrayPosition {
+		/**
+		 * Represents the beginning of the array (index {@code 0})
+		 */
+		START,
+		/**
+		 * Represents the end of the array (index {@code length})
+		 */
+		END;
+	}
+
+
+
+	/**
+	 * Indicates what kind of behavior to exhibit when searching.
+	 */
+	public static enum SearchBehavior {
+		/**
+		 * Indicates that search methods should stop after the first find
+		 */
+		ANY,
+		/**
+		 * Indicates that search methods should guarantee that ALL given items are in the array
+		 */
+		ALL,
+		/**
+		 * Indicates that search methods should guarantee that the the array consists SOLELY of the given items
+		 */
+		SOLELY;
+	}
+
+
+
+	/**
+	 * Indicates a specific, yet non-typical search result, wherein a specific result cannot be returned.
+	 */
+	public static enum SearchResults {
+
+		/**
+		 * Indicates that the value which was searched for was not found. This has an {@link #INTVAL integer value} of
+		 * {@code -1}
+		 */
+		NOT_FOUND(-1);
+
+		/**
+		 * The integer value of this search result.
+		 */
+		public final int INTVAL;
+
+		private SearchResults(int intVal) {
+			INTVAL = intVal;
+		}
+	}
+
 }

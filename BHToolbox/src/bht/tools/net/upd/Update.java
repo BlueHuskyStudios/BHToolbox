@@ -3,7 +3,7 @@ package bht.tools.net.upd;
 import java.net.URI;
 
 /**
- * Update, made for BHToolbox, is copyright Blue Husky Programming ©2014 GPLv3<HR/>
+ * Update, made for BHToolbox, is copyright Blue Husky Programming ©2014 BH-1-PS<HR/>
  * 
  * Represents an update/
  * 

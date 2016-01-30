@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 
 /**
- * Version, made for BHToolbox, is copyright Blue Husky Programming ©2014 GPLv3<HR/>
+ * Version, made for BHToolbox, is copyright Blue Husky Programming ©2014 BH-1-PS<HR/>
  * 
  * @author Kyli of Blue Husky Programming
  * @version 1.1.0
