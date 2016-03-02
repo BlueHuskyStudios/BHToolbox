@@ -1,21 +1,25 @@
 package org.bh.tools.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import static org.bh.tools.util.Do.A.a;
 
-
-
+/**
+ * A collection of tiny methods with tiny names that {@link Do} tiny things
+ *
+ * @author Kyli Rouge of Blue Husky Studios
+ */
 public class Do {
+
     private Do() {
     }
-
-
 
     /**
      * An organizational subclass grouping string-related operations
      */
     public static class S {
+
         private S() {
         }
 
@@ -46,8 +50,7 @@ public class Do {
 
         /**
          * Returns the String value of the given Object, with special parsing if it's an array. In such a case, the
-         * String
-         * returned is in the following format: {@code [value1, value2, value3]}
+         * String returned is in the following format: {@code [value1, value2, value3]}
          *
          * @param o the Object to convert to a String with conditional formatting
          *
@@ -69,17 +72,17 @@ public class Do {
         }
     }
 
-
-
     /**
      * An organizational subclass grouping array-related operations
      */
     public static class A {
+
         /**
          * Returns an array version of the given object.
          * <ul>
          * <li>If {@code o} is {@code null}, {@code null} is returned.
          * <li>Else, if {@code o} is an array, it is returned.
+         * <li>Else, if {@code o} is a {@link Collection}, its {@link Collection#toArray() toArray()} result is returned.
          * <li>Else, if {@code o} is an {@link Iterable}, its contents are put into an array, and that is returned.
          * <li>Else, an array is returned whose single value is {@code o}.
          * </ul>
@@ -91,19 +94,19 @@ public class Do {
         public static Object[] a(Object o) {
             if (o == null) {
                 return null;
-            }
-            else if (o.getClass().isArray()) {
+            } else if (o.getClass().isArray()) {
                 return (Object[]) o;
-            }
-            else if (o instanceof Iterable) {
+            } else if (o instanceof Collection) {
+                Collection c = (Collection)o;
+                return c.toArray();
+            } else if (o instanceof Iterable) {
                 Iterable i = (Iterable) o;
                 ArrayList<Object> ret = new ArrayList<>();
                 for (Object object : i) {
                     ret.add(object);
                 }
                 return ret.toArray();
-            }
-            else {
+            } else {
                 return new Object[]{o};
             }
         }

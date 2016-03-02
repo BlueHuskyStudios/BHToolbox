@@ -21,6 +21,8 @@ import static org.bh.tools.util.ImmutableArrayPP.SearchBehavior.SOLELY;
  * many enhancements and conveniences.
  *
  * @param <T> The type of item to store
+ * 
+ * @see ImmutableArrayPP
  *
  * @author Kyli of Blue Husky Programming
  * @version 2.1.0
@@ -37,7 +39,7 @@ import static org.bh.tools.util.ImmutableArrayPP.SearchBehavior.SOLELY;
  */
 public class ArrayPP<T> extends ImmutableArrayPP<T> {
 	@SuppressWarnings("FieldNameHidesFieldInSuperclass")
-	public static final long serialVersionUID = 02_000_0000L;
+	public static final long serialVersionUID = 02_001_0000L;
 
 	@SafeVarargs
 	public ArrayPP(T... basis) {
@@ -99,7 +101,7 @@ public class ArrayPP<T> extends ImmutableArrayPP<T> {
 					}
 					catch (Throwable ex) {
 						Logger.getLogger(ArrayPP.class.getName()).log(Level.WARNING, "Could not destroy item " + i
-																							 + ": " + t, ex);
+						                                                             + ": " + t, ex);
 					}
 				}
 			}
@@ -119,8 +121,8 @@ public class ArrayPP<T> extends ImmutableArrayPP<T> {
 
 	public ArrayPP<T> increaseSize(int thisManyMoreSlots) {
 		System.arraycopy(array, 0,
-						 array, 0,
-						 array.length + thisManyMoreSlots);
+				array, 0,
+				array.length + thisManyMoreSlots);
 		return this;
 	}
 
@@ -271,8 +273,8 @@ public class ArrayPP<T> extends ImmutableArrayPP<T> {
 			endIndex = oldStart;
 		}
 		System.arraycopy(array, startIndex, // start writing at startIndex
-						 array, endIndex + 1, // start writing with the object after endIndex
-						 array.length - (endIndex - startIndex + 1)); // shorten the array appropriately
+				array, endIndex + 1, // start writing with the object after endIndex
+				array.length - (endIndex - startIndex + 1)); // shorten the array appropriately
 		return this;
 	}
 
