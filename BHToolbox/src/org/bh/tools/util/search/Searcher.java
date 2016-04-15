@@ -1,6 +1,6 @@
 package org.bh.tools.util.search;
 
-import org.bh.tools.util.ArrayPP;
+import org.bh.tools.util.MutableArrayPP;
 
 
 
@@ -21,12 +21,12 @@ import org.bh.tools.util.ArrayPP;
 @SuppressWarnings("unchecked")
 public class Searcher<ArgType, ResultType, EngineType extends SearchEngine<ArgType, ResultType>> {
     private EngineType engine;
-    private ArrayPP<SearchListener<ArgType, ResultType>> listeners;
-    private ArrayPP<ArgType> args;
+    private MutableArrayPP<SearchListener<ArgType, ResultType>> listeners;
+    private MutableArrayPP<ArgType> args;
 
     public Searcher(EngineType engine, SearchListener<ArgType, ResultType>... initListeners) {
         this.engine = engine;
-        listeners = new ArrayPP<>(initListeners);
+        listeners = new MutableArrayPP<>(initListeners);
     }
 
     public Searcher<ArgType, ResultType, EngineType> addArgument(ArgType argument) {
