@@ -12,15 +12,12 @@ import static bht.tools.util.Do.s;
 
 import java.awt.Dimension;
 
-
-
 /**
  * Numbers, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012. License is default.<hr/> A
  * convenience class for dealing with numbers
  *
  * @author Supuhstar
- * @version 2.3.0
- * <pre>
+ * @version 2.3.0  <pre>
  *		- 2.3.0 (2015-03-02)
  *			+ Kyli added:
  *				{@link #isIntegerOfSize(java.lang.CharSequence, int)}
@@ -32,21 +29,20 @@ import java.awt.Dimension;
  * </pre>
  */
 @SuppressWarnings({"ConfusingArrayVararg", "PrimitiveArrayArgumentToVariableArgMethod", "BroadCatchBlock",
-                   "TooBroadCatch"})
+    "TooBroadCatch"})
 public class Numbers {
+
     //<editor-fold defaultstate="collapsed" desc="Behavior Flags">
     /**
      * Used for {@link #max(java.awt.Dimension, java.awt.Dimension, byte)} and {@link #min(java.awt.Dimension,
      * java.awt.Dimension, byte)} to signify that the returned dimension should have a larger/smaller overall perimeter
-     * than the
-     * other.
+     * than the other.
      */
     public static final byte BEHAVIOR_PERIMETER = 0b0000;
     /**
      * Used for {@link #max(java.awt.Dimension, java.awt.Dimension, byte)} and {@link #min(java.awt.Dimension,
      * java.awt.Dimension, byte)} to signify that the returned dimension should have a larger/smaller overall area than
-     * the
-     * other.
+     * the other.
      */
     public static final byte BEHAVIOR_AREA = 0b0001;
     /**
@@ -79,8 +75,7 @@ public class Numbers {
      * <LI>{@link #BEHAVIOR_HEIGHT}</LI>
      * <LI>{@link #BEHAVIOR_WIDTH}</LI>
      * <LI>{@link #BEHAVIOR_FIT} (or {@code Numbers.BEHAVIOR_HEIGHT | Numbers.BEHAVIOR_WIDTH}) (returns the dimension
-     * which is
-     * either taller or wider)</LI>
+     * which is either taller or wider)</LI>
      * </UL>
      *
      * @return the larger dimension
@@ -118,8 +113,7 @@ public class Numbers {
      * <LI>{@link #BEHAVIOR_HEIGHT}</LI>
      * <LI>{@link #BEHAVIOR_WIDTH}</LI>
      * <LI>{@link #BEHAVIOR_FIT} (or {@code Numbers.BEHAVIOR_HEIGHT | Numbers.BEHAVIOR_WIDTH}) (returns the dimension
-     * which is
-     * either shorter or thinner)</LI>
+     * which is either shorter or thinner)</LI>
      * </UL>
      *
      * @return the smaller dimension
@@ -149,9 +143,9 @@ public class Numbers {
      * {@code "1st"}</LI> <LI>{@code toRank(2)} returns {@code "2nd"}</LI> <LI>{@code toRank(3)} returns
      * {@code "3rd"}</LI>
      * <LI>{@code toRank(4)} returns {@code "4th"}</LI> <LI>{@code toRank(0)} returns {@code "0th"}</LI>
-     * <LI>{@code toRank(21)}
-     * returns {@code "21st"}</LI> <LI>{@code toRank(42)} returns {@code "42nd"}</LI> <LI>{@code toRank(11)} returns
-     * {@code "11st"} (it's not perfect, blame the English language for not calling it "Tenty-first")</LI> </UL>
+     * <LI>{@code toRank(21)} returns {@code "21st"}</LI> <LI>{@code toRank(42)} returns {@code "42nd"}</LI>
+     * <LI>{@code toRank(11)} returns {@code "11st"} (it's not perfect, blame the English language for not calling it
+     * "Tenty-first")</LI> </UL>
      *
      * @param number the number to become a rank
      *
@@ -164,8 +158,7 @@ public class Numbers {
 
     /**
      * Calculates the ratio between the two given numbers. This uses {@link #getGCDRec(double, double)}. If that fails,
-     * it uses
-     * {@link #getGCDItr(double, double)}.
+     * it uses {@link #getGCDItr(double, double)}.
      *
      * @param d1 The first number. Can be any value.
      * @param d2 The second number. Can be any value.
@@ -194,13 +187,11 @@ public class Numbers {
 //      l1 = (long)teaseUp(d1); l2 = (long)teaseUp(d2); //my gut tells me to leave this uncommented, but it's causing this method to return zeroes.
             double gcd = getGCDRec(l1, l2);
             return new Ratio(((long) (d1 / gcd)), ((long) (d2 / gcd)));
-        }
-        catch (StackOverflowError er) {
+        } catch (StackOverflowError er) {
             try {
                 double gcd = getGCDItr(l1, l2);
                 return new Ratio(((long) (d1 / gcd)), ((long) (d2 / gcd)));
-            }
-            catch (Throwable t) {
+            } catch (Throwable t) {
                 throw new IrrationalRatioException("Irrational ratio: " + l1 + " to " + l2);
             }
         }
@@ -231,8 +222,7 @@ public class Numbers {
                 return getGCDRec(i1 - i2, i2);
             }
             return getGCDRec(i1, i2 - i1);
-        }
-        catch (StackOverflowError so) {
+        } catch (StackOverflowError so) {
             return Double.NaN;
         }
     }
@@ -308,7 +298,7 @@ public class Numbers {
         }
         return num > low && num < high;
     }
-  // </editor-fold>
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="public static boolean contains(number num, number[] nums)">
     public static boolean contains(byte num, byte... nums) {
@@ -381,15 +371,12 @@ public class Numbers {
 
     /**
      * Works like Double.parseDouble, but ignores any extraneous characters. The first radix point ({@code .}) is the
-     * only one
-     * treated as such.<br/> <h4>Examples:</h4> <UL> <LI>{@code extractDouble("123456.789", false)} returns the double
-     * value of
-     * {@code 123456.789}</LI> <LI>{@code extractDouble("1qw2e3rty4uiop[5a'6.p7u8&9", false)} returns the double value
-     * of
-     * {@code 123456.789}</LI> <LI>{@code extractDouble("123,456.7.8.9", false)} returns the double value of
-     * {@code 123456.789}</LI> <LI>{@code extractDouble("I have $9,862.39 in the bank.", false)} returns the double
-     * value of
-     * {@code 9862.39}</LI> <LI>{@code extractDouble("12e6", true)} returns the double value of {@code 12000000}</LI>
+     * only one treated as such.<br/> <h4>Examples:</h4> <UL> <LI>{@code extractDouble("123456.789", false)} returns the
+     * double value of {@code 123456.789}</LI> <LI>{@code extractDouble("1qw2e3rty4uiop[5a'6.p7u8&9", false)} returns
+     * the double value of {@code 123456.789}</LI> <LI>{@code extractDouble("123,456.7.8.9", false)} returns the double
+     * value of {@code 123456.789}</LI> <LI>{@code extractDouble("I have $9,862.39 in the bank.", false)} returns the
+     * double value of {@code 9862.39}</LI> <LI>{@code extractDouble("12e6", true)} returns the double value of
+     * {@code 12000000}</LI>
      * <LI>{@code extractDouble("2.5e1.6", true)} returns the double value of
      * {@code 99.526792638374312692563076271938}</LI>
      * </UL>
@@ -406,8 +393,7 @@ public class Numbers {
     public static double extractDouble(CharSequence str, boolean sciNot) throws NumberFormatException {
         try {
             return Double.parseDouble(str.toString());
-        }
-        catch (Throwable t) {
+        } catch (Throwable t) {
             boolean r = true, m = false;
             String d = "";
             int mult = 1;
@@ -427,8 +413,7 @@ public class Numbers {
             }
             try {
                 return Double.parseDouble(d) * Math.pow(10, mult);
-            }
-            catch (NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 throw new NumberFormatException("The input string could not be parsed to a double: " + str);
             }
         }
@@ -436,10 +421,9 @@ public class Numbers {
 
     /**
      * Works like Double.parseDouble, but ignores any extraneous characters. The first radix point ({@code .}) is the
-     * only one
-     * treated as such.<br/> <h4>Examples:</h4> <UL> <LI>{@code extractDouble("123456.789")} returns the double value of
-     * {@code 123456.789}</LI> <LI>{@code extractDouble("1qw2e3rty4uiop[5a'6.p7u8&9")} returns the double value of
-     * {@code 123456.789}</LI> <LI>{@code extractDouble("123,456.7.8.9")} returns the double value of
+     * only one treated as such.<br/> <h4>Examples:</h4> <UL> <LI>{@code extractDouble("123456.789")} returns the double
+     * value of {@code 123456.789}</LI> <LI>{@code extractDouble("1qw2e3rty4uiop[5a'6.p7u8&9")} returns the double value
+     * of {@code 123456.789}</LI> <LI>{@code extractDouble("123,456.7.8.9")} returns the double value of
      * {@code 123456.789}</LI>
      * <LI>{@code extractDouble("I have $9,862.39 in the bank.")} returns the double value of {@code 9862.39}</LI>
      * <LI>{@code extractDouble("12e6")} returns the double value of {@code 126}</LI> </UL>
@@ -479,7 +463,7 @@ public class Numbers {
         }
         for (int i = 0, j = b ? numStr.indexOf(RAD_POI) - 1 : numStr.length() - 1/* ,
                  * t = b ? numStr.length() : j + 1 */;
-             j >= 0; i++, j--) {
+                j >= 0; i++, j--) {
             if (!Character.isDigit(numStr.charAt(j))) {
                 if (numStr.length() > j) {
                     ret += numStr.substring(j + 1);
@@ -539,8 +523,7 @@ public class Numbers {
      * <LI>{@code X.0YZABC, 0} <UL><LI>Returns {@code "X"}</LI></UL></LI> <LI>{@code ABC.DEF, 1} <UL><LI>Returns
      * {@code "ABC.D"}</LI></UL></LI> <LI>{@link Double.POSITIVE_INFINITY} <UL><LI>Returns {@code "8"}</LI></UL></LI>
      * <LI>{@link Double.NEGATIVE_INFINITY} <UL><LI>Returns {@code "-8"}</LI></UL></LI> <LI>{@link Double.NaN}
-     * <UL><LI>Returns
-     * {@code "?"}</LI></UL></LI> </ol>
+     * <UL><LI>Returns {@code "?"}</LI></UL></LI> </ol>
      *
      * @param num the number to be formatted
      * @param fmt the number of decimal places to ensure
@@ -564,11 +547,9 @@ public class Numbers {
      * {@code 9} ({@code 00001001}), where the 5th and 8th bits are on in both values, and are the ONLY ones on in
      * {@code value2}, this will return {@code true}</LI> <LI>when {@code value1} is {@code -55} ({@code 11001001}) and
      * {@code value2} is {@code 45} ({@code 00101101}), where the 5th and 8th bits are on in both values, this will
-     * return
-     * {@code false}</LI>
+     * return {@code false}</LI>
      * <LI>when {@code value1} is {@code -55} ({@code 11001001}) and {@code value2} is {@code 45} ({@code 00100100}),
-     * where
-     * there are no bits on in either of the values, this will return {@code false}</LI> </UL>
+     * where there are no bits on in either of the values, this will return {@code false}</LI> </UL>
      *
      * @param value       the value which carries the information bit(s)
      * @param bitsToCheck the value which carries the checking bit(s)
@@ -587,11 +568,9 @@ public class Numbers {
      * {@code 9} ({@code 00001001}), where the 5th and 8th bits are on in both values, and are the ONLY ones on in
      * {@code value2}, this will return {@code true}</LI> <LI>when {@code value1} is {@code -55} ({@code 11001001}) and
      * {@code value2} is {@code 45} ({@code 00101101}), where the 5th and 8th bits are on in both values, this will
-     * return
-     * {@code true}</LI>
+     * return {@code true}</LI>
      * <LI>when {@code value1} is {@code -55} ({@code 11001001}) and {@code value2} is {@code 45} ({@code 00100100}),
-     * where
-     * there are no bits on in either of the values, this will return {@code false}</LI> </UL>
+     * where there are no bits on in either of the values, this will return {@code false}</LI> </UL>
      *
      * @param value       the value which carries the information bit(s)
      * @param bitsToCheck the value which carries the checking bit(s)
@@ -606,8 +585,7 @@ public class Numbers {
     //<editor-fold defaultstate="collapsed" desc="Between">
     /**
      * Returns {@code num} if, and only if, it lies between the given limits. If the limits are equal, returns the limit
-     * value.
-     * It does not matter which limit is higher.
+     * value. It does not matter which limit is higher.
      *
      * @param num    the number to be evaluated, and possibly returned
      * @param limit1 the first limit
@@ -624,8 +602,7 @@ public class Numbers {
 
     /**
      * Returns {@code num} if, and only if, it lies between the given limits. If the limits are equal, returns the limit
-     * value.
-     * It does not matter which limit is higher.
+     * value. It does not matter which limit is higher.
      *
      * @param num    the number to be evaluated, and possibly returned
      * @param limit1 the first limit
@@ -639,8 +616,7 @@ public class Numbers {
 
     /**
      * Returns {@code num} if, and only if, it lies between the given limits. If the limits are equal, returns the limit
-     * value.
-     * It does not matter which limit is higher.
+     * value. It does not matter which limit is higher.
      *
      * @param num    the number to be evaluated, and possibly returned
      * @param limit1 the first limit
@@ -654,8 +630,7 @@ public class Numbers {
 
     /**
      * Returns {@code num} if, and only if, it lies between the given limits. If the limits are equal, returns the limit
-     * value.
-     * It does not matter which limit is higher.
+     * value. It does not matter which limit is higher.
      *
      * @param num    the number to be evaluated, and possibly returned
      * @param limit1 the first limit
@@ -669,8 +644,7 @@ public class Numbers {
 
     /**
      * Returns {@code num} if, and only if, it lies between the given limits. If the limits are equal, returns the limit
-     * value.
-     * It does not matter which limit is higher.
+     * value. It does not matter which limit is higher.
      *
      * @param num    the number to be evaluated, and possibly returned
      * @param limit1 the first limit
@@ -684,8 +658,7 @@ public class Numbers {
 
     /**
      * Returns {@code num} if, and only if, it lies between the given limits. If the limits are equal, returns the limit
-     * value.
-     * It does not matter which limit is higher.
+     * value. It does not matter which limit is higher.
      *
      * @param num    the number to be evaluated, and possibly returned
      * @param limit1 the first limit
@@ -746,7 +719,7 @@ public class Numbers {
     private static final NumberFormat FMT = NumberFormat.getNumberInstance();
     private static final NumberFormat I_FMT = NumberFormat.getIntegerInstance();
     private static final Pattern SCINOT_PATTERN = Pattern.compile("(-?\\d+(\\.\\d+)?)e(-?\\d+(\\.\\d+)?)",
-                                                                  Pattern.CASE_INSENSITIVE);
+            Pattern.CASE_INSENSITIVE);
 
     /**
      * continually increases the value of the last digit in {@code d1} until the length of the double changes
@@ -777,16 +750,16 @@ public class Numbers {
             while (s.charAt(s.length() - 1) == '9') {
                 is9 = true;
                 s = s.substring(0, s.length() - 2) + ((b = Byte.parseByte(Character.toString(s.charAt(s.length() - 2))))
-                                                      == 9 ? "" : b
-                                                                  + 1);
+                        == 9 ? "" : b
+                                + 1);
             }
             if (!Character.isDigit(s.charAt(s.length() - 1)))//if it ends in something like '.'
             {
                 s = s.substring(0, s.length() - 1);//trim it so it's only numbers, again.
             }
             s = s.substring(0, s.length() - 1) + Byte.toString((byte) (Byte.parseByte(Character.toString(s.charAt(s
-                                                                       .length() - 1)))
-                                                                       + 1));
+                    .length() - 1)))
+                    + 1));
 
         }
         return extractDouble(s);
@@ -809,8 +782,7 @@ public class Numbers {
 
     /**
      * Works similarly to the {@code switch} statement. This method returns the given choice out of the given list of
-     * choices.
-     * For instance, {@code choose(2, "Hello", "World!", "Foo", "Bar")} would return {@code "Foo"}
+     * choices. For instance, {@code choose(2, "Hello", "World!", "Foo", "Bar")} would return {@code "Foo"}
      *
      * @param choice  The index of the choice to return
      * @param choices The choices, one of which will be returned
@@ -818,8 +790,7 @@ public class Numbers {
      * @return the object in {@code choices} at index {@code choice}
      *
      * @throws ArrayIndexOutOfBoundsException if the given index {@code choice} is less than {@code 0} or greater than
-     *                                        or equal
-     *                                        to the number of given choices
+     *                                        or equal to the number of given choices
      */
     public static Object choose(int choice, Object... choices) {
         return choices[choice];
@@ -827,8 +798,8 @@ public class Numbers {
 
     /**
      * Returns a "pretty" version of the given date.<br/> <h4>Examples</h4> <UL>
-     * <LI>{@code toPrettyDate(1000, Calendar.SECOND)}
-     * produces {@code "1 second"}</LI> <LI>{@code toPrettyDate(1851, Calendar.SECOND)} produces {@code "1 second"}</LI>
+     * <LI>{@code toPrettyDate(1000, Calendar.SECOND)} produces {@code "1 second"}</LI>
+     * <LI>{@code toPrettyDate(1851, Calendar.SECOND)} produces {@code "1 second"}</LI>
      * <LI>{@code toPrettyDate(1851, Calendar.MILLISECOND)} produces {@code "1 second, 851 milliseconds"}</LI>
      * <LI>{@code toPrettyDate(1000000, Calendar.SECOND)} produces {@code "16 minutes, 40 seconds"}</LI>
      * <LI>{@code toPrettyDate(10000000, Calendar.SECOND)} produces {@code "16 minutes, 40 seconds"}</LI>
@@ -868,44 +839,43 @@ public class Numbers {
                 useM = (useS || limit == Calendar.MINUTE),
                 useH = (useM || limit == Calendar.HOUR_OF_DAY || limit == Calendar.HOUR),
                 useD = (useH || limit == Calendar.DAY_OF_YEAR || limit == Calendar.DAY_OF_MONTH || limit
-                                                                                                   == Calendar.DAY_OF_WEEK
-                        || limit == Calendar.DAY_OF_WEEK_IN_MONTH),
+                == Calendar.DAY_OF_WEEK
+                || limit == Calendar.DAY_OF_WEEK_IN_MONTH),
                 useY = (useD || limit == Calendar.YEAR);
         /* X matters and (previous shows or the user wants X to show) */
 
         return ((useY = useY && yrs != 0)
                 ? yrs + " year" + (yrs == 1 ? "" : "s")
                 : "")
-                       + ((useD = useD && days != 0)
-                          ? (useY ? ", " : "") + days + " day" + (days == 1 ? "" : "s")
-                          : "")
-                       + ((useH = useH && hrs != 0)
-                          ? ((useD || useY) ? ", " : "") + hrs + " hour" + (hrs == 1 ? "" : "s")
-                          : "")
-                       + ((useM = useM && mins != 0)
-                          ? ((useH || useD || useY) ? ", " : "") + mins + " minute" + (mins == 1 ? "" : "s")
-                          : "")
-                       + ((useS = useS && secs != 0)
-                          ? ((useM || useH || useD || useY) ? ", " : "") + secs + " second" + (secs == 1 ? "" : "s")
-                          : "")
-                       + ((useMs && mils != 0)
-                          ? (useS || useM || useH || useD || useY ? ", " : "") + mils + " millisecond"
-                            + (mils == 1 ? "" : "s")
-                          : "");
+                + ((useD = useD && days != 0)
+                        ? (useY ? ", " : "") + days + " day" + (days == 1 ? "" : "s")
+                        : "")
+                + ((useH = useH && hrs != 0)
+                        ? ((useD || useY) ? ", " : "") + hrs + " hour" + (hrs == 1 ? "" : "s")
+                        : "")
+                + ((useM = useM && mins != 0)
+                        ? ((useH || useD || useY) ? ", " : "") + mins + " minute" + (mins == 1 ? "" : "s")
+                        : "")
+                + ((useS = useS && secs != 0)
+                        ? ((useM || useH || useD || useY) ? ", " : "") + secs + " second" + (secs == 1 ? "" : "s")
+                        : "")
+                + ((useMs && mils != 0)
+                        ? (useS || useM || useH || useD || useY ? ", " : "") + mils + " millisecond"
+                        + (mils == 1 ? "" : "s")
+                        : "");
     }
     //<editor-fold defaultstate="collapsed" desc="Dim Behavior Flags">
     /**
      * Defines that this image should fit within its container upon resizing (if the container is taller or wider than
-     * the
-     * image, then the image will stay the same scale so that the complete image is still visible). Equal to
+     * the image, then the image will stay the same scale so that the complete image is still visible). Equal to
      * {@value}.<hr/>
      * Behaviors can be combined with the {@code |} (OR) operator
      */
     public static final byte DIM_BEHAVIOR_SCALE_FIT = 0b0100;
     /**
      * Defines that this image should fit within its container upon resizing (if the container is taller or wider than
-     * the
-     * image, then the image will be scaled and trimmed so that the entire container is filled). Equal to {@value}.<hr/>
+     * the image, then the image will be scaled and trimmed so that the entire container is filled). Equal to
+     * {@value}.<hr/>
      * Behaviors can be combined with the {@code |} (OR) operator
      */
     public static final byte DIM_BEHAVIOR_SCALE_FILL = 0b1000;
@@ -1003,7 +973,7 @@ public class Numbers {
          * 1001 == 01001 == 9
          * return 9
          */
-        /*
+ /*
          * getBits(10662, 3, 8): (should return all bits from index 8 to 3, which are 110100 in binary and 100 in
          * decimal)
          * value == 10662 == 0010 1001 1010 0110
@@ -1027,12 +997,11 @@ public class Numbers {
 
     /**
      * Creates a human-readable string that represents the given number of bytes <H4>Examples:</H4> <UL>
-     * <LI>{@code toBytes(5)}
-     * returns "{@code 5 B}"</LI> <LI>{@code toBytes(1024)} returns "{@code 1 KB}"</LI> <LI>{@code toBytes(2048)}
-     * returns
-     * "{@code 2 KB}"</LI> <LI>{@code toBytes(18236)} returns "{@code 17.80859375 KB}"</LI>
-     * <LI>{@code toBytes(5      * 1024 * 1024)}
-     * returns "{@code 5 MB}"</LI> <LI>{@code toBytes(8      * 1024 * 1024 * 1024)} returns "{@code 8 GB}"</LI>
+     * <LI>{@code toBytes(5)} returns "{@code 5 B}"</LI> <LI>{@code toBytes(1024)} returns "{@code 1 KB}"</LI>
+     * <LI>{@code toBytes(2048)} returns "{@code 2 KB}"</LI> <LI>{@code toBytes(18236)} returns
+     * "{@code 17.80859375 KB}"</LI>
+     * <LI>{@code toBytes(5      * 1024 * 1024)} returns "{@code 5 MB}"</LI> <LI>{@code toBytes(8      * 1024 * 1024 * 1024)}
+     * returns "{@code 8 GB}"</LI>
      * <LI>{@code toBytes(116L   * 1024 * 1024 * 1024 * 1024)} returns "{@code 116 TB}"</LI>
      * <LI>{@code toBytes(1L     * 1024 * 1024 * 1024 * 1024 * 1024)} returns "{@code 1 PB}"</LI>
      * <LI>{@code toBytes(32L    * 1024 * 1024 * 1024 * 1024 * 1024 * 1024)} returns "{@code 32 EB}"</LI>
@@ -1042,15 +1011,14 @@ public class Numbers {
      * Anything higher than 1024<sup>8</sup> will be shown in terms of Yottabytes
      *
      * @param bytes the number of bytes to be interpreted. This is only in {@code double} format so that very large
-     *              numbers
-     *              (larger than the limit of a {@code long} ({@code 9223372036854775807L}, {@code 0x7FFFFFFFFFFFFFFFL}, or
-     *              8&times;1024<sup>6</sup>))
+     *              numbers (larger than the limit of a {@code long} ({@code 9223372036854775807L},
+     *              {@code 0x7FFFFFFFFFFFFFFFL}, or 8&times;1024<sup>6</sup>))
      *
      * @return a {@link CharSequence} that represents the given number of bytes.
      */
     public static CharSequence toPrettyBytes(double bytes) {
-    //<editor-fold defaultstate="collapsed" desc="Legacy code, taken from the old bht.tools.util.ProgLog. Kept for reference">
-    /* if ((bytes / 1024) >= 1)
+        //<editor-fold defaultstate="collapsed" desc="Legacy code, taken from the old bht.tools.util.ProgLog. Kept for reference">
+        /* if ((bytes / 1024) >= 1)
          * {
          * if (((bytes / 1024) / 1024) >= 1)
          * {
@@ -1115,10 +1083,8 @@ public class Numbers {
      * Return the maximum value of the given list of doubles as quickly as possible.<BR/> <STRONG>Special
      * Cases:</STRONG> <UL>
      * <LI>If the given set of values is null or empty, an exception is thrown</LI> <LI>If the given array only has one
-     * value in
-     * it ({@code vals.length == 1}, then its only value is returned</LI> <LI>If the given array only has two values in
-     * it
-     * ({@code vals.length == 2}, then they are given to {@link Math#max(double,
+     * value in it ({@code vals.length == 1}, then its only value is returned</LI> <LI>If the given array only has two
+     * values in it ({@code vals.length == 2}, then they are given to {@link Math#max(double,
      *      double)}, and that result is returned.</LI> </UL>
      *
      * @param vals the list of values to compare to find the maximum
@@ -1202,10 +1168,9 @@ public class Numbers {
 
     /**
      * Return the sum of the given list of doubles as quickly as possible.<BR/> <STRONG>Special Cases:</STRONG> <UL>
-     * <LI>If the
-     * given set of values is null or empty, an exception is thrown</LI> <LI>If the given array only has one value in it
-     * ({@code vals.length == 1}, then its only value is returned</LI> <LI>If the given array only has two values in it
-     * ({@code vals.length == 2}, then the sum of the two is returned.</LI> </UL>
+     * <LI>If the given set of values is null or empty, an exception is thrown</LI> <LI>If the given array only has one
+     * value in it ({@code vals.length == 1}, then its only value is returned</LI> <LI>If the given array only has two
+     * values in it ({@code vals.length == 2}, then the sum of the two is returned.</LI> </UL>
      *
      * @param vals the list of values to summize
      *
@@ -1240,14 +1205,11 @@ public class Numbers {
 
     /**
      * Return the number of values in the given list of doubles that are repeated. If there are no repeats, an empty
-     * array is
-     * returned. The array returned is <EM>guaranteed</EM> to not have repeated values in it. This means that
+     * array is returned. The array returned is <EM>guaranteed</EM> to not have repeated values in it. This means that
      * {@code Numbers.repeats(Numbers.repeats(list))} will <EM>always</EM> return an empty array.<BR/> <STRONG>Special
      * Cases:</STRONG> <UL> <LI>If the given set of values is null or empty, an exception is thrown</LI> <LI>If the
-     * given array
-     * only has one value in it ({@code vals.length == 1}, then its only value is returned</LI> <LI>If the given array
-     * only has
-     * two values in it ({@code vals.length == 2}, then the sum of the two is returned.</LI> </UL>
+     * given array only has one value in it ({@code vals.length == 1}, then its only value is returned</LI> <LI>If the
+     * given array only has two values in it ({@code vals.length == 2}, then the sum of the two is returned.</LI> </UL>
      *
      * @param vals the list of values to summize
      *
@@ -1256,8 +1218,7 @@ public class Numbers {
      * @throws NullPointerException     if {@code vals} is {@code null}
      * @throws IllegalArgumentException if {@code vals} is empty (has length {@code 0})
      * @since 2012/10/10 (2.1.13)
-     * @version 1.0.1
-     * - 1.0.1 (2014-12-18) - Kyli Rouge commented out unnecessary continue; statement
+     * @version 1.0.1 - 1.0.1 (2014-12-18) - Kyli Rouge commented out unnecessary continue; statement
      */
     public static double[] getDuplicates(double... vals) {
         if (vals == null) {
@@ -1300,8 +1261,7 @@ public class Numbers {
 
     /**
      * Returns the <strong>location</strong> of the last occurrence of an even integer in the given list, or -1 if none
-     * is
-     * encountered
+     * is encountered
      *
      * @param list a list of integers
      *
@@ -1366,8 +1326,7 @@ public class Numbers {
     }
     /**
      * Defines the behavior of the {@link #round(byte, double)} method so that it returns the given number rounded up to
-     * an
-     * integer
+     * an integer
      */
     public static final byte ROUND_UP = 0b00;
     public static final byte ROUND_DOWN = 0b01;
@@ -1389,14 +1348,12 @@ public class Numbers {
     /**
      * Returns the given subset of items in the list. This uses the PHP-style bounding model
      *
-     * @param start
-     *              If {@code start} is non-negative, the returned range will start at the {@code start}'th position, counting from
-     *              zero. For instance, in the array {@code char[]{'a', 'b', 'c', 'd', 'e', 'f'}}, the character at
-     *              position {@code 0} is {@code 'a'}, the character at position {@code 2} is {@code 'c'}, and so
-     *              forth.<br/>
+     * @param start If {@code start} is non-negative, the returned range will start at the {@code start}'th position,
+     *              counting from zero. For instance, in the array {@code char[]{'a', 'b', 'c', 'd', 'e', 'f'}}, the
+     *              character at position {@code 0} is {@code 'a'}, the character at position {@code 2} is {@code 'c'},
+     *              and so forth.<br/>
      * If {@code start} is negative, the returned range will start at the {@code start}'th position from the end.<BR/>
-     * <B>Example</B> of Using a negative start:
-     * <PRE>
+     * <B>Example</B> of Using a negative start:      <PRE>
      * 	asPHPRange(6, -1);    // returns (5, 5)
      * 	asPHPRange(6, -2);    // returns (4, 5)
      * 	asPHPRange(6, -3, 1); // returns (3, 3)
@@ -1421,30 +1378,26 @@ public class Numbers {
     /**
      * Returns the given subset of items in the list. This uses the PHP-style bounding model
      *
-     * @param start
-     *               If {@code start} is non-negative, the returned range will start at the {@code start}'th position, counting from
-     *               zero. For instance, in the array {@code char[]{'a', 'b', 'c', 'd', 'e', 'f'}}, the character at
-     *               position {@code 0} is {@code 'a'}, the character at position {@code 2} is {@code 'c'}, and so
-     *               forth.<br/>
+     * @param start If {@code start} is non-negative, the returned range will start at the {@code start}'th position,
+     *               counting from zero. For instance, in the array {@code char[]{'a', 'b', 'c', 'd', 'e', 'f'}}, the
+     *               character at position {@code 0} is {@code 'a'}, the character at position {@code 2} is {@code 'c'},
+     *               and so forth.<br/>
      * If {@code start} is negative, the returned range will start at the {@code start}'th position from the end.<BR/>
-     * <B>Example</B> of Using a negative start:
-     * <PRE>
+     * <B>Example</B> of Using a negative start:      <PRE>
      * 	asPHPRange(6, -1);    // returns (5, 6)
      * 	asPHPRange(6, -2);    // returns (4, 6)
      * 	asPHPRange(6, -3, 1); // returns (3, 4)
      * </PRE>
      *
-     * @param length
-     *               If {@code length} is given and is <STRONG>positive</STRONG>, the range returned will contain at most
-     *               {@code length} values beginning from {@code start} (depending on {@code size}).<BR/>
+     * @param length If {@code length} is given and is <STRONG>positive</STRONG>, the range returned will contain at
+     *               most {@code length} values beginning from {@code start} (depending on {@code size}).<BR/>
      * If {@code length} is given and is <STRONG>negative</STRONG>, then that many values will be omitted from the end
      * (after the {@code start} position has been calculated when a {@code start} is negative). If {@code start} denotes
      * the position of this truncation or beyond, {@code null} will be returned.<BR/>
      * If {@code length} is given and is {@code 0}, {@code null} will be returned.<BR/>
      * If {@code length} is omitted, the substring starting from start until the end of the string will be
      * returned.<BR/>
-     * <STRONG>Example</STRONG> Using a negative length:
-     * <PRE>
+     * <STRONG>Example</STRONG> Using a negative length:      <PRE>
      * asPHPRange(6, 0, -1);  // returns (0, 5)
      * asPHPRange(6, 2, -1);  // returns (2, 5)
      * asPHPRange(6, 4, -4);  // returns null
@@ -1496,88 +1449,88 @@ public class Numbers {
         System.out.println("\"16 minutes, 40 seconds\": \"" + toPrettyDate(1000000, Calendar.SECOND) + "\"");//
         System.out.println("\"2 hours, 46 minutes, 40 seconds\": \"" + toPrettyDate(10000000, Calendar.SECOND) + "\"");//
         System.out.println("\"1 day, 3 hours, 46 minutes, 40 seconds\": \"" + toPrettyDate(100000000, Calendar.SECOND)
-                                   + "\"");//
+                + "\"");//
         System.out.println("\"11 days, 13 hours, 46 minutes, 40 seconds\": \"" + toPrettyDate(1000000000,
-                                                                                              Calendar.SECOND) + "\"");//
+                Calendar.SECOND) + "\"");//
         System.out.println("\"11 days\": \"" + toPrettyDate(1000000000, Calendar.DAY_OF_YEAR) + "\"");//
         System.out.println("\"1 day\": \"" + toPrettyDate(86400000, Calendar.DAY_OF_YEAR) + "\"");//
         System.out.println("\"1 day\": \"" + toPrettyDate(86400000, Calendar.MILLISECOND) + "\"");//
         System.out.println("\"1 day, 1 millisecond\": \"" + toPrettyDate(86400001, Calendar.MILLISECOND) + "\"");//
         System.out.println("\"1 day\": \"" + toPrettyDate(86400001, Calendar.DAY_OF_YEAR) + "\"");//
         System.out.println("\"1 year, 134 days, 6 milliseconds\": \"" + toPrettyDate(43200000006L, Calendar.MILLISECOND)
-                                   + "\"");//
+                + "\"");//
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="getGCD">
         System.out.println("==== getGCDItr, getGCDRec ====");
         double x, y, e, i, r;
         System.out.println("GCD of " + (x = 8) + " and " + (y = 4) + " is " + (e = 4) + ": " + (((i = getGCDItr(x, y))
-                                                                                                 - e) + ((r
-                                                                                                          = getGCDRec(
-                                                                                                          x, y))
-                                                                                                         - e)
-                                                                                                == 0 ? "confirmed!"
-                                                                                                : "discrepency! (itr = "
-                                                                                                  + i
-                                                                                                  + " and, rec = " + r
-                                                                                                  + ")"));
+                - e) + ((r
+                = getGCDRec(
+                        x, y))
+                - e)
+                == 0 ? "confirmed!"
+                        : "discrepency! (itr = "
+                        + i
+                        + " and, rec = " + r
+                        + ")"));
 
         System.out.println("GCD of " + (x = 875) + " and " + (y = 125) + " is " + (e = 125) + ": " + (((i = getGCDItr(x,
-                                                                                                                      y))
-                                                                                                       - e)
-                                                                                                      + ((r = getGCDRec(
-                                                                                                          x, y)) - e)
-                                                                                                      == 0 ? "confirmed!"
-                                                                                                      : "discrepency! (itr = "
-                                                                                                        + i
-                                                                                                        + " and, rec = "
-                                                                                                        + r + ")"));
+                y))
+                - e)
+                + ((r = getGCDRec(
+                        x, y)) - e)
+                == 0 ? "confirmed!"
+                        : "discrepency! (itr = "
+                        + i
+                        + " and, rec = "
+                        + r + ")"));
 
         System.out.println("GCD of " + (x = 300) + " and " + (y = 588) + " is " + (e = 12) + ": " + (((i = getGCDItr(x,
-                                                                                                                     y))
-                                                                                                      - e)
-                                                                                                     + ((r = getGCDRec(x,
-                                                                                                                       y))
-                                                                                                        - e)
-                                                                                                     == 0 ? "confirmed!"
-                                                                                                     : "discrepency! (itr = "
-                                                                                                       + i
-                                                                                                       + " and, rec = "
-                                                                                                       + r + ")"));
+                y))
+                - e)
+                + ((r = getGCDRec(x,
+                        y))
+                - e)
+                == 0 ? "confirmed!"
+                        : "discrepency! (itr = "
+                        + i
+                        + " and, rec = "
+                        + r + ")"));
 
         System.out.println("GCD of " + (x = 123) + " and " + (y = 456) + " is " + (e = 3) + ": "
-                                   + (((i = getGCDItr(x, y)) - e)
-                                      + ((r = getGCDRec(x, y)) - e)
-                                      == 0 ? "confirmed!"
-                                      : "discrepency! (itr = " + i
-                                        + " and, rec = " + r + ")"));
+                + (((i = getGCDItr(x, y)) - e)
+                + ((r = getGCDRec(x, y)) - e)
+                == 0 ? "confirmed!"
+                        : "discrepency! (itr = " + i
+                        + " and, rec = " + r + ")"));
 
         System.out.println("GCD of " + (x = 3141592654L) + " and " + (y = 2718281828L) + " is " + (e = 2) + ": "
-                                   + (((i = getGCDItr(
-                                        x, y)) - e)
-                                      + ((r
-                                          = getGCDRec(x,
-                                                      y))
-                                         - e) == 0
-                                      ? "confirmed!"
-                                      : "discrepency! (itr = "
-                                        + i
-                                        + " and, rec = "
-                                        + r + ")"));
+                + (((i = getGCDItr(
+                        x, y)) - e)
+                + ((r
+                = getGCDRec(x,
+                        y))
+                - e) == 0
+                        ? "confirmed!"
+                        : "discrepency! (itr = "
+                        + i
+                        + " and, rec = "
+                        + r + ")"));
 
         System.out.println("GCD of " + (x = 123456789L) + " and " + (y = 987654321L) + " is " + (e = 9) + ": "
-                                   + (((i = getGCDItr(x,
-                                                      y))
-                                       - e) + ((r
-                                                = getGCDRec(
-                                                x, y))
-                                               - e) == 0
-                                      ? "confirmed!"
-                                      : "discrepency! (itr = "
-                                        + i
-                                        + " and, rec = "
-                                        + r + ")"));
-		//</editor-fold>
+                + (((i = getGCDItr(x,
+                        y))
+                - e) + ((r
+                = getGCDRec(
+                        x, y))
+                - e) == 0
+                        ? "confirmed!"
+                        : "discrepency! (itr = "
+                        + i
+                        + " and, rec = "
+                        + r + ")"));
+        //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="lists">
         final double[] vals = new double[]{-2, 8, 3, -7, 5, 0.0, -0.0, 10, 5, 1, 2};
@@ -1592,7 +1545,7 @@ public class Numbers {
         System.out.println(min(vals));
         System.out.println("=== getDuplicates ===");
         System.out.println(Arrays.toString(getDuplicates(vals)));
-		//</editor-fold>
+        //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="asPHPRange">
         {
@@ -1618,8 +1571,7 @@ public class Numbers {
      * @param max   the maximum value
      *
      * @return {@code min} if {@code value} is lower than it, else {@code max} if {@code value} is higher than that,
-     *         else
-     *         {@code value}
+     *         else {@code value}
      *
      * @since 2014-12-18 (2.2.1) for bht.test.tools.util.Half}
      * @author Kyli Rouge
@@ -1627,10 +1579,10 @@ public class Numbers {
      */
     public static byte clamp(byte value, byte min, byte max) {
         return value < min
-               ? min
-               : value > max
-                 ? max
-                 : value;
+                ? min
+                : value > max
+                        ? max
+                        : value;
     }
 
     /**
@@ -1641,8 +1593,7 @@ public class Numbers {
      * @param max   the maximum value
      *
      * @return {@code min} if {@code value} is lower than it, else {@code max} if {@code value} is higher than that,
-     *         else
-     *         {@code value}
+     *         else {@code value}
      *
      * @since 2014-12-18 (2.2.1) for bht.test.tools.util.Half
      * @author Kyli Rouge
@@ -1650,10 +1601,10 @@ public class Numbers {
      */
     public static double clamp(double value, double min, double max) {
         return value < min
-               ? min
-               : value > max
-                 ? max
-                 : value;
+                ? min
+                : value > max
+                        ? max
+                        : value;
     }
 
     public static boolean isIntegerOfSize(CharSequence text, int bitCount) {
@@ -1664,8 +1615,7 @@ public class Numbers {
         long longValue;
         try {
             longValue = Long.valueOf(textString);
-        }
-        catch (NumberFormatException numberFormatException) {
+        } catch (NumberFormatException numberFormatException) {
             return false;
         }
         return (longValue & (1 << bitCount - 1)) == longValue;
@@ -1719,8 +1669,8 @@ public class Numbers {
      * @return a {@code long} made up of the given 8 bytes.
      */
     public static long longFromBytes(byte b7, byte b6, byte b5,
-                                     byte b4, byte b3, byte b2,
-                                     byte b1, byte b0) {
+            byte b4, byte b3, byte b2,
+            byte b1, byte b0) {
         // I've never used octal constants before :D
         return (((long) b7 << 070L)
                 | ((b6 & 0xFFL) << 060)
@@ -1732,13 +1682,8 @@ public class Numbers {
                 | ((b0 & 0xFFL)));
     }
 
-    /* public static boolean isDouble(CharSequence text)
-     * {
-     * return ;
-     * } */
-
-
     public static class IrrationalRatioException extends Exception {
+
         public IrrationalRatioException(Throwable cause) {
             super(cause);
         }
@@ -1756,12 +1701,11 @@ public class Numbers {
         }
     }
 
-
-
     /**
      * Represents a fraction.
      */
     public static class Fraction {
+
         private double t, b;
         private char s;
 
@@ -1787,7 +1731,7 @@ public class Numbers {
         public char getSeparator() {
             return s;
         }
-    //</editor-fold>
+        //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Setters">
         public void setTop(double newTop) {
@@ -1818,17 +1762,15 @@ public class Numbers {
         }
     }
 
-
-
     public static class Ratio extends Fraction {
+
         public Ratio(double left, double right) {
             super(left, right, ':');
         }
     }
 
-
-
     public static class Range {
+
         int low, high;
 
         public Range(int initLow, int initHigh) {
