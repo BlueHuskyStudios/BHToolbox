@@ -4,3 +4,8 @@
 *.bak
 *.lnk
 /BHToolbox/src/bht/tools/util/nppBackup/
+/BHToolbox/out/
+/BHToolbox/nbbuild/
+/BHToolbox/nbdist/
+/BHToolbox/nbactions.xml
+/BHToolbox/.nb-gradle/
