@@ -7,7 +7,7 @@ import java.util.Set;
 
 /**
  * Range, made for English Learner, is copyright BHStudios ©2016 BH-1-PS <hr/>
- * A range of numeric values.
+ * I wanted a range, and this seems like a good way to do that.
  *
  * @author Kyli Rouge of BHStudios
  * @since 2016-04-18
@@ -47,16 +47,16 @@ public interface Range<T extends Number> {
     }
 
     /**
-     * A mutable version of {@link IntRange}
+     * A mutable version of {@link Range}
      */
     public static interface MutableRange<T extends Number> extends Range<T> {
 
         /**
          * Changes the lowest value of this range. If {@code newLow} is higher than {@link #getHigh() the old high},
-         * then this acts like {@link #setLow(long) setLow(oldHigh);} {@link #setHigh(long) setHigh(newLow);}. Imagine
+         * then this acts like {@link #setLow(Number) setLow(newLow)}{@link #setHigh(Number) .setHigh(newLow)}. Imagine
          * this:
          * <pre>
-         * IntRange r = new IntRange(3, 6);
+         * MutableRange r = new MutableRange(3, 6);
          * 0  1  2 [3  4  5  6] 7  8  9
          *          ^--------^
          *
@@ -65,8 +65,8 @@ public interface Range<T extends Number> {
          *             ^-----^
          *
          * r.setLow(8);
-         * 0  1  2  3  4  5 [6  7  8] 9
-         *                   ^-----^
+         * 0  1  2  3  4  5  6  7 [8] 9
+         *                         ^
          * </pre>
          *
          * @param newLow The new lowest value in this range. {@code null} is interpreted as {@code 0}.
@@ -76,9 +76,10 @@ public interface Range<T extends Number> {
 
         /**
          * Changes the highest value of this range. If {@code newHigh} is lower than {@link #getLow() the old low}, then
-         * this acts like {@link #setHigh(long) setHigh(oldLow);} {@link #setLow(long) setLow(newHigh);}. Imagine this:
+         * this acts like {@link #setHigh(Number) setHigh(newHigh)}{@link #setLow(Number) .setLow(newHigh)}. Imagine
+         * this:
          * <pre>
-         * IntRange r = new IntRange(3, 6);
+         * MutableRange r = new MutableRange(3, 6);
          * 0  1  2 [3  4  5  6] 7  8  9
          *          ^--------^
          *
@@ -87,8 +88,8 @@ public interface Range<T extends Number> {
          *          ^-----^
          *
          * r.setHigh(1);
-         * 0 [1  2  3  4  5] 6  7  8  9
-         *    ^-----------^
+         * 0 [1] 2  3  4  5  6  7  8  9
+         *    ^
          * </pre>
          *
          * @param newLow The new highest value in this range. {@code null} is interpreted as {@code 0}.
@@ -197,10 +198,8 @@ public interface Range<T extends Number> {
                 if (null == newLow) {
                     newLow = 0l;
                 }
-                if (newLow <= getLow()) {
-                    low = newLow;
-                } else {
-                    low = getHigh();
+                low = newLow;
+                if (newLow > getHigh()) {
                     setHigh(newLow);
                 }
                 return this;
@@ -211,10 +210,8 @@ public interface Range<T extends Number> {
                 if (null == newHigh) {
                     newHigh = 0l;
                 }
-                if (newHigh >= getHigh()) {
-                    high = newHigh;
-                } else {
-                    high = getLow();
+                high = newHigh;
+                if (newHigh < getLow()) {
                     setLow(newHigh);
                 }
                 return this;
@@ -280,10 +277,8 @@ public interface Range<T extends Number> {
                 if (null == newLow) {
                     newLow = 0d;
                 }
-                if (newLow <= getLow()) {
-                    low = newLow;
-                } else {
-                    low = getHigh();
+                low = newLow;
+                if (newLow > getHigh()) {
                     setHigh(newLow);
                 }
                 return this;
@@ -294,10 +289,8 @@ public interface Range<T extends Number> {
                 if (null == newHigh) {
                     newHigh = 0d;
                 }
-                if (newHigh >= getHigh()) {
-                    high = newHigh;
-                } else {
-                    high = getLow();
+                high = newHigh;
+                if (newHigh < getLow()) {
                     setLow(newHigh);
                 }
                 return this;
