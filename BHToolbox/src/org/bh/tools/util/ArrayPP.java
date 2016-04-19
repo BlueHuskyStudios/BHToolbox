@@ -8,11 +8,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import static bht.tools.util.Do.i;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.bh.tools.math.Averager;
 
@@ -63,8 +59,7 @@ import static org.bh.tools.util.ArrayPP.SearchResults.NOT_FOUND;
 public class ArrayPP<T>
         implements Comparable<ArrayPP<?>>,
         Iterable<T>,
-        Serializable,
-        Map<Integer, T> {
+        Serializable {
 
     public static final long serialVersionUID = 02_000_0000L;
 
@@ -179,21 +174,13 @@ public class ArrayPP<T>
     }
 
     /**
-     * Returns a <strong>copy</strong> of the array at the core of this class
-     *
      * @return a <strong>copy</strong> of the array at the core of this class
      */
     @SuppressWarnings("unchecked")
     public T[] toArray() {
-        try {
-            T[] ret = (T[]) new Object[length()];
-            for (int i = 0, l = ret.length; i < l; i++) {
-                ret[i] = get(i);
-            }
-            return ret;
-        } catch (Exception e) {
-            return array;
-        }
+        T[] ret = (T[]) new Object[length()];
+        System.arraycopy(array, 0, ret, 0, length());
+        return ret;
     }
 
     /**
@@ -272,96 +259,6 @@ public class ArrayPP<T>
         }
         return NOT_FOUND.INTVAL;
     }
-
-//<editor-fold defaultstate="collapsed" desc="Map">
-    /**
-     * @return the result of {@link #length()}
-     */
-    @Override
-    public int size() {
-        return length();
-    }
-
-    /**
-     * If the given key is a {@link Number}, returns {@code true} iff it's between {@code 0} and {@link #length()}.
-     * Else, {@code false} is returned.
-     *
-     * @param key The index of the object to find.
-     * @return {@code true} iff the given key is a number between 0 and {@link length()}
-     */
-    @Override
-    public boolean containsKey(Object key) {
-        if (key instanceof Number) {
-            int intKey = ((Number) key).intValue();
-            return intKey > 0 && intKey < length();
-        }
-        return false;
-    }
-
-    /**
-     * If {@code needle} is {@code null}, this returns the result of {@link #containsNull()}. Else, if {@code needle} is
-     * of type {@link #T}, returns the result of {@link #contains(Object)}. Else, it returns {@code false}.
-     *
-     * @param needle The object to find in the values of this array++.
-     * @return {@code true} iff {@code needle} is in this array++.
-     */
-    @Override
-    public boolean containsValue(Object needle) {
-        if (null == needle) {
-            return containsNull();
-        } else if (type.isInstance(needle)) {
-            return contains((T) needle);
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * If {@code key} is a non-{@code null} {@link Number}, this acts like {@link #get(int)} passed the result of
-     * {@code key}'s {@link Number#intValue() intValue()} method. Else, returns {@code null}.
-     *
-     * @param key The index of the object to find.
-     * @return The object at index {@code key}, or {@code null}.
-     */
-    @Override
-    public T get(Object key) {
-        if (null == key) {
-            return null;
-        } else if (key instanceof Number) {
-            return get(((Number) key).intValue());
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public T put(Integer key, T value) {
-    }
-
-    @Override
-    public T remove(Object key) {
-    }
-
-    @Override
-    public void putAll(Map<? extends Integer, ? extends T> m) {
-    }
-
-    @Override
-    public void clear() {
-    }
-
-    @Override
-    public Set<Integer> keySet() {
-    }
-
-    @Override
-    public Collection<T> values() {
-    }
-
-    @Override
-    public Set<Entry<Integer, T>> entrySet() {
-    }
-//</editor-fold>
 
 
     /**
@@ -459,6 +356,10 @@ public class ArrayPP<T>
 
     public boolean containsNull() {
         return Arrays.stream(array).anyMatch(t -> null == t);
+    }
+
+    public Stream<T> stream() {
+        return Arrays.stream(toArray());
     }
 
 

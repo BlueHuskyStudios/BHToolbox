@@ -1,9 +1,15 @@
 package org.bh.tools.util;
 
 import bht.tools.misc.CompleteObject;
+import bht.tools.util.math.Numbers;
 import java.lang.reflect.Array;
+import java.util.AbstractMap;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -127,17 +133,38 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
     }
 
     /**
-     * Sets the value at slot {@code index} to be {@code newVal}
+     * Identical to {@link #set(int, Object, boolean) set(index, newVal, false)}.
      *
-     * @deprecated untested!
      * @param index  The index of the slot to change
      * @param newVal The new value to put into the slot
      *
      * @return {@code this}
+     *
+     * @throws ArrayIndexOutOfBoundsException if {@code index} is greater than {@link #length() length()}
      */
     public MutableArrayPP<T> set(int index, T newVal) {
-        if (index > this.length()) {
-            increaseSize(this.length() - index);
+        return set(index, newVal, false);
+    }
+
+    /**
+     * Sets the value at slot {@code index} to be {@code newVal}
+     *
+     * @param index      The index of the slot to change
+     * @param newVal     The new value to put into the slot
+     * @param increaseOK Indicates whether it's OK to increase the size of the array to accommodate the new value. If
+     *                   {@code false}, a {@link ArrayIndexOutOfBoundsException} may be thrown by passing an index that
+     *                   is too high.
+     *
+     * @return {@code this}
+     *
+     * @throws ArrayIndexOutOfBoundsException if {@code increaseOK} is {@code false} and {@code index} is greater than
+     *                                        {@link #length() length()}
+     */
+    public MutableArrayPP<T> set(int index, T newVal, boolean increaseOK) {
+        if (increaseOK) {
+            if (index > this.length()) {
+                increaseSize((this.length() - index) + 1);
+            }
         }
         array[index] = newVal;
         return this;
@@ -187,7 +214,7 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
     public static void main(String[] args) {
         MutableArrayPP<String> test = new MutableArrayPP<>("won", "too", "tree");
         test.prepend("fore", "jive");
-        test.append("sicks", "sever");
+        test.append("sicks", "heaven");
         System.out.println(test);
     }
 
@@ -258,7 +285,7 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
     }
 
     /**
-     * Removes all items from {@code startIndex} to {@code endIndex}, inclusive.
+     * Removes all items from {@code startIndex}, inclusive, to {@code endIndex}, inclusive.
      *
      * @param startIndex The first index whose item is to be removed
      * @param endIndex   The last index whose item is to be removed
@@ -420,4 +447,145 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
         return ret;
     }
     //</editor-fold>
+
+    public Map<Integer, T> toMap() {
+        return new Map<Integer, T>() {
+            /**
+             * @return the result of {@link #length()}
+             */
+            @Override
+            public int size() {
+                return length();
+            }
+
+            /**
+             * If the given key is a {@link Number}, returns {@code true} iff it's between {@code 0} and
+             * {@link #length()}. Else, {@code false} is returned.
+             *
+             * @param key The index of the object to find.
+             * @return {@code true} iff the given key is a number between 0 and {@link length()}
+             */
+            @Override
+            public boolean containsKey(Object key) {
+                if (key instanceof Number) {
+                    int intKey = ((Number) key).intValue();
+                    return intKey > 0 && intKey < length();
+                }
+                return false;
+            }
+
+            /**
+             * If {@code needle} is {@code null}, this returns the result of {@link #containsNull()}. Else, if
+             * {@code needle} is of type {@link #T}, returns the result of {@link #contains(Object)}. Else, it returns
+             * {@code false}.
+             *
+             * @param needle The object to find in the values of this array++.
+             * @return {@code true} iff {@code needle} is in this array++.
+             */
+            @SuppressWarnings("unchecked") // type is transitively checked
+            @Override
+            public boolean containsValue(Object needle) {
+                if (null == needle) {
+                    return containsNull();
+                } else if (type.isInstance(needle)) {
+                    return contains((T) needle);
+                } else {
+                    return false;
+                }
+            }
+
+            /**
+             * If {@code key} is a non-{@code null} {@link Number}, this acts like {@link #get(int)} passed the result
+             * of {@code key}'s {@link Number#intValue() intValue()} method. Else, returns {@code null}.
+             *
+             * @param key The index of the object to find.
+             * @return The object at index {@code key}, or {@code null}.
+             *
+             * @throws ArrayIndexOutOfBoundsException If the given key is a number outside the array bounds.
+             */
+            @Override
+            public T get(Object key) {
+                if (null == key) {
+                    return null;
+                } else if (key instanceof Number) {
+                    return MutableArrayPP.this.get(((Number) key).intValue());
+                } else {
+                    return null;
+                }
+            }
+
+            @Override
+            public T put(Integer key, T newVal) {
+                T oldVal = get(key);
+                set(key, newVal);
+                return oldVal;
+            }
+
+            /**
+             * Iff the given key is a number, the object at the index represented by its
+             * {@link Number#intValue() intValue()} is removed and returned. Else, {@code null} is returned.
+             * <hr/> {@inheritDoc}
+             *
+             * @param key The index of the object to fetch.
+             * @return The object that was at index {@code key} (using {@link MutableArrayPP#get(int)}) before it was
+             *         removed, or {@code null} if you don't give a valid index as the key.
+             *
+             * @throws ArrayIndexOutOfBoundsException If the given key is a number outside the array bounds.
+             */
+            @Override
+            public T remove(Object key) {
+                if (null == key) {
+                    return null;
+                } else if (key instanceof Number) {
+                    int idx = ((Number) key).intValue();
+                    T oldVal = this.get(idx);
+                    MutableArrayPP.this.remove(idx);
+                    return oldVal;
+                }
+                return null;
+            }
+
+            @Override
+            public void putAll(Map<? extends Integer, ? extends T> m) {
+                for (Entry<? extends Integer, ? extends T> entry : m.entrySet()) {
+                    set(entry.getKey(), entry.getValue(), true);
+                }
+            }
+
+            @Override
+            public void clear() {
+                MutableArrayPP.this.clear();
+            }
+
+            @Override
+            public Set<Integer> keySet() {
+                return new Numbers.IntRange(0, length() - 1).toSet();
+            }
+
+            @Override
+            public Collection<T> values() {
+                return MutableArrayPP.this.toCollection();
+            }
+
+            @Override
+            public Set<Entry<Integer, T>> entrySet() {
+                // I wish there were a more efficient way to do this :/
+
+                HashSet<Entry<Integer, T>> ret = new HashSet<>(length());
+                for (int i = length() - 1; i > 0; i--) {
+                    ret.add(new AbstractMap.SimpleEntry<>(i, get(i)));
+                }
+                return ret;
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return length() == 0;
+            }
+        };
+    }
+
+    public Collection<T> toCollection() {
+        return Arrays.asList(toArray());
+    }
 }
