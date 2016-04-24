@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import static bht.tools.util.Do.i;
+import static bht.tools.util.Do.s;
 import java.util.stream.Stream;
 
 import org.bh.tools.math.Averager;
@@ -354,12 +355,41 @@ public class ArrayPP<T>
         return as(this);
     }
 
+    /**
+     * Returns this array, starting with the given {@code preceding} character sequence, ending with the given
+     * {@code succeeding} one, and with the given {@code separator} between each element.
+     *
+     * @param preceding  the character sequence to start the String with
+     * @param separator  the character sequence to end the String with
+     * @param succeeding the character sequence to separate each item with
+     *
+     * @return this array, starting with, separated by, and ending with the given sequences
+     *
+     * @author Kyli Rouge
+     * @since 2014-08-20
+     * @version 1.0.0 - 2014-08-20 (1.8.0) - Kyli Rouge created this method for more powerful stringification
+     */
+    public String toString(CharSequence preceding, CharSequence separator, CharSequence succeeding) {
+        if (isEmpty()) {
+            return s(preceding) + succeeding;
+        }
+        StringBuilder sb = new StringBuilder(preceding);
+        for (int i = 0, l = length() - 1; i < l; i++) {
+            sb.append(get(i)).append(separator);
+        }
+        return sb.append(getLastItem()).append(succeeding).toString();
+    }
+
     public boolean containsNull() {
-        return Arrays.stream(array).anyMatch(t -> null == t);
+        return stream().anyMatch(t -> null == t);
     }
 
     public Stream<T> stream() {
         return Arrays.stream(toArray());
+    }
+
+    public T getLastItem() {
+        return get(length() - 1);
     }
 
 

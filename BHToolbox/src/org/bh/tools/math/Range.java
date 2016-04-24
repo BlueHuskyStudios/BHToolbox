@@ -103,7 +103,7 @@ public interface Range<T extends Number> {
      */
     public static class IntegerRange implements Range<Long> {
 
-        protected long low, high;
+        protected Long low, high;
 
         /**
          * Creates a new IntegerRange with the given values
@@ -111,7 +111,7 @@ public interface Range<T extends Number> {
          * @param initLow  The initial low value of the range
          * @param initHigh The initial high value of the range
          */
-        public IntegerRange(long initLow, long initHigh) {
+        public IntegerRange(Long initLow, Long initHigh) {
             low = initLow;
             high = initHigh;
         }
@@ -147,7 +147,7 @@ public interface Range<T extends Number> {
              * @param initLow  The initial low value of the range
              * @param initHigh The initial high value of the range
              */
-            public MutableIntegerRange(long initLow, long initHigh) {
+            public MutableIntegerRange(Long initLow, Long initHigh) {
                 super(initLow, initHigh);
             }
 
@@ -263,19 +263,19 @@ public interface Range<T extends Number> {
     }
 
     /**
-     * An implementation of {@link Range} which uses real numbers.
+     * An implementation of {@link Range} which uses floating-point numbers.
      */
-    public static class RealRange implements Range<Double> {
+    public static class FloatingPointRange implements Range<Double> {
 
-        protected double low, high;
+        protected Double low, high;
 
         /**
-         * Creates a new RealRange with the given values
+         * Creates a new FloatingPointRange with the given values
          *
          * @param initLow  The initial low value of the range
          * @param initHigh The initial high value of the range
          */
-        public RealRange(double initLow, double initHigh) {
+        public FloatingPointRange(Double initLow, Double initHigh) {
             low = initLow;
             high = initHigh;
         }
@@ -301,22 +301,22 @@ public interface Range<T extends Number> {
         }
 
         /**
-         * A mutable version of {@link IntegerRange}.
+         * A mutable version of {@link FloatingPointRange}.
          */
-        public static class MutableRealRange extends RealRange implements MutableRange<Double> {
+        public static class MutableFloatingPointRange extends FloatingPointRange implements MutableRange<Double> {
 
             /**
-             * Creates a new MutableRealRange with the given values
+             * Creates a new MutableFloatingPointRange with the given values
              *
              * @param initLow  The initial low value of the range
              * @param initHigh The initial high value of the range
              */
-            public MutableRealRange(long initLow, long initHigh) {
+            public MutableFloatingPointRange(Double initLow, Double initHigh) {
                 super(initLow, initHigh);
             }
 
             @Override
-            public MutableRealRange setLow(Double newLow) {
+            public MutableFloatingPointRange setLow(Double newLow) {
                 if (null == newLow) {
                     newLow = 0d;
                 }
@@ -328,7 +328,7 @@ public interface Range<T extends Number> {
             }
 
             @Override
-            public MutableRealRange setHigh(Double newHigh) {
+            public MutableFloatingPointRange setHigh(Double newHigh) {
                 if (null == newHigh) {
                     newHigh = 0d;
                 }

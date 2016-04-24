@@ -559,7 +559,7 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
 
             @Override
             public Set<Integer> keySet() {
-                return new MutableIntegerRange(0, length() - 1).toInt32Set();
+                return new MutableIntegerRange(0L, length() - 1L).toInt32Set();
             }
 
             @Override
