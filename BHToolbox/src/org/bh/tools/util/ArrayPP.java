@@ -6,16 +6,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.logging.Logger;
-
-import static bht.tools.util.Do.i;
-import static bht.tools.util.Do.s;
 import java.util.stream.Stream;
-
 import org.bh.tools.math.Averager;
-
-import static org.bh.tools.util.Do.S.as;
+import static org.bh.tools.math.NumberConverter.toInt32;
 import static org.bh.tools.util.ArrayPP.ArrayPosition.START;
 import static org.bh.tools.util.ArrayPP.SearchResults.NOT_FOUND;
+import static org.bh.tools.util.Do.S.as;
+import static org.bh.tools.util.Do.S.s;
 
 
 /**
@@ -106,7 +103,7 @@ public class ArrayPP<T>
                     avg.average(((Comparable) other.get(i)).compareTo(array[i]));
                 }
             }
-            return i(avg);
+            return toInt32(avg);
         }
         return array.length - other.length();
     }
