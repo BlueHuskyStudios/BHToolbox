@@ -16,6 +16,9 @@
             <word>iff</word>
             <word>Lamda</word>
             <word>ordinals</word>
+            <word>unconverted</word>
+            <word>Unicode</word>
+            <word>Version's</word>
         </spellchecker-wordlist>
     </configuration>
 </project>
