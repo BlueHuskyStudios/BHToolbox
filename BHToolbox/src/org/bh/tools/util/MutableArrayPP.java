@@ -1,7 +1,6 @@
 package org.bh.tools.util;
 
 import bht.tools.misc.CompleteObject;
-import bht.tools.util.math.Numbers;
 import java.lang.reflect.Array;
 import java.util.AbstractMap;
 import java.util.Arrays;
@@ -14,6 +13,7 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bh.tools.math.Range.IntegerRange.MutableIntegerRange;
 
 import static org.bh.tools.util.ArrayPP.ArrayPosition.END;
 import static org.bh.tools.util.ArrayPP.ArrayPosition.START;
@@ -559,7 +559,7 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
 
             @Override
             public Set<Integer> keySet() {
-                return new Numbers.IntRange(0, length() - 1).toSet();
+                return new MutableIntegerRange(0, length() - 1).toInt32Set();
             }
 
             @Override

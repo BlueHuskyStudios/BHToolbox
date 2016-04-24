@@ -116,48 +116,6 @@ public interface Range<T extends Number> {
             high = initHigh;
         }
 
-        /**
-         * @return A set of all integers between {@link #getLow() low} and {@link #getHigh() high}, inclusive.
-         */
-        public Set<Long> toSet() {
-            return new AbstractSet<Long>() {
-                @Override
-                public Iterator<Long> iterator() {
-                    return new Iterator<Long>() {
-                        long latest = 0;
-
-                        @Override
-                        public boolean hasNext() {
-                            return latest < getLength();
-                        }
-
-                        @Override
-                        public Long next() {
-                            return latest++;
-                        }
-                    };
-                }
-
-                @Override
-                public int size() {
-                    return getLength().intValue();
-                }
-
-                @Override
-                public boolean isEmpty() {
-                    return Objects.equals(getLow(), getHigh());
-                }
-
-                @Override
-                public boolean contains(Object o) {
-                    if (o instanceof Number) {
-                        return IntegerRange.this.contains(((Number) o).longValue());
-                    }
-                    return false;
-                }
-            };
-        }
-
         @Override
         public Long getLow() {
             return low;
@@ -215,6 +173,91 @@ public interface Range<T extends Number> {
                     setLow(newHigh);
                 }
                 return this;
+            }
+
+            /**
+             * @return A set of all integers between {@link #getLow() low} and {@link #getHigh() high}, inclusive.
+             */
+            public Set<Long> toSet() {
+                return new AbstractSet<Long>() {
+                    @Override
+                    public Iterator<Long> iterator() {
+                        return new Iterator<Long>() {
+                            long latest = 0;
+
+                            @Override
+                            public boolean hasNext() {
+                                return latest < getLength();
+                            }
+
+                            @Override
+                            public Long next() {
+                                return latest++;
+                            }
+                        };
+                    }
+
+                    @Override
+                    public int size() {
+                        return getLength().intValue();
+                    }
+
+                    @Override
+                    public boolean isEmpty() {
+                        return Objects.equals(getLow(), getHigh());
+                    }
+
+                    @Override
+                    public boolean contains(Object o) {
+                        if (o instanceof Number) {
+                            return MutableIntegerRange.this.contains(((Number) o).longValue());
+                        }
+                        return false;
+                    }
+                };
+            }
+
+            /**
+             * @return A set of all integers between {@link #getLow() low} and {@link #getHigh() high}, inclusive, as
+             *         32-bit {@code int}s. Keep in mind that this may cause over- and under-flows.
+             */
+            public Set<Integer> toInt32Set() {
+                return new AbstractSet<Integer>() {
+                    @Override
+                    public Iterator<Integer> iterator() {
+                        return new Iterator<Integer>() {
+                            int latest = 0;
+
+                            @Override
+                            public boolean hasNext() {
+                                return latest < getLength();
+                            }
+
+                            @Override
+                            public Integer next() {
+                                return latest++;
+                            }
+                        };
+                    }
+
+                    @Override
+                    public int size() {
+                        return getLength().intValue();
+                    }
+
+                    @Override
+                    public boolean isEmpty() {
+                        return Objects.equals(getLow(), getHigh());
+                    }
+
+                    @Override
+                    public boolean contains(Object o) {
+                        if (o instanceof Number) {
+                            return MutableIntegerRange.this.contains(((Number) o).longValue());
+                        }
+                        return false;
+                    }
+                };
             }
         }
     }
