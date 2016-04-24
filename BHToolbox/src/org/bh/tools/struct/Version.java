@@ -31,7 +31,7 @@ public class Version implements Comparable<Version>, Comparable64<Version> { // 
     protected Channel channel = STABLE;
 
     /**
-     * Creates a version number with the given stages. For instance, if it's version 1.2.3, you would call
+     * Creates a version with the given stages. For instance, if it's version 1.2.3, you would call
      * {@code new Version(1,2,3)}
      *
      * @param initStages The stages (number) of the version
@@ -41,7 +41,17 @@ public class Version implements Comparable<Version>, Comparable64<Version> { // 
     }
 
     /**
-     * Creates a version number with the given channel and stages. For instance, if it's version 1.2.3 β, you would call
+     * Creates a version with the given stages. For instance, if it's version 1.2.3, you would call
+     * {@code new Version(1,2,3)}
+     *
+     * @param initStages The stages (number) of the version
+     */
+    public Version(long... initStages) {
+        this(STABLE, initStages);
+    }
+
+    /**
+     * Creates a version with the given channel and stages. For instance, if it's version 1.2.3 β, you would call
      * {@code new Version(β, 1,2,3)}
      *
      * @param initChannel The channel of the version
@@ -49,6 +59,21 @@ public class Version implements Comparable<Version>, Comparable64<Version> { // 
      */
     public Version(Channel initChannel, Long... initStages) {
         stages = initStages;
+        channel = initChannel;
+    }
+
+    /**
+     * Creates a version with the given channel and stages. For instance, if it's version 1.2.3 β, you would call
+     * {@code new Version(β, 1,2,3)}
+     *
+     * @param initChannel The channel of the version
+     * @param initStages  The stages (number) of the version
+     */
+    public Version(Channel initChannel, long... initStages) {
+        stages = new Long[initStages.length];
+        for (int stage = 0; stage < stages.length; stage++) {
+            stages[stage] = initStages[stage];
+        }
         channel = initChannel;
     }
 
@@ -268,6 +293,48 @@ public class Version implements Comparable<Version>, Comparable64<Version> { // 
     }
 
     public class MutableVersion extends Version {
+
+        /**
+         * Creates a mutable version with the given stages. For instance, if it's version 1.2.3, you would call
+         * {@code new MutableVersion(1,2,3)}
+         *
+         * @param initStages The stages (number) of the version
+         */
+        public MutableVersion(Long... initStages) {
+            super(STABLE, initStages);
+        }
+
+        /**
+         * Creates a mutable version with the given stages. For instance, if it's version 1.2.3, you would call
+         * {@code new MutableVersion(1,2,3)}
+         *
+         * @param initStages The stages (number) of the version
+         */
+        public MutableVersion(long... initStages) {
+            super(STABLE, initStages);
+        }
+
+        /**
+         * Creates a mutable version with the given channel and stages. For instance, if it's version 1.2.3 β, you would
+         * call {@code new MutableVersion(β, 1,2,3)}
+         *
+         * @param initChannel The channel of the version
+         * @param initStages  The stages (number) of the version
+         */
+        public MutableVersion(Channel initChannel, Long... initStages) {
+            super(initChannel, initStages);
+        }
+
+        /**
+         * Creates a mutable version with the given channel and stages. For instance, if it's version 1.2.3 β, you would
+         * call {@code new MutableVersion(β, 1,2,3)}
+         *
+         * @param initChannel The channel of the version
+         * @param initStages  The stages (number) of the version
+         */
+        public MutableVersion(Channel initChannel, long... initStages) {
+            super(initChannel, initStages);
+        }
 
 
         /**
