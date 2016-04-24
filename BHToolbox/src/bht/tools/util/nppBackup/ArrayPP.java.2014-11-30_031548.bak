@@ -19,7 +19,7 @@ import javax.swing.AbstractListModel;
 import javax.swing.ListModel;
 
 /**
- * <strong>Copyright Blue Husky Programming, © 2011</strong> GPLv3<br/>
+ * <strong>Copyright Blue Husky Programming, © 2011</strong> BH-1-PS<br/>
  * Would have been called "Array++" if "+" were an acceptable character. This class is made to give enhanced features to arrays,
  * such as basic search functions and comparability, along with the standard accessing methods, such as {@link get(int)} and
  * {@link set(int, Object)}. The internal structure is an array, so as to make the interactions as <b>memory-efficient</b>

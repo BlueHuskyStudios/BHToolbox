@@ -5,7 +5,7 @@ import java.io.PrintStream;
 
 
 /**
- * Do, made for J. Jonah JSON, is copyright Blue Husky Programming ©2014 GPLv3<HR/>
+ * Do, made for J. Jonah JSON, is copyright Blue Husky Programming ©2014 BH-1-PS<HR/>
  *
  * A class full of tiny-named static methods that act as generalizers or shorten the names of common practices
  *

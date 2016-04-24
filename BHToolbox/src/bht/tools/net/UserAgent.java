@@ -6,10 +6,10 @@ import static bht.tools.util.Do.A;
 import static bht.tools.util.Do.s;
 
 /**
- * UserAgent, made for BHToolbox, is copyright Blue Husky Programming ©2014 GPLv3 <hr/>
+ * UserAgent, made for BHToolbox, is copyright Blue Husky Programming ©2014 BH-1-PS <hr/>
  * A data structure for representing a user agent string like
  * {@code Mozilla/[version] ([system and browser information]) [platform] ([platform details]) [extensions]}
- * 
+ *
  * @author Kyli of Blue Husky Programming
  * @version 1.0.0
 		- 2014-11-29 (1.0.0) - Kyli created UserAgent
@@ -23,7 +23,7 @@ public class UserAgent
 			Version.fromString(System.getProperty("java.version").replace('_', '.')),
 			A(System.getProperty("java.vm.name"))
 		);
-	
+
 	private Program mainProgram;
 	private ArrayPP<Program> otherPrograms;
 	private Program platform;
@@ -32,15 +32,15 @@ public class UserAgent
 	{
 		this(new Program(initProgramName, initProgramVersion));
 	}
-	
+
 	public UserAgent(String initProgramName, Version initProgramVersion, String initProgramDetails)
 	{
 		this(new Program(initProgramName, initProgramVersion, initProgramDetails));
 	}
-	
+
 	public UserAgent(Program initMainProgram)
 	{
-		this(initMainProgram, ArrayPP.EMPTY, defaultPlatform);
+		this(initMainProgram, new ArrayPP<>(), defaultPlatform);
 	}
 
 	public UserAgent(Program initMainProgram, ArrayPP<Program> initOtherPrograms, Program initPlatform)
@@ -73,27 +73,27 @@ public class UserAgent
 			(platform == null ? "" : " " + platform) +
 			(otherPrograms == null ? "" : ' ' + otherPrograms.toString("", " ", ""));
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	public static class Program
 	{
+		public final ArrayPP<String> DETAILS;
 		public final String NAME;
 		public final Version VERSION;
-		public final ArrayPP<String> DETAILS;
 
 		public Program(String NAME, Version VERSION)
 		{
-			this(NAME, VERSION, ArrayPP.EMPTY);
+			this(NAME, VERSION, new ArrayPP<>());
 		}
-		
+
 		public Program(String initName, Version initVersion, String initDetails)
 		{
 			this(initName, initVersion, A(initDetails));
 		}
-		
+
 		public Program(String initName, Version initVersion, ArrayPP<String> initDetails)
 		{
 			NAME = initName;

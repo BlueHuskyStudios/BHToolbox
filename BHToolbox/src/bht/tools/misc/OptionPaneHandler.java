@@ -8,7 +8,7 @@ import java.util.logging.LogRecord;
 import javax.swing.JOptionPane;
 
 /**
- * OptionPaneHandler, made for BHToolbox, is copyright Blue Husky Programming ©2015 GPLv3 <hr/>
+ * OptionPaneHandler, made for BHToolbox, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
  * 
  * @author Kyli of Blue Husky Programming
  * @version 1.0.0
