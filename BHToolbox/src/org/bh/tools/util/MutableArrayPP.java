@@ -13,8 +13,8 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import org.bh.tools.math.Range.IntegerRange.MutableIntegerRange;
-
 import static org.bh.tools.util.ArrayPP.ArrayPosition.END;
 import static org.bh.tools.util.ArrayPP.ArrayPosition.START;
 import static org.bh.tools.util.ArrayPP.SearchBehavior.ALL;
@@ -303,6 +303,10 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
                 array, endIndex + 1, // start writing with the object after endIndex
                 array.length - (endIndex - startIndex + 1)); // shorten the array appropriately
         return this;
+    }
+
+    public Stream<T> parallelStream() {
+        return stream().parallel();
     }
 
     /**
