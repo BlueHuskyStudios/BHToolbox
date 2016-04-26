@@ -6,7 +6,7 @@
 package bht.tools.util;
 
 /**
- * TinyPoint, made for BH Checkers 2, is made by and copyrighted to Blue Husky Programming, ©2012. License is default.<hr/>
+ * TinyPoint, made for BH Checkers 2, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
  * Similar to {@link java.awt.Point}, but only uses a single 64-bit integer to store its data.
  * @author Supuhstar of Blue Husky Programming
  * @since Jan 24, 2012

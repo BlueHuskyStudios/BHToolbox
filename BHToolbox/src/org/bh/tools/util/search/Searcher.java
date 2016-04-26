@@ -5,7 +5,7 @@ import org.bh.tools.util.MutableArrayPP;
 
 
 /**
- * Sercher, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
+ * Searcher, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
  *
  * @param <ArgType>    The type of argument that will be passed to the searcher
  * @param <ResultType> The type or result to be expected

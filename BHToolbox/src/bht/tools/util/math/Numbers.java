@@ -13,7 +13,7 @@ import static bht.tools.util.Do.s;
 import java.awt.Dimension;
 
 /**
- * Numbers, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012. License is default.<hr/> A
+ * Numbers, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/> A
  * convenience class for dealing with numbers
  *
  * @author Supuhstar

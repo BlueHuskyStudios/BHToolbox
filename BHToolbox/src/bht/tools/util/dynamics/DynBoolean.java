@@ -1,7 +1,7 @@
 package bht.tools.util.dynamics;
 
 /**
- * DynBoolean, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012. License is default.<hr/>
+ * DynBoolean, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
  * @author Supuhstar of Blue Husky Programming
  * @since Nov 8, 2012
  * @version 1.0.0

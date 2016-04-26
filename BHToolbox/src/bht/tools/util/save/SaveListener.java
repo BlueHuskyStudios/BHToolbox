@@ -8,7 +8,7 @@ package bht.tools.util.save;
 import java.util.EventListener;
 
 /**
- * SaveListener, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012. License is default.<hr/>
+ * SaveListener, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
  * @author ben_sims2 of Blue Husky Programming
  * @since Feb 1, 2012
  * @version 1.1.0

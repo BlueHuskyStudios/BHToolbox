@@ -1,7 +1,7 @@
 package bht.tools.misc;
 
 /**
- * CompleteObject, made for BH Toolbox, is made by and copyrighted to Blue Husky Programming, ©2012. License is default.<hr/>
+ * CompleteObject, made for BH Toolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
  * Signifies that the object that implements this interface overrides ALL capabilities of a basic object. This can be used as
  * a way to guarantee that any object that implements this interface also has the {@link java.lang.Object#clone()} and
  * {@link java.lang.Object#finalize()} methods

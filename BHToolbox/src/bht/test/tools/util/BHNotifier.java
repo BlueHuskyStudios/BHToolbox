@@ -30,7 +30,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 /**
- * BHNotifier, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012. License is default.<hr/>
+ * BHNotifier, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
  *
  * @author Supuhstar of Blue Husky Programming
  * @since Mar 3, 2012

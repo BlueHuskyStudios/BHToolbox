@@ -13,7 +13,7 @@ import javax.swing.JList;
 import javax.swing.ListModel;
 
 /**
- * BHChooserPanel, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012. License is default.<hr/>
+ * BHChooserPanel, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
  * A panel that lets user and programmer work together to build a textual list
  * @author Supuhstar of Blue Husky Programming
  * @since Jan 31, 2012

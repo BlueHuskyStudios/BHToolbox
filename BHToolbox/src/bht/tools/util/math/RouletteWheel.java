@@ -4,7 +4,7 @@ import bht.tools.util.ArrayPP;
 import java.util.Random;
 
 /**
- * RouletteWheel, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012. License is default.<hr/>
+ * RouletteWheel, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
  * @author Supuhstar of Blue Husky Programming
  * @since Feb 29, 2012
  * @version 1.0.0
