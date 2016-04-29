@@ -13,7 +13,7 @@ import static bht.tools.util.Do.s;
 import java.awt.Dimension;
 
 /**
- * Numbers, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/> A
+ * Numbers, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr> A
  * convenience class for dealing with numbers
  *
  * @author Supuhstar
@@ -868,14 +868,14 @@ public class Numbers {
     /**
      * Defines that this image should fit within its container upon resizing (if the container is taller or wider than
      * the image, then the image will stay the same scale so that the complete image is still visible). Equal to
-     * {@value}.<hr/>
+     * {@value}.<hr>
      * Behaviors can be combined with the {@code |} (OR) operator
      */
     public static final byte DIM_BEHAVIOR_SCALE_FIT = 0b0100;
     /**
      * Defines that this image should fit within its container upon resizing (if the container is taller or wider than
      * the image, then the image will be scaled and trimmed so that the entire container is filled). Equal to
-     * {@value}.<hr/>
+     * {@value}.<hr>
      * Behaviors can be combined with the {@code |} (OR) operator
      */
     public static final byte DIM_BEHAVIOR_SCALE_FILL = 0b1000;

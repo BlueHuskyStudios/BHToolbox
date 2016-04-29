@@ -29,7 +29,7 @@ import javax.swing.JScrollPane;
 
 
 /**
- * BHSearchableList, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
+ * BHSearchableList, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr>
  *
  * Provides a list with a search bar
  * 

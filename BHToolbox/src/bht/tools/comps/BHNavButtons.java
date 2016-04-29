@@ -24,7 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 /**
- * BHNavButtons, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
+ * BHNavButtons, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr>
  *
  * @param <T> The type of thing that these buttons browse
  * @author Supuhstar of Blue Husky Programming

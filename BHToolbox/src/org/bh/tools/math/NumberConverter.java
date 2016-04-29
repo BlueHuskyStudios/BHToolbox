@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import static org.bh.tools.math.BasicFunctions.clamp;
 
 /**
- * NumberConverter, made for BHToolbox, is copyright Blue Husky Programming ©2016 BH-1-PS<HR/>
+ * NumberConverter, made for BHToolbox, is copyright Blue Husky Programming ©2016 BH-1-PS<hr>
  * Converts numbers. This takes on the philosophy wherein data is kept raw first and foremost, then converted to the
  * highest available native precision as needed, then converted to the necessary precision. Nulls are treated as zeroes.
  *

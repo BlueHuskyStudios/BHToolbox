@@ -12,7 +12,7 @@ import java.awt.Container;
 import java.awt.Window;
 
 /**
- * BHPanel, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
+ * BHPanel, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr>
  * @author ben_sims2 of Blue Husky Programming
  * @since Jan 31, 2012
  * @version 1.0.0

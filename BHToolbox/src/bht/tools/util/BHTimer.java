@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 
 
 /**
- * BHTimer, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
+ * BHTimer, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr>
  * Acts like a lightweight version of {@link javax.swing.Timer}. This class performs a specified action until told to
  * stop, with
  * a specified delay between repetitions. This class takes advantage of separate threads, so make use of synchronized

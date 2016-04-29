@@ -3,7 +3,7 @@ package org.bh.tools.util;
 import java.util.function.Predicate;
 
 /**
- * StreamUtils, made for BHToolbox 2, is copyright Blue Husky Programming ©2016 BH-1-PS <hr/>
+ * StreamUtils, made for BHToolbox 2, is copyright Blue Husky Programming ©2016 BH-1-PS <hr>
  *
  * @author Kyli of Blue Husky Programming
  * @since 2016-04-25

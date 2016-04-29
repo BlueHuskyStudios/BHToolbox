@@ -23,24 +23,24 @@ public class BHImageComp extends JPanel
 {
   //<editor-fold defaultstate="collapsed" desc="Behavior Flags">
   /**
-   * Defines that this image should automatically resize itself when the component is resized. Equal to {@value}.<hr/>
+   * Defines that this image should automatically resize itself when the component is resized. Equal to {@value}.<hr>
    * Behaviors can be combined with the {@code |} (OR) operator
    */
   public static final byte BEHAVIOR_AUTO_RESIZE = 0b0001;
   /**
-   * Defines that this image should smooth itself out (use anti-aliasing) after resizing. Equal to {@value}.<hr/>
+   * Defines that this image should smooth itself out (use anti-aliasing) after resizing. Equal to {@value}.<hr>
    * Behaviors can be combined with the {@code |} (OR) operator
    */
   public static final byte BEHAVIOR_SMOOTH_RESIZE = 0b0010;
   /**
    * Defines that this image should fit within its container upon resizing (if the container is taller or wider than the image,
-   * then the image will stay the same scale so that the complete image is still visible). Equal to {@value}.<hr/>
+   * then the image will stay the same scale so that the complete image is still visible). Equal to {@value}.<hr>
    * Behaviors can be combined with the {@code |} (OR) operator
    */
   public static final byte BEHAVIOR_SCALE_FIT = Numbers.DIM_BEHAVIOR_SCALE_FIT;
   /**
    * Defines that this image should fit within its container upon resizing (if the container is taller or wider than the image,
-   * then the image will be scaled and trimmed so that the entire container is filled). Equal to {@value}.<hr/>
+   * then the image will be scaled and trimmed so that the entire container is filled). Equal to {@value}.<hr>
    * Behaviors can be combined with the {@code |} (OR) operator
    */
   public static final byte BEHAVIOR_SCALE_FILL = Numbers.DIM_BEHAVIOR_SCALE_FILL;

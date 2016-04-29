@@ -3,7 +3,7 @@ package org.bh.tools.math;
 import static org.bh.tools.math.NumberConverter.toFloatingPoint;
 
 /**
- * BasicFunctions, made for BHToolbox, is copyright Blue Husky Programming ©2016 BH-1-PS<HR/>
+ * BasicFunctions, made for BHToolbox, is copyright Blue Husky Programming ©2016 BH-1-PS<hr>
  * Basic mathematical functions. This takes on the philosophy wherein data is kept raw first and foremost, then
  * converted to the highest available native precision as needed, then converted to the necessary precision.
  *

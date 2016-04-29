@@ -10,7 +10,7 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JTextArea;
 
 /**
- * BHTextArea, made for English Learner, is copyright BHStudios ©2016 BH-1-PS <hr/>
+ * BHTextArea, made for English Learner, is copyright BHStudios ©2016 BH-1-PS <hr>
  * Merely an extension of the {@link JTextArea} class that adds placeholder capability to the field that only appears
  * (in a different color than normal text) when the text field is both out of focus and empty.
  *

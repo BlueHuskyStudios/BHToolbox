@@ -1,7 +1,7 @@
 package org.bh.tools.net.msg;
 
 /**
- * Copyright BHStudios ©2016 BH-1-PS <hr/>
+ * Copyright BHStudios ©2016 BH-1-PS <hr>
  *
  * Created by Kyli Rouge on 2016-01-31.
  */

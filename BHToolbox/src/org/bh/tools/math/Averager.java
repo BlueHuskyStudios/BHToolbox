@@ -5,7 +5,7 @@ import static bht.tools.util.Do.s;
 
 
 /**
- * Averager, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
+ * Averager, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr>
  *
  * @author Kyli of Blue Husky Programming
  * @version 2.0.0

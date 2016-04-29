@@ -1,7 +1,7 @@
 package org.bh.tools.util.search;
 
 /**
- * SearchFailureReason, made for BHToolbox 2, is copyright Blue Husky Programming ©2016 BH-1-PS <hr/>
+ * SearchFailureReason, made for BHToolbox 2, is copyright Blue Husky Programming ©2016 BH-1-PS <hr>
  *
  * @author Kyli of Blue Husky Programming
  *

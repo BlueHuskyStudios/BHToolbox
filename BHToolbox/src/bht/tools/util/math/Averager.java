@@ -3,7 +3,7 @@ package bht.tools.util.math;
 import static bht.tools.util.Do.s;
 
 /**
- * Averager, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
+ * Averager, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr>
  * Averages very many numbers while only using 128 bits of memory (one {@code double} and one {@code long}), maximum, to store
  * the average information. This also allows for a more accurate result than adding all and dividing by the number of inputs.
  * The downside is that you sacrifice speed. As the build-in main method shows, rigorous tests put this method at up to 10

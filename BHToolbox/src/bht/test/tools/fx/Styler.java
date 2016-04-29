@@ -8,7 +8,7 @@ import java.awt.Font;
 /**
  * Colors3, made for Error on line 6, column 24 in Templates/Classes/Class.java
  * Expecting a string, date or number here, Expression project is instead a freemarker.template.SimpleHash, is copyright Blue
- * Husky Programming, ©2013 <HR/>
+ * Husky Programming, ©2013 <hr>
  *
  * @author csu of Blue Husky Programming
  * @version 1.0.0

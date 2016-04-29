@@ -11,7 +11,7 @@ import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 
 /**
- * BHEditorPane, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
+ * BHEditorPane, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr>
  * @author Supuhstar of Blue Husky Programming
  * @since Apr 30, 2012
  * @version 1.0.0

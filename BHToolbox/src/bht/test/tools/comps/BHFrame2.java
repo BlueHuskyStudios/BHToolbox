@@ -23,7 +23,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 /**
- * BHFrame2, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
+ * BHFrame2, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr>
  * A desperately-needed recreation of {@link bht.tools.comps.BHFrame}
  *
  * @author Kyli of Blue Husky Programming

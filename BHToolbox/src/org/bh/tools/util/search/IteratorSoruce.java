@@ -1,7 +1,7 @@
 package org.bh.tools.util.search;
 
 /**
- * IteratorSoruce, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
+ * IteratorSoruce, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr>
  * 
  * @param <T> The type of object that will be iterated through by the source iterator
  * 

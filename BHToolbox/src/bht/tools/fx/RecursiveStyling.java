@@ -7,7 +7,7 @@ import javax.swing.JComponent;
 import javax.swing.border.TitledBorder;
 
 /**
- * RecursiveStyling, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012. License is CC-BY-SA.<hr/>
+ * RecursiveStyling, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012. License is CC-BY-SA.<hr>
  * A set of convenience methods for recursively styling GUI components
  * @author Kyli of Blue Husky Studios
  * @version 1.0.0

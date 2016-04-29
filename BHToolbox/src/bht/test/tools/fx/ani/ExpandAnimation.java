@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 import javax.swing.JRootPane;
 
 /**
- * ExpandAnimation, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2013 CC BY-SA 3.0.<HR/>
+ * ExpandAnimation, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2013 CC BY-SA 3.0.<hr>
  * 
  * @author Kyli of Blue Husky Programming
  * @since 2013-00-11

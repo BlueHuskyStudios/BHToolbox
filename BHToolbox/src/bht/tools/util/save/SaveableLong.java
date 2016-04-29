@@ -1,7 +1,7 @@
 package bht.tools.util.save;
 
 /**
- * SaveableLong, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012. License is CC-BY-SA.<hr/>
+ * SaveableLong, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012. License is CC-BY-SA.<hr>
  * Allows for the saving of a long data type as a named hexadecimal integer
  * @author Supuhstar
  */

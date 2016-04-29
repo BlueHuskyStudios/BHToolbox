@@ -1,7 +1,7 @@
 package bht.tools.util;
 
 /**
- * TinyPoint, made for Blues2D, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
+ * TinyPoint, made for Blues2D, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr>
  * A small, efficient alternative to {@link java.awt.Dimension} which only uses a 64-bit integer to store its data.
  * @author Supuhstar of Blue Husky Programming
  * @version 1.0.0

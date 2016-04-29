@@ -5,7 +5,7 @@ import java.util.EventObject;
 
 
 /**
- * ListenerEvent, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
+ * ListenerEvent, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr>
  *
  * @author Kyli of Blue Husky Programming
  * @version 1.0.0

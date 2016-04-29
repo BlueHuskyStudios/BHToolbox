@@ -20,7 +20,7 @@ import javax.swing.JFrame;
 import static bht.tools.Constants.MAX_WIN_BOUNDS;
 
 /**
- * CompAction, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
+ * CompAction, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr>
  * An incarnation of {@code CompAction} wherein ALL animation methods simply use {@link #morphTo(java.awt.Component,
  * java.awt.Rectangle, double, double, double, boolean, java.awt.Rectangle, java.awt.event.ActionListener, boolean, int)} in
  * different ways.

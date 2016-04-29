@@ -6,7 +6,7 @@ import bht.tools.util.search.Needle.Keyword;
 
 /**
  *
- * Searcher, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
+ * Searcher, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr>
  * @author Supuhstar of Blue Husky Programming
  * @since ‎Dec ‎20, ‎2011
  * @author Supuhstar

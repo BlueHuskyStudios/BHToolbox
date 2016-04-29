@@ -124,7 +124,7 @@ package bht.tools.util.search;
 import bht.tools.util.ArrayPP;
 
 /**
- * Haystack, made for BH Font Manager, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
+ * Haystack, made for BH Font Manager, is copyright Blue Husky Programming ©2015 BH-1-PS <hr>
  * 
  * @param <T> The type of item to be searched
  * 

@@ -1,7 +1,7 @@
 package bht.tools.util.save;
 
 /**
- * CompressedSaveableLong, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012. License is CC-BY-SA.<hr/>
+ * CompressedSaveableLong, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012. License is CC-BY-SA.<hr>
  * A version of {@link SaveableLong} that compresses the long into exactly four characters before saving it, and decompresses
  * it back into a long before loading it.
  * @author Supuhstar

@@ -1,7 +1,7 @@
 package bht.test.tools.comps;
 
 /**
- * BHSettingsPane, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
+ * BHSettingsPane, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr>
  * 
  * @author Kyli of Blue Husky Programming
  * @version 2.0.0

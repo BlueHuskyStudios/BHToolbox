@@ -4,7 +4,7 @@ import bht.tools.fx.LookAndFeelChanger;
 import javax.swing.JOptionPane;
 
 /**
- * DummyMain, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
+ * DummyMain, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr>
  * In case someone tries to run the toolbox, they get this.
  * @author Supuhstar of Blue Husky Programming
  * @since Mar 11, 2012

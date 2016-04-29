@@ -1,7 +1,7 @@
 package bht.tools.util;
 
 /**
- * SortedArrayPP, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012.<hr/>
+ * SortedArrayPP, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012.<hr>
  * An extension of ArrayPP that automatically sorts itself when something is added to it.
  * @param <T> The type of objects in the array. MUST implement {@link Comparable}
  * @author Supuhstar of Blue Husky Programming

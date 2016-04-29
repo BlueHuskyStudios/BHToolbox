@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 /**
  * BHGraphicsSurrogate, made for BH Checkers 2, is made by and copyrighted to Blue Husky Programming, ©2012. License is
- * default.<hr/> This is a class that allows for the drawing of an anti-aliased line.
+ * default.<hr> This is a class that allows for the drawing of an anti-aliased line.
  * @deprecated Doesn't work
  * @author Supuhstar of Blue Husky Programming
  * @since Jan 18, 2012

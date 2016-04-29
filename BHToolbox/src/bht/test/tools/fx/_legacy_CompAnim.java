@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionListener;
 
 /**
- * _legacy_CompAnim, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
+ * _legacy_CompAnim, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr>
  * A separation of abilities from {@link bht.tools.fx.CompAction}. This class, unlike the original, makes use of the new {@link
  * Animation} interface to allow the animation to be paused, rewound, or skipped in any order. The original will still be kept
  * and used for things like its {@link bht.tools.fx.CompAction#flash(java.awt.Window, boolean)},

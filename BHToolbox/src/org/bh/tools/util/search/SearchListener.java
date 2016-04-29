@@ -1,7 +1,7 @@
 package org.bh.tools.util.search;
 
 /**
- * SearchListener, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
+ * SearchListener, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr>
  *
  * @author Kyli of Blue Husky Programming
  * @version 1.0.0 - 2015-04-14 (1.0.0) - Kyli created SearchListener

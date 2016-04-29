@@ -6,7 +6,7 @@ import static bht.tools.util.Do.A;
 import static bht.tools.util.Do.s;
 
 /**
- * UserAgent, made for BHToolbox, is copyright Blue Husky Programming ©2014 BH-1-PS <hr/>
+ * UserAgent, made for BHToolbox, is copyright Blue Husky Programming ©2014 BH-1-PS <hr>
  * A data structure for representing a user agent string like
  * {@code Mozilla/[version] ([system and browser information]) [platform] ([platform details]) [extensions]}
  *

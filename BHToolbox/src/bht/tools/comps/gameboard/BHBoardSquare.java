@@ -21,7 +21,7 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 /**
- * BHBoardSquare, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012.<hr/>
+ * BHBoardSquare, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012.<hr>
  * @author Supuhstar of Blue Husky Programming
  * @version 1.0.0
  * @since Jan 16, 2012

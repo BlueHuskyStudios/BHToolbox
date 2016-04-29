@@ -16,7 +16,7 @@ import static org.bh.tools.util.Do.S.s;
 
 
 /**
- * ArrayPP, made for BHToolbox, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
+ * ArrayPP, made for BHToolbox, is copyright Blue Husky Programming ©2015 BH-1-PS <hr>
  * Would have been called "{@code Array++}" if "{@code +}" were an acceptable character. This class is made to give
  * enhanced features to arrays, such as basic search functions and comparability, along with the standard accessing
  * methods. The internal structure is an array, so as to make the interactions as memory-efficient as possible.<br/>

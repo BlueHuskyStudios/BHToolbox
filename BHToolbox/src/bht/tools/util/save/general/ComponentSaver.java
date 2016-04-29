@@ -9,7 +9,7 @@ import java.io.Serializable;
 import javax.swing.JComponent;
 
 /**
- * ComponentSaver, made for BHToolbox, is copyright Blue Husky Programming ©2014 BH-1-PS<HR/>
+ * ComponentSaver, made for BHToolbox, is copyright Blue Husky Programming ©2014 BH-1-PS<hr>
  * 
  * @deprecated doesn't do anything different than {@link ObjectSaver}
  * 

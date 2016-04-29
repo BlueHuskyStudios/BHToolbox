@@ -3,7 +3,7 @@ package bht.tools.misc;
 
 
 /**
- * FactoryDelegate, made for BHToolbox, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
+ * FactoryDelegate, made for BHToolbox, is copyright Blue Husky Programming ©2015 BH-1-PS <hr>
  *
  * @author Kyli of Blue Husky Programming
  * @version 1.0.0

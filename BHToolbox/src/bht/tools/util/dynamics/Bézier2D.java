@@ -3,7 +3,7 @@ package bht.tools.util.dynamics;
 import java.awt.geom.Point2D;
 
 /**
- * Bézier2D, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
+ * Bézier2D, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr>
  * Utilizes the {@link ProgressingValue} class to represent a continuous Bézier curve on a 2D coordinate plane.
  *
  * @author Supuhstar of Blue Husky Programming

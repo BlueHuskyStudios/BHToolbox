@@ -6,7 +6,7 @@ import bht.tools.util.StringPP;
 
 
 /**
- * Argument, made for BHToolbox, is copyright Blue Husky Programming ©2013 BH-1-PS<HR/>
+ * Argument, made for BHToolbox, is copyright Blue Husky Programming ©2013 BH-1-PS<hr>
  *
  * @author Supuhstar of Blue Husky Programming
  * @version 1.0.0

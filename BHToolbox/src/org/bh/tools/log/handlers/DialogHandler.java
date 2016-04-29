@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 
 /**
- * DialogHandler, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
+ * DialogHandler, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr>
  *
  * @author Kyli of Blue Husky Programming
  * @version 1.0.0

@@ -4,7 +4,7 @@ import bht.tools.util.dynamics.ProgressingValue;
 import java.awt.Rectangle;
 
 /**
- * DefCompActionAnimation, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2013 CC BY-SA 3.0.<HR/>
+ * DefCompActionAnimation, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2013 CC BY-SA 3.0.<hr>
  * a default implementation of {@link CompActionAnimation}
  * @author Kyli of Blue Husky Programming
  * @since 2013-00-11

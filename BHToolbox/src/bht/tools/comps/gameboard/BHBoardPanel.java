@@ -7,7 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
 /**
- * BHBoardPanel, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012. Licence is default.<hr/>
+ * BHBoardPanel, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012. Licence is default.<hr>
  * @author Supuhstar of Blue Husky Programming
  * @since Jan 16, 2012
  * @version 1.0.2

@@ -1,7 +1,7 @@
 package bht.tools.util;
 
 /**
- * TinyPoint32, made for BH Redstone Sim, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
+ * TinyPoint32, made for BH Redstone Sim, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr>
  * Similar to {@link TinyPoint}, but supports 3 dimensions (X, Y, and Z). Each coordinate has 21 bits to store its information,
  * including the sign. This means that each has a range of ±1,048,575. If this is too small for you,
  * consider using three {@code int}s or {@code long}s.<br/>

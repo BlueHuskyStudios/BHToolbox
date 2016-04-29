@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 
 /**
- * Colors2, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr/>
+ * Colors2, made for BHToolbox, is made by and copyrighted to Blue Husky Programming, ©2012 BH-1-PS.<hr>
  * A complete remake of the outdated and, admittedly, messy {@link Colors}.
  * @author Supuhstar of Blue Husky Programming
  * @since Feb 22, 2012 (Java version 1.7_02)

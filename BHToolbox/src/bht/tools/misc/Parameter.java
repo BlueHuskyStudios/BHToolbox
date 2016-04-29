@@ -1,7 +1,7 @@
 package bht.tools.misc;
 
 /**
- * Parameter, made for BHToolbox, is copyright Blue Husky Programming, ©2013 <HR/>
+ * Parameter, made for BHToolbox, is copyright Blue Husky Programming, ©2013 <hr>
  * 
  * @author csu of Blue Husky Programming
  * @version 1.0.0

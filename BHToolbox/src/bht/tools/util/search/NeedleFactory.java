@@ -4,7 +4,7 @@ import bht.tools.misc.Factory;
 import bht.tools.util.search.Needle.Keyword;
 
 /**
- * NeedleFactory, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
+ * NeedleFactory, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr>
  * 
  * Allows for the creation of {@link Needle}s by automated processes.
  * 

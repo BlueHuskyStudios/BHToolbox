@@ -1,7 +1,7 @@
 package org.bh.tools.util.search;
 
 /**
- * SearchEngine, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
+ * SearchEngine, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr>
  *
  * @param <ArgType>    The type of argument being passed to the search engine
  * @param <ResultType> The type of result expected from the search engine

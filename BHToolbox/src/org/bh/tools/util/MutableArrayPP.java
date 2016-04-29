@@ -528,7 +528,7 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
             /**
              * Iff the given key is a number, the object at the index represented by its
              * {@link Number#intValue() intValue()} is removed and returned. Else, {@code null} is returned.
-             * <hr/> {@inheritDoc}
+             * <hr> {@inheritDoc}
              *
              * @param key The index of the object to fetch.
              * @return The object that was at index {@code key} (using {@link MutableArrayPP#get(int)}) before it was
