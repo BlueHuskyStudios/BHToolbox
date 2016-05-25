@@ -30,12 +30,15 @@ public class Round {
 	}
 
 	/**
-	 * Rounds the given number {@code n} to the given precision using the given rounding mode and tier.
+	 * Rounds the given number {@code n} to the given precision using the given rounding mode and tier. Formula thanks
+	 * to <a href="https://math.stackexchange.com/q/1798899/26772">Math StackExchange</a>.
 	 *
 	 * @param n    The number to round.
 	 * @param mode The mody by which to round the number.
 	 * @param tier The tier to which to round. For instance, if calculating cash needed when there are nickels but no
 	 *             pennies, use {@code 0.05}.
+	 *
+	 * @see <a href="https://math.stackexchange.com/q/1798899/26772">What is the function for “round n to the nearest m”?</a>
 	 */
 	public static Number round(Number n, RoundingMode mode, Number tier) {
 		BigDecimal nDecimal    = toReal(n);
