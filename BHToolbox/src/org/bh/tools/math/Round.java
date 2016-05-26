@@ -43,10 +43,11 @@ public class Round {
 	public static Number round(Number n, RoundingMode mode, Number tier) {
 		BigDecimal nDecimal    = toReal(n);
 		BigDecimal tierDecimal = toReal(tier);
-		BigDecimal nOverTier   = nDecimal.divide(tierDecimal, nDecimal.scale() + tierDecimal.scale(), mode);
-		BigDecimal plusHalf    = nOverTier.add(HALF);
-		BigDecimal floored     = plusHalf.setScale(0, BigDecimal.ROUND_FLOOR);
-		return floored.multiply(tierDecimal);
+		return nDecimal
+				.divide(tierDecimal, 0, mode)
+				.setScale(10, mode)
+				.multiply(tierDecimal)
+				.setScale(tierDecimal.scale(), mode);
 	}
 
 	/**

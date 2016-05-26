@@ -39,10 +39,33 @@ public class RoundTest {
 		assertEquals(toReal(123.46), Round.round(123.456, (short) 2, RoundingMode.HALF_UP));
 
 		// if a 5¢ coin is the smallest denomination (like in Canada):
+		assertEquals(toReal("1.00"), Round.roundTier(1.00, NICKEL));
+		assertEquals(toReal("1.00"), Round.roundTier(1.01, NICKEL));
 		assertEquals(toReal("1.00"), Round.roundTier(1.02, NICKEL));
 		assertEquals(toReal("1.05"), Round.roundTier(1.03, NICKEL));
+		assertEquals(toReal("1.05"), Round.roundTier(1.04, NICKEL));
+		assertEquals(toReal("1.05"), Round.roundTier(1.05, NICKEL));
+		assertEquals(toReal("1.00"), Round.round(1.00, RoundingMode.DOWN, NICKEL));
+		assertEquals(toReal("1.00"), Round.round(1.01, RoundingMode.DOWN, NICKEL));
+		assertEquals(toReal("1.00"), Round.round(1.02, RoundingMode.DOWN, NICKEL));
+		assertEquals(toReal("1.00"), Round.round(1.03, RoundingMode.DOWN, NICKEL));
+		assertEquals(toReal("1.00"), Round.round(1.04, RoundingMode.DOWN, NICKEL));
+		assertEquals(toReal("1.05"), Round.round(1.05, RoundingMode.DOWN, NICKEL));
+		assertEquals(toReal("1.00"), Round.round(1.00, RoundingMode.UP, NICKEL));
+		assertEquals(toReal("1.05"), Round.round(1.01, RoundingMode.UP, NICKEL));
+		assertEquals(toReal("1.05"), Round.round(1.02, RoundingMode.UP, NICKEL));
+		assertEquals(toReal("1.05"), Round.round(1.03, RoundingMode.UP, NICKEL));
+		assertEquals(toReal("1.05"), Round.round(1.04, RoundingMode.UP, NICKEL));
+		assertEquals(toReal("1.05"), Round.round(1.05, RoundingMode.UP, NICKEL));
 		assertEquals(toReal("1.30"), Round.roundTier(1.29, NICKEL));
 		assertEquals(toReal("1.30"), Round.roundTier(1.30, NICKEL));
+		assertEquals(toReal("1.30"), Round.roundTier(1.31, NICKEL));
+		assertEquals(toReal("1.25"), Round.round(1.29, RoundingMode.DOWN, NICKEL));
+		assertEquals(toReal("1.30"), Round.round(1.30, RoundingMode.DOWN, NICKEL));
+		assertEquals(toReal("1.30"), Round.round(1.31, RoundingMode.DOWN, NICKEL));
+		assertEquals(toReal("1.30"), Round.round(1.29, RoundingMode.UP, NICKEL));
+		assertEquals(toReal("1.30"), Round.round(1.30, RoundingMode.UP, NICKEL));
+		assertEquals(toReal("1.35"), Round.round(1.31, RoundingMode.UP, NICKEL));
 
 		// if a 25¢ coin is the smallest denomination (like in bars):
 		assertEquals(toReal("1.00"), Round.roundTier(1.12, QUARTER));
@@ -56,6 +79,4 @@ public class RoundTest {
 		assertEquals(toReal("40.00"), Round.roundTier(39.99, TWENTY));
 		assertEquals(toReal("40.00"), Round.roundTier(40.00, TWENTY));
 	}
-
-
 }
