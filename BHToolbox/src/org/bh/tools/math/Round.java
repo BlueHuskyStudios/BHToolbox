@@ -13,8 +13,8 @@ import static org.bh.tools.math.NumberConverter.*;
  * @author Kyli Rouge
  * @since 2016-05-24
  */
+@SuppressWarnings("WeakerAccess")
 public class Round {
-	private static final BigDecimal HALF = toReal(0.5);
 
 	private Round() {}
 
@@ -34,7 +34,7 @@ public class Round {
 	 * to <a href="https://math.stackexchange.com/q/1798899/26772">Math StackExchange</a>.
 	 *
 	 * @param n    The number to round.
-	 * @param mode The mody by which to round the number.
+	 * @param mode The mode by which to round the number.
 	 * @param tier The tier to which to round. For instance, if calculating cash needed when there are nickels but no
 	 *             pennies, use {@code 0.05}.
 	 *
@@ -66,7 +66,7 @@ public class Round {
 	 * @param n         The number to round.
 	 * @param precision How precise the result should be (where {@code 0} is whole numbers, {@code 2} is hundredths,
 	 *                  {@code -2} is hundreds, etc.).
-	 * @param mode      The mody by which to round the number.
+	 * @param mode      The mode by which to round the number.
 	 */
 	public static Number round(Number n, short precision, RoundingMode mode) {
 		return toReal(n).setScale(precision, mode);
