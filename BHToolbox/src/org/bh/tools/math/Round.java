@@ -45,7 +45,6 @@ public class Round {
 		BigDecimal tierDecimal = toReal(tier);
 		return nDecimal
 				.divide(tierDecimal, 0, mode)
-				.setScale(10, mode)
 				.multiply(tierDecimal)
 				.setScale(tierDecimal.scale(), mode);
 	}
