@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Distro Jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Distro_Jar</output-path>
+    <root id="archive" name="BHToolbox.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="BHToolbox" />
+    </root>
+  </artifact>
+</component>
