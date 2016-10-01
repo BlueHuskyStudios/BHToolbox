@@ -2,12 +2,10 @@ package bht.tools.fx;
 
 import bht.tools.misc.YesNoBox;
 import bht.tools.util.ArrayPP;
-import java.awt.Frame;
-import java.awt.Window;
-import javax.swing.LookAndFeel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.event.ChangeListener;
+
+import javax.swing.*;
+import javax.swing.event.*;
+import java.awt.*;
 
 /**
  * A convenience class for changing the Java Look-And-Feel. Place a <tt>byte</tt> constant in the
@@ -335,8 +333,7 @@ public class LookAndFeelChanger
           }
           catch (Throwable t)
           {
-            t.printStackTrace();
-            setLookAndFeel(DEFAULT);
+            return getLookAndFeel(DEFAULT);
           }
         case METAL:
           return new javax.swing.plaf.metal.MetalLookAndFeel();
