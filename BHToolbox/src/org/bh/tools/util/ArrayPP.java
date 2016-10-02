@@ -1,5 +1,9 @@
 package org.bh.tools.util;
 
+import org.bh.tools.func.*;
+import org.bh.tools.math.*;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -7,12 +11,11 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-import org.bh.tools.math.Averager;
-import static org.bh.tools.math.NumberConverter.toInt32;
-import static org.bh.tools.util.ArrayPP.ArrayPosition.START;
-import static org.bh.tools.util.ArrayPP.SearchResults.NOT_FOUND;
-import static org.bh.tools.util.Do.S.as;
-import static org.bh.tools.util.Do.S.s;
+
+import static org.bh.tools.math.NumberConverter.*;
+import static org.bh.tools.util.ArrayPP.ArrayPosition.*;
+import static org.bh.tools.util.ArrayPP.SearchResults.*;
+import static org.bh.tools.util.Do.S.*;
 
 
 /**
@@ -45,7 +48,9 @@ import static org.bh.tools.util.Do.S.s;
  * </ul>
  *
  * @author Kyli of Blue Husky Programming
- * @version 2.2.0  <pre>
+ * @version 2.3.0  <pre>
+ *		- 2016-10-01 (2.3.0)
+ *                      ~ Ben added functional programming paradigms.
  *		- 2016-04-06 (2.2.0)
  *                      ~ Kyli renamed {@code ImmutableArray++} to {@code Array++}.
  *		~ 2015-08-30 (2.1.0) - Kyli renamed {@code ContainsBehavior} to {@code SearchBehavior}.
@@ -54,12 +59,12 @@ import static org.bh.tools.util.Do.S.s;
  *
  * @since 2015-03-03
  */
-public class ArrayPP<T>
+@SuppressWarnings({"unused", "WeakerAccess"}) public class ArrayPP<T>
         implements Comparable<ArrayPP<?>>,
         Iterable<T>,
         Serializable {
 
-    public static final long serialVersionUID = 02_000_0000L;
+    public static final long serialVersionUID = 0x2_003_0000L;
 
     /**
      * The internal array that holds all the data for this Array++
@@ -87,14 +92,30 @@ public class ArrayPP<T>
      *                    type. If this is not empty, its contents will be at the beginning of the new, immutable
      *                    array++.
      */
-    public ArrayPP(int initSize, T[] emptySample) {
+    public ArrayPP(int initSize, @NotNull T[] emptySample) {
         type = (Class<T>) emptySample.getClass();
         array = Arrays.copyOf(emptySample, initSize);
     }
 
+    /**
+     * Creates a new, filled, immutable array++ of the given size.
+     *
+     * @param numberOfElements The size of the new, empty, immutable array++
+     * @param emptySample      An non-null empty array to use to guarantee the new, empty, immutable array++ is of the
+     *                         right type. If this is not empty, its contents will be at the beginning of the new,
+     *                         immutable array++.
+     * @param generator        The generator which will be used to fill this array with its contents
+     */
+    public ArrayPP(int numberOfElements, @NotNull T[] emptySample, IndexedGenerator<T> generator) {
+        this(numberOfElements, emptySample) ;
+        for (int i = 0; i < numberOfElements; i++) {
+            array[i] = generator.generate(i);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     @Override
-    public int compareTo(ArrayPP<?> other) {
+    public int compareTo(@NotNull ArrayPP<?> other) {
         if (array instanceof Comparable[]
                 && other.toArray() instanceof Comparable[]) {
             Averager avg = new Averager();
@@ -393,7 +414,7 @@ public class ArrayPP<T>
     /**
      * Basic, universal positions in an array
      */
-    public static enum ArrayPosition {
+    public enum ArrayPosition {
         /**
          * Represents the beginning of the array (index {@code 0})
          */
@@ -401,14 +422,14 @@ public class ArrayPP<T>
         /**
          * Represents the end of the array (index {@code length})
          */
-        END;
+        END
     }
 
 
     /**
      * Indicates what kind of behavior to exhibit when searching.
      */
-    public static enum SearchBehavior {
+    public enum SearchBehavior {
         /**
          * Indicates that search methods should stop after the first find
          */
@@ -420,14 +441,14 @@ public class ArrayPP<T>
         /**
          * Indicates that search methods should guarantee that the the array consists SOLELY of the given items
          */
-        SOLELY;
+        SOLELY
     }
 
 
     /**
      * Indicates a specific, yet non-typical search result, wherein a specific result cannot be returned.
      */
-    public static enum SearchResults {
+    public enum SearchResults {
 
         /**
          * Indicates that the value which was searched for was not found. This has an {@link #INTVAL integer value} of
@@ -440,7 +461,7 @@ public class ArrayPP<T>
          */
         public final int INTVAL;
 
-        private SearchResults(int intVal) {
+        SearchResults(int intVal) {
             INTVAL = intVal;
         }
     }
