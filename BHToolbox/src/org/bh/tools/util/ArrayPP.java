@@ -78,9 +78,9 @@ import static org.bh.tools.util.Do.S.*;
      *
      * @param contents The contents of the array++.
      */
-    @SafeVarargs
+    @SuppressWarnings("unchecked") @SafeVarargs
     public ArrayPP(T... contents) {
-        type = (Class<T>) contents.getClass();
+        type = (Class<T>) (Class<?>)contents.getClass();
         array = Arrays.copyOf(contents, contents.length);
     }
 
@@ -92,8 +92,9 @@ import static org.bh.tools.util.Do.S.*;
      *                    type. If this is not empty, its contents will be at the beginning of the new, immutable
      *                    array++.
      */
-    public ArrayPP(int initSize, @NotNull T[] emptySample) {
-        type = (Class<T>) emptySample.getClass();
+    @SuppressWarnings("unchecked") @SafeVarargs
+    public ArrayPP(int initSize, T... emptySample) {
+        type = (Class<T>) (Class<?>)emptySample.getClass();
         array = Arrays.copyOf(emptySample, initSize);
     }
 
@@ -106,7 +107,8 @@ import static org.bh.tools.util.Do.S.*;
      *                         immutable array++.
      * @param generator        The generator which will be used to fill this array with its contents
      */
-    public ArrayPP(int numberOfElements, @NotNull T[] emptySample, IndexedGenerator<T> generator) {
+    @SafeVarargs
+    public ArrayPP(int numberOfElements, IndexedGenerator<T> generator, @NotNull T... emptySample) {
         this(numberOfElements, emptySample) ;
         for (int i = 0; i < numberOfElements; i++) {
             array[i] = generator.generate(i);

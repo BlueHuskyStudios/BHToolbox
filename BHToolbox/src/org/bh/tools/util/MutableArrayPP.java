@@ -64,10 +64,11 @@ import static org.bh.tools.util.ArrayPP.SearchBehavior.*;
      * Creates a new, empty array++ of the given size.
      *
      * @param initSize    The size of the new, empty array
-     * @param emptySample An empty array to use to guarantee the new, empty array++ is of the right type. If this is not
-     *                    empty, its contents will be at the beginning of the new array++.
+     * @param emptySample [optional] An empty array to use to guarantee the new, empty array++ is of the right type. If
+     *                    this is not empty, its contents will be at the beginning of the new array++.
      */
-    public MutableArrayPP(int initSize, T[] emptySample) {
+    @SafeVarargs
+    public MutableArrayPP(int initSize, T... emptySample) {
         super(initSize, emptySample);
     }
 
@@ -75,13 +76,14 @@ import static org.bh.tools.util.ArrayPP.SearchBehavior.*;
      * Creates a new, filled, mutable array++ of the given size.
      *
      * @param numberOfElements The size of the new, empty, immutable array++
-     * @param emptySample      An non-null empty array to use to guarantee the new, empty, immutable array++ is of the
-     *                         right type. If this is not empty, its contents will be at the beginning of the new,
-     *                         immutable array++.
      * @param generator        The generator which will be used to fill this array with its contents
+     * @param emptySample      [optional] An non-null empty array to use to guarantee the new, empty, immutable array++
+     *                         is of the right type. If this is not empty, its contents will be at the beginning of
+     *                         the new, immutable array++.
      */
-    public MutableArrayPP(int numberOfElements, @NotNull T[] emptySample, IndexedGenerator<T> generator) {
-        super(numberOfElements, emptySample, generator);
+    @SafeVarargs
+    public MutableArrayPP(int numberOfElements, IndexedGenerator<T> generator, @NotNull T... emptySample) {
+        super(numberOfElements, generator);
     }
 
         @SuppressWarnings("unchecked")
