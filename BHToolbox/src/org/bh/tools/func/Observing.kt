@@ -144,6 +144,8 @@ fun <PropertyType> NullDSB(): DidSetBlock<PropertyType> = { a, b -> }
  *                     use the `shouldSet` block.
  * @param didSet       `[optional]` - The block which will be called after the value has been changed. It is
  *                     nonsensical to modify the value within this block.
+ *
+ * @author [hotkey on StackOverflow](http://stackoverflow.com/a/39842353/453435)
  */
 fun <PropertyType> observing(initialValue: PropertyType,
                              willSet: WillSetBlock<PropertyType> = NullWSB(),
