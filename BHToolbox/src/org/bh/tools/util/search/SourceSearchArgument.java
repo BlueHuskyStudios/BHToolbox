@@ -1,7 +1,7 @@
 package org.bh.tools.util.search;
 
 /**
- * SourceSearchArgument, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
+ * SourceSearchArgument, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr>
  * 
  * @param <SourceType> The type of source this represents
  * 

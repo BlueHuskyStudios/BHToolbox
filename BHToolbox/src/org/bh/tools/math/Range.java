@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Range, made for English Learner, is copyright BHStudios ©2016 BH-1-PS <hr/>
+ * Range, made for English Learner, is copyright BHStudios ©2016 BH-1-PS <hr>
  * I wanted a range, and this seems like a good way to do that.
  *
  * @author Kyli Rouge of BHStudios

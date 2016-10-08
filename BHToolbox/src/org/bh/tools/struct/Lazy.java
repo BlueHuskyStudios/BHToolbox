@@ -6,7 +6,7 @@ package org.bh.tools.struct;
 import java.util.function.Supplier;
 
 /**
- * Lazy, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
+ * Lazy, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr>
  * Lazily instantiates an object when and only when it's needed. Also allows the object to be temporarily nullified.
  *
  * @param <T> The type of object this will maintain.

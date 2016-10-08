@@ -1,24 +1,19 @@
 package org.bh.tools.util;
 
 import bht.tools.misc.CompleteObject;
+import org.bh.tools.func.*;
+import org.bh.tools.math.Range.IntegerRange.*;
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Array;
-import java.util.AbstractMap;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bh.tools.math.Range.IntegerRange.MutableIntegerRange;
+import java.util.stream.Stream;
 
-import static org.bh.tools.util.ArrayPP.ArrayPosition.END;
-import static org.bh.tools.util.ArrayPP.ArrayPosition.START;
-import static org.bh.tools.util.ArrayPP.SearchBehavior.ALL;
-import static org.bh.tools.util.ArrayPP.SearchBehavior.SOLELY;
+import static org.bh.tools.util.ArrayPP.ArrayPosition.*;
+import static org.bh.tools.util.ArrayPP.SearchBehavior.*;
 
 
 /**
@@ -30,7 +25,9 @@ import static org.bh.tools.util.ArrayPP.SearchBehavior.SOLELY;
  * @see ArrayPP
  *
  * @author Kyli of Blue Husky Programming
- * @version 2.2.0  <pre>
+ * @version 2.3.0  <pre>
+ *		- 2016-10-01 (2.3.0)
+ *                      ~ Ben added functional programming paradigms.
  *		- 2016-04-06 (2.2.0)
  *                      ~ Kyli renamed {@code Array++} to {@code MutableArray++}
  *		- 2015-08-30 (2.1.0)
@@ -43,10 +40,10 @@ import static org.bh.tools.util.ArrayPP.SearchBehavior.SOLELY;
  *
  * @since 2015-03-03
  */
-public class MutableArrayPP<T> extends ArrayPP<T> {
+@SuppressWarnings({"unused", "WeakerAccess"}) public class MutableArrayPP<T> extends ArrayPP<T> {
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
-    public static final long serialVersionUID = 02_001_0000L;
+    public static final long serialVersionUID = 0x2_003_0000L;
 
     @SafeVarargs
     public MutableArrayPP(T... basis) {
@@ -60,21 +57,36 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
      */
     @SuppressWarnings({"unchecked", "OverridableMethodCallInConstructor"})
     public MutableArrayPP(Iterable<T> basis) {
-        basis.forEach((i) -> append(i));
+        basis.forEach(this::append);
     }
 
     /**
      * Creates a new, empty array++ of the given size.
      *
      * @param initSize    The size of the new, empty array
-     * @param emptySample An empty array to use to guarantee the new, empty array++ is of the right type. If this is not
-     *                    empty, its contents will be at the beginning of the new array++.
+     * @param emptySample [optional] An empty array to use to guarantee the new, empty array++ is of the right type. If
+     *                    this is not empty, its contents will be at the beginning of the new array++.
      */
-    public MutableArrayPP(int initSize, T[] emptySample) {
+    @SafeVarargs
+    public MutableArrayPP(int initSize, T... emptySample) {
         super(initSize, emptySample);
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Creates a new, filled, mutable array++ of the given size.
+     *
+     * @param numberOfElements The size of the new, empty, immutable array++
+     * @param generator        The generator which will be used to fill this array with its contents
+     * @param emptySample      [optional] An non-null empty array to use to guarantee the new, empty, immutable array++
+     *                         is of the right type. If this is not empty, its contents will be at the beginning of
+     *                         the new, immutable array++.
+     */
+    @SafeVarargs
+    public MutableArrayPP(int numberOfElements, IndexedGenerator<T> generator, @NotNull T... emptySample) {
+        super(numberOfElements, generator);
+    }
+
+        @SuppressWarnings("unchecked")
     public MutableArrayPP<T> add(T... newVals) {
         return add(END, newVals);
     }
@@ -94,10 +106,13 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
      * Removes all objects from the array, with an option to destroy them as they are removed. Destruction is calling
      * their {@link #finalize()} method.
      *
-     * @param destructive
+     * @param destructive If {@code true}, attempts to call {@link Object#finalize()} on each object in this array.
+     *                    If any one fails, a message is logged and that one is skipped. Either way, the array is
+     *                    emptied at the end.
      *
-     * @return
+     * @return {@code this}
      */
+    @SuppressWarnings("FinalizeCalledExplicitly")
     public MutableArrayPP<T> clear(boolean destructive) {
         if (destructive) {
             for (int i = 0; i < array.length; i++) {
@@ -234,17 +249,17 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
      *
      * @param behavior The behavior by which to search
      * <ul>
-     * <li>If {@link ImmutableArrayPP.SearchBehavior#ANY ANY}, removes the first found matching object at an index close
+     * <li>If {@link ArrayPP.SearchBehavior#ANY ANY}, removes the first found matching object at an index close
      * to {@code near}. If none is found, nothing is changed.</li>
-     * <li>If {@link ImmutableArrayPP.SearchBehavior#ALL ALL}, removes each and every found matching object. If none is
+     * <li>If {@link ArrayPP.SearchBehavior#ALL ALL}, removes each and every found matching object. If none is
      * found, nothing is changed.</li>
-     * <li>If {@link ImmutableArrayPP.SearchBehavior#SOLELY SOLELY}, first determines if the array consists solely of
+     * <li>If {@link ArrayPP.SearchBehavior#SOLELY SOLELY}, first determines if the array consists solely of
      * matching objects. If it does, {@link #clear()} is called.</li>
      * </ul>
      * @param val      The value to remove
-     * @param near     Used if {@code behavior} is {@link ImmutableArrayPP.SearchBehavior#ANY ANY}.
+     * @param near     Used if {@code behavior} is {@link ArrayPP.SearchBehavior#ANY ANY}.
      *
-     * @return
+     * @return {@code this}
      */
     @SuppressWarnings("unchecked")
     public MutableArrayPP<T> remove(SearchBehavior behavior, T val, ArrayPosition near) {
@@ -258,7 +273,7 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
 
             case ALL:
                 for (int i = 0; i < array.length; i++) {
-                    if (Objects.equals(val, array[i])) {
+                    if (val == array[i] || Objects.equals(val, array[i])) {
                         remove(i);
                     }
                 }
@@ -278,7 +293,7 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
      *
      * @param index The index of the item to remove
      *
-     * @return this
+     * @return {@code this}
      */
     public MutableArrayPP<T> remove(int index) {
         return removeChunk(index, index);
@@ -303,6 +318,19 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
                 array, endIndex + 1, // start writing with the object after endIndex
                 array.length - (endIndex - startIndex + 1)); // shorten the array appropriately
         return this;
+    }
+
+    /**
+     * Remove all null values from this array++.
+     *
+     * @return {@code this}
+     */
+    public MutableArrayPP<T> removeNulls() {
+        return removeAll(null);
+    }
+
+    public Stream<T> parallelStream() {
+        return stream().parallel();
     }
 
     /**
@@ -451,7 +479,7 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
     public Map<Integer, T> toMap() {
         return new Map<Integer, T>() {
             /**
-             * @return the result of {@link #length()}
+             * @return the result of {@link ArrayPP#length()}
              */
             @Override
             public int size() {
@@ -460,10 +488,10 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
 
             /**
              * If the given key is a {@link Number}, returns {@code true} iff it's between {@code 0} and
-             * {@link #length()}. Else, {@code false} is returned.
+             * {@link ArrayPP#length()}. Else, {@code false} is returned.
              *
              * @param key The index of the object to find.
-             * @return {@code true} iff the given key is a number between 0 and {@link length()}
+             * @return {@code true} iff the given key is a number between 0 and {@link ArrayPP#length()}
              */
             @Override
             public boolean containsKey(Object key) {
@@ -475,14 +503,16 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
             }
 
             /**
-             * If {@code needle} is {@code null}, this returns the result of {@link #containsNull()}. Else, if
-             * {@code needle} is of type {@link #T}, returns the result of {@link #contains(Object)}. Else, it returns
+             * If {@code needle} is {@code null}, this returns the result of {@link ArrayPP#containsNull()}. Else, if
+             * {@code needle} is of type {@code T}, returns the result of {@link ArrayPP#contains(Object)}.
+             * Else, it returns
              * {@code false}.
              *
              * @param needle The object to find in the values of this array++.
              * @return {@code true} iff {@code needle} is in this array++.
              */
-            @SuppressWarnings("unchecked") // type is transitively checked
+            @SuppressWarnings({"unchecked", // type is transitively checked
+                               "SimplifiableIfStatement"}) // The statements are intentionally broken out for easier reading
             @Override
             public boolean containsValue(Object needle) {
                 if (null == needle) {
@@ -495,7 +525,7 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
             }
 
             /**
-             * If {@code key} is a non-{@code null} {@link Number}, this acts like {@link #get(int)} passed the result
+             * If {@code key} is a non-{@code null} {@link Number}, this acts like {@link ArrayPP#get(int)} passed the result
              * of {@code key}'s {@link Number#intValue() intValue()} method. Else, returns {@code null}.
              *
              * @param key The index of the object to find.
@@ -524,7 +554,7 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
             /**
              * Iff the given key is a number, the object at the index represented by its
              * {@link Number#intValue() intValue()} is removed and returned. Else, {@code null} is returned.
-             * <hr/> {@inheritDoc}
+             * <hr> {@inheritDoc}
              *
              * @param key The index of the object to fetch.
              * @return The object that was at index {@code key} (using {@link MutableArrayPP#get(int)}) before it was
@@ -546,7 +576,7 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
             }
 
             @Override
-            public void putAll(Map<? extends Integer, ? extends T> m) {
+            public void putAll(@NotNull Map<? extends Integer, ? extends T> m) {
                 for (Entry<? extends Integer, ? extends T> entry : m.entrySet()) {
                     set(entry.getKey(), entry.getValue(), true);
                 }
@@ -557,17 +587,17 @@ public class MutableArrayPP<T> extends ArrayPP<T> {
                 MutableArrayPP.this.clear();
             }
 
-            @Override
+            @NotNull @Override
             public Set<Integer> keySet() {
                 return new MutableIntegerRange(0L, length() - 1L).toInt32Set();
             }
 
-            @Override
+            @NotNull @Override
             public Collection<T> values() {
                 return MutableArrayPP.this.toCollection();
             }
 
-            @Override
+            @NotNull @Override
             public Set<Entry<Integer, T>> entrySet() {
                 // I wish there were a more efficient way to do this :/
 

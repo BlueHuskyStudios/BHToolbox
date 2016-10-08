@@ -3,7 +3,7 @@ package org.bh.tools.evt;
 
 
 /**
- * ListenerListener, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
+ * ListenerListener, made for BHToolbox 2, is copyright Blue Husky Programming ©2015 BH-1-PS <hr>
  *
  * Listens for listener events.
  *

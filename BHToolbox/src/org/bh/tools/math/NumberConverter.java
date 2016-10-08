@@ -1,10 +1,13 @@
 package org.bh.tools.math;
 
+import bht.tools.util.Do;
+
 import java.math.BigDecimal;
-import static org.bh.tools.math.BasicFunctions.clamp;
+
+import static org.bh.tools.math.BasicFunctions.*;
 
 /**
- * NumberConverter, made for BHToolbox, is copyright Blue Husky Programming ©2016 BH-1-PS<HR/>
+ * NumberConverter, made for BHToolbox, is copyright Blue Husky Programming ©2016 BH-1-PS<hr>
  * Converts numbers. This takes on the philosophy wherein data is kept raw first and foremost, then converted to the
  * highest available native precision as needed, then converted to the necessary precision. Nulls are treated as zeroes.
  *
@@ -133,6 +136,21 @@ public class NumberConverter {
             }
         }
         return new BigDecimal(toString(n));
+    }
+
+    /**
+     * Returns the form of the given number which is a <a href="https://en.wikipedia.org/wiki/Real_number">real
+     * number</a>. If the given number is {@code null}, {@link BigDecimal#ZERO 0} is returned.
+     *
+     * @param n The number to convert into a real number.
+     * @return The real number form of the given number.
+     * @see https://en.wikipedia.org/wiki/Real_number
+     */
+    public static BigDecimal toReal(CharSequence n) {
+        if (null == n) {
+            return BigDecimal.ZERO;
+        }
+        return new BigDecimal(Do.s(n));
     }
 
     /**
