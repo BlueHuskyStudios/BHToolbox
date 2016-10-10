@@ -1,7 +1,5 @@
 package org.bh.tools.math;
 
-import bht.tools.util.Do;
-
 import java.math.BigDecimal;
 
 import static org.bh.tools.math.BasicFunctions.*;
@@ -14,6 +12,7 @@ import static org.bh.tools.math.BasicFunctions.*;
  * @author Kyli of Blue Husky Programming
  * @since 2016-04-24
  */
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class NumberConverter {
 
     /**
@@ -41,7 +40,7 @@ public class NumberConverter {
      * Returns the 32-bit integer form of the given number. The returned value is clamped between
      * {@link Integer#MIN_VALUE} and {@link Integer#MAX_VALUE}.
      *
-     * @param int64 The 64-bit integer to convert.
+     * @param n The number to convert.
      * @return The given integer in 32 bits.
      */
     public static int toInt32(Number n) {
@@ -57,7 +56,7 @@ public class NumberConverter {
     /**
      * Returns the 32-bit floating-point form of the given number. Only native conversion is performed.
      *
-     * @param float64 The 64-bit floating-point number to convert.
+     * @param n number to convert.
      * @return The given floating-point number in 32 bits.
      */
     public static float toFloatingPoint32(Number n) {
@@ -110,7 +109,6 @@ public class NumberConverter {
      *
      * @param n The number to convert into a real number.
      * @return The real number form of the given number.
-     * @see https://en.wikipedia.org/wiki/Real_number
      */
     public static BigDecimal toReal(Number n) {
         if (null == n) {
@@ -144,13 +142,12 @@ public class NumberConverter {
      *
      * @param n The number to convert into a real number.
      * @return The real number form of the given number.
-     * @see https://en.wikipedia.org/wiki/Real_number
      */
     public static BigDecimal toReal(CharSequence n) {
         if (null == n) {
             return BigDecimal.ZERO;
         }
-        return new BigDecimal(Do.s(n));
+        return new BigDecimal(n.toString());
     }
 
     /**

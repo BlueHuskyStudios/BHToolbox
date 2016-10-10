@@ -59,13 +59,13 @@ class Observing<in ThisRefType, PropertyType>(
         return initialValue
     }
 
-    override fun setValue(thisRef: ThisRefType, property: KProperty<*>, newValue: PropertyType) {
+    override fun setValue(thisRef: ThisRefType, property: KProperty<*>, value: PropertyType) {
         synchronized(syncLock) {
-            if (shouldSet(initialValue, newValue)) {
+            if (shouldSet(initialValue, value)) {
                 val oldValue = initialValue
-                willSet(oldValue, newValue)
-                initialValue = newValue
-                didSet(oldValue, newValue)
+                willSet(oldValue, value)
+                initialValue = value
+                didSet(oldValue, value)
             }
         }
     }
