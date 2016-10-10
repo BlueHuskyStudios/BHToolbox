@@ -24,7 +24,9 @@ class LookAndFeelChanger {
         private var _changeListeners = MutableArrayPP<LafChangeListener>()
         internal val _defaultLaf = UIManager.getLookAndFeel()
 
-        fun setLookAndFeel(lafEnum: LookAndFeelEnum, force: Boolean = false, errorHandler: LafChangeErrorHandler) {
+        fun setLookAndFeel(lafEnum: LookAndFeelEnum,
+                           force: Boolean = false,
+                           errorHandler: LafChangeErrorHandler = NullLafChangeErrorHandler) {
             setLookAndFeel(className = lafEnum.lafClassName, force = force, errorHandler = errorHandler)
         }
 
@@ -89,6 +91,7 @@ enum class LookAndFeelEnum(val lafClassName: CharSequence) {
 }
 
 typealias LafChangeErrorHandler = (type: LafChangeErrorType) -> Unit
+val NullLafChangeErrorHandler: LafChangeErrorHandler = { x -> }
 
 enum class LafChangeErrorType {
     NotALaf,
@@ -102,6 +105,6 @@ class LafChangeEvent() {
 
 }
 
-interface LafChangeListener: ActionListener {
+interface LafChangeListener : ActionListener {
     fun lafChanged(event: LafChangeEvent)
 }

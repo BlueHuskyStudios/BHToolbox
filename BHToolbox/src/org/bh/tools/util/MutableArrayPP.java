@@ -1,6 +1,5 @@
 package org.bh.tools.util;
 
-import bht.tools.misc.CompleteObject;
 import org.bh.tools.func.*;
 import org.bh.tools.math.Range.IntegerRange.*;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +34,7 @@ import static org.bh.tools.util.ArrayPP.SearchBehavior.*;
  *			~ Kyli changed the log message when an object couldn't be destroyed with {@link #clear(boolean) clear(true)}.
  *			+ Kyli added {@link #remove(SearchBehavior,Object,ArrayPosition)},
  *				{@link #remove(int)}, and {@link #removeChunk(int,int)}.
- *		- 2015-03-03 (2.0.0) . Kyli created this completely new ArrayPP, as a rewrite of {@link bht.tools.util.ArrayPP}.
+ *		- 2015-03-03 (2.0.0) . Kyli created this completely new ArrayPP, as a rewrite of {@link org.bh.tools.util.ArrayPP}.
  * </pre>
  *
  * @since 2015-03-03
@@ -115,14 +114,13 @@ import static org.bh.tools.util.ArrayPP.SearchBehavior.*;
     @SuppressWarnings("FinalizeCalledExplicitly")
     public MutableArrayPP<T> clear(boolean destructive) {
         if (destructive) {
-            for (int i = 0; i < array.length; i++) {
-                T t = array[i];
+            for (T t : array) {
                 if (t instanceof CompleteObject) {
                     try {
                         ((CompleteObject) t).finalize();
                     } catch (Throwable ex) {
-                        Logger.getLogger(MutableArrayPP.class.getName()).log(Level.WARNING, "Could not destroy item " + i
-                                + ": " + t, ex);
+                        Logger.getLogger(MutableArrayPP.class.getName()).log(Level.WARNING,
+                                "Could not destroy item $i: $t", ex);
                     }
                 }
             }

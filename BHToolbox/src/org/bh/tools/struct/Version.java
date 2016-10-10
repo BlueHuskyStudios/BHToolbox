@@ -1,17 +1,21 @@
 package org.bh.tools.struct;
 
-import bht.tools.util.Comparable64;
-import org.bh.tools.util.ArrayPP;
+import org.bh.tools.crossplatform.*;
+import org.bh.tools.util.*;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 import java.util.regex.Pattern;
-import static org.bh.tools.math.NumberConverter.to32Bit;
-import static org.bh.tools.struct.Version.Channel.STABLE;
+
+import static org.bh.tools.math.NumberConverter.*;
+import static org.bh.tools.struct.Version.Channel.*;
 
 /**
  * Version, made for BHToolbox, is copyright Blue Husky Programming ©2014 BH-1-PS<hr>
  *
- * @author Kyli of Blue Husky Programming
+ * @author Kyli and Ben of Blue Husky Programming
  * @version 2.0.0  <pre>
+ *     - 2.1.0 (2016-10-09) - Ben Leggiero updated to work without version 1, cleaned up warnings
  *     - 2.0.0 (2016-04-24) - Kyli Rouge updated to modern BH standards
  *     - 1.1.1 (2014-11-29) - Kyli Rouge Changed version pattern from \d(\.\d)* to \d+(\.\d+)*
  *     - 1.1.0 (2014-11-29) - Kyli Rouge added support for channels
@@ -19,6 +23,7 @@ import static org.bh.tools.struct.Version.Channel.STABLE;
  *
  * @since 2014-09-22
  */
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class Version implements Comparable<Version>, Comparable64<Version> { // MUST BE COMPILED IN UNICODE
 
     /**
@@ -114,17 +119,17 @@ public class Version implements Comparable<Version>, Comparable64<Version> { // 
      */
     public static Version fromString(String versionString) throws IllegalArgumentException {
         if (!VERSION_PATTERN.matcher(versionString).matches()) {
-            // TODO: Find a more friendly way to handle this. Perhaps remove/ignore unvalid characters?
+            // TODO: Find a more friendly way to handle this. Perhaps remove/ignore invalid characters?
             throw new IllegalArgumentException("Given string is not a valid version number: " + versionString);
         }
 
         String[] numStrings = Pattern.compile("\\.").split(versionString);
-        Long[] nums = new Long[numStrings.length];
+        Long[] components = new Long[numStrings.length];
 
         for (int i = 0; i < numStrings.length; i++) {
-            nums[i] = Long.valueOf(numStrings[i]);
+            components[i] = Long.valueOf(numStrings[i]);
         }
-        return new Version(nums);
+        return new Version(components);
     }
 
     @Override
@@ -148,6 +153,7 @@ public class Version implements Comparable<Version>, Comparable64<Version> { // 
      * @param obj the other object to test
      * @return {@code true} iff both this and the other object are equal
      */
+    @SuppressWarnings("RedundantIfStatement") // `equals` methods get a pardon
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -184,7 +190,7 @@ public class Version implements Comparable<Version>, Comparable64<Version> { // 
      * @return an integer, centered around 0, telling how much more or less this object is than the other.
      */
     @Override
-    public int compareTo(Version otherVersion) {
+    public int compareTo(@NotNull Version otherVersion) {
         return to32Bit(compareTo64(otherVersion));
     }
 
@@ -207,7 +213,7 @@ public class Version implements Comparable<Version>, Comparable64<Version> { // 
     /**
      * Represents a channel (stable, beta, alpha, lambda)
      */
-    public static enum Channel {
+    public enum Channel {
         /**
          * Signifies that this software is in very unstable or incomplete testing, and the next major release should be
          * an unstable alpha test.
@@ -285,7 +291,7 @@ public class Version implements Comparable<Version>, Comparable64<Version> { // 
          * @param unicode The Unicode symbol of the channel. This is preferred.
          * @param html    The HTML escape of the Unicode symbol of the channel.
          */
-        private Channel(char ascii, char unicode, String html) {
+        Channel(char ascii, char unicode, String html) {
             ASCII = ascii;
             UNICODE = unicode;
             HTML = html;
