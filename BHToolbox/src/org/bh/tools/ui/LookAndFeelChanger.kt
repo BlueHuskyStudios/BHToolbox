@@ -75,7 +75,7 @@ class LookAndFeelChanger {
 
             val evt = LafChangeEvent()
             for (changeListener in _changeListeners)
-                changeListener.lafChanged(evt)
+                changeListener?.lafChanged(evt)
         }
 
 //        val _systemLaf: LookAndFeel by lazy { Class.forName(UIManager.getSystemLookAndFeelClassName()).newInstance() as LookAndFeel }

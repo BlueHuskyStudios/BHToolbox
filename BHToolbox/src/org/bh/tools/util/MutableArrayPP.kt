@@ -6,7 +6,6 @@ import org.bh.tools.func.IndexedGenerator
 import org.bh.tools.util.ArrayPosition.END
 import org.bh.tools.util.ArrayPosition.START
 import org.bh.tools.util.SearchBehavior.*
-import java.lang.Iterable
 import java.util.*
 import java.util.function.Consumer
 import java.util.logging.Logger
