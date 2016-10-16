@@ -8,9 +8,7 @@ package org.bh.tools.func
  * @author Ben Leggiero
  * @since 2016-10-01
  */
-interface Generator<OutputType> {
-    fun generate(): OutputType
-}
+typealias Generator<OutputType> = () -> OutputType
 
 /**
  * Copyright BHStudios ©2016 BH-1-PS. Made for BH Tic Tac Toe IntelliJ Project.
@@ -20,6 +18,4 @@ interface Generator<OutputType> {
  * @author Ben Leggiero
  * @since 2016-10-01
  */
-interface IndexedGenerator<OutputType> {
-    fun generate(idx: Int): OutputType
-}
+typealias IndexedGenerator<OutputType> = (idx: Int) -> OutputType

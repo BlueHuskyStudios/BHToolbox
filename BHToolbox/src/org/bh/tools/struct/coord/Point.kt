@@ -6,6 +6,11 @@ package org.bh.tools.struct.coord
  * @author Ben Leggiero
  * @since 2016-09-29
  */
-data class Point<NumberType>(val x: NumberType, val y: NumberType) where NumberType: Number
+data class Point<NumberType>(val x: NumberType, val y: NumberType) where NumberType: Number {
+    companion object {
+        val zero: Point<Number> get() = Point(0, 0)
+    }
+}
 
 typealias Coordinate<NumberType> = Point<NumberType>
+
