@@ -112,8 +112,8 @@ public interface Range<T extends Number> {
          * @param initHigh The initial high value of the range
          */
         public IntegerRange(Long initLow, Long initHigh) {
-            low = initLow;
-            high = initHigh;
+            low = Math.min(initLow, initHigh);
+            high = Math.max(initLow, initHigh);
         }
 
         @Override
